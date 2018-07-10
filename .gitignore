@@ -1,12 +1,32 @@
-build
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log*
+yarn-error.log
+testem.log
 simba.db
 .vscode
+.editorconfig
 **local*
 **TODO*
 .idea
 **.DS_Store
-node_modules
 **target*
-test/chisel*
 .testrpc
-test/scripts-versioning-integrity/fakekeys/*
+
+# ember-try
+.node_modules.ember-try/
+bower.json.ember-try
+package.json.ember-try
