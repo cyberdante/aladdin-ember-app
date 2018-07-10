@@ -1,0 +1,12 @@
+build
+simba.db
+.vscode
+**local*
+**TODO*
+.idea
+**.DS_Store
+node_modules
+**target*
+test/chisel*
+.testrpc
+test/scripts-versioning-integrity/fakekeys/*
