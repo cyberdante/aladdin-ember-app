@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: 'aladdin-ember-app',
+    modulePrefix: 'aladdin',
     environment,
     rootURL: '/',
     locationType: 'auto',
