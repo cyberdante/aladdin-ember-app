@@ -1,0 +1,12 @@
+.schema-validator-log-line {
+    &.output-error {
+        p {
+            color: red;
+        }
+    }
+    &.output-warning {
+        p {
+            color: orange;
+        }
+    }
+}
