@@ -1,0 +1,58 @@
+& {
+    height: 100%;
+    width: 100%;
+
+    // temp starts
+    div {
+        height: 100%;
+        // width: 100%;
+    }
+    .contract-editor-wrapper {
+        opacity: 1;
+        height: 100%;
+        width: 100%;
+
+        .ace_text-input {
+            opacity: 1;
+            height: 100%;
+            width: 100%;
+            left: 0;
+        }
+    }
+    // temp ends
+    
+    md-card {
+        height: 100%;
+        md-card-title {
+            background-color: #ff5722;
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            padding: 0;
+            margin: 0;
+            height: calc(100% - 72px);
+            div {
+                height: 100%;
+                // width: 100%;
+                opacity: 1;
+            }
+            .contract-editor-wrapper {
+                opacity: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 0;
+        
+                .ace_text-input {
+                    opacity: 1 !important;
+                    height: 100%;
+                    width: 100%;
+                    left: 0;
+                }
+            }
+        }  
+    } 
+    
+    
+}

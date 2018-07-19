@@ -7,6 +7,12 @@ module.exports = function(defaults) {
     // Add options here
     sassOptions: {
       extension: 'scss'
+    },
+    ace: {
+      themes: ['monokai', 'ambiance', 'chaos'],
+      modes: ['yaml'],
+      workers: ['yaml'],
+      exts: ['language_tools']
     }
   });
 
