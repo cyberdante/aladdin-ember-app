@@ -1,25 +1,6 @@
 & {
     height: 100%;
     width: 100%;
-
-    // temp starts
-    div {
-        height: 100%;
-        // width: 100%;
-    }
-    .contract-editor-wrapper {
-        opacity: 1;
-        height: 100%;
-        width: 100%;
-
-        .ace_text-input {
-            opacity: 1;
-            height: 100%;
-            width: 100%;
-            left: 0;
-        }
-    }
-    // temp ends
     
     md-card {
         height: 100%;
@@ -35,7 +16,6 @@
             height: calc(100% - 72px);
             div {
                 height: 100%;
-                // width: 100%;
                 opacity: 1;
             }
             .contract-editor-wrapper {
@@ -53,6 +33,4 @@
             }
         }  
     } 
-    
-    
 }
