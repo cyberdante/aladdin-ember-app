@@ -1,3 +1,5 @@
+@import '../../../styles/palette';
+
 & {
     height: 100%;
     width: 100%;
@@ -5,7 +7,7 @@
     md-card {
         height: 100%;
         md-card-title {
-            background-color: #ff5722;
+            background-color: aladdin-color('secondary'); //#ff5722;
             color: #fff;
             height: 32px;
             max-height: 32px;
