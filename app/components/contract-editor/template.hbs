@@ -5,14 +5,29 @@
         {{/title.text}}
     {{/card.title}}
     {{#card.content}}
-        {{ember-ace
-            value=value 
-            useSoftTabs=true
-            tabSize=4
+        {{#ember-ace
             minlines=10
-            showIndentGuides=true
-            useWrapMode="true"
+            value=value
+            highlightActiveLine=highlightActiveLine
+            showPrintMargin=showPrintMargin
+            readOnly=readOnly
+            tabSize=tabSize
+            useSoftTabs=useSoftTabs
+            useWrapMode=useWrapMode
             editorClass="contract-editor-wrapper"
-            update=(action 'valueUpdated')}}
+            showInvisibles=showInvisibles
+            showGutter=showGutter
+            showIndentGuides=showIndentGuides
+            theme=theme
+            overlays=overlays
+            update=(action 'valueUpdated')
+            suggestCompletions=(action 'suggestCompletions')
+            as |editor| }}
+            {{#editor.completion-tooltip as |suggestion|}}
+                Caption: {{suggestion.caption}}
+            {{/editor.completion-tooltip}}
+        {{/ember-ace}}
+
+        {{!-- <pre>{{value}}</pre> --}}
     {{/card.content}}
 {{/paper-card}}
