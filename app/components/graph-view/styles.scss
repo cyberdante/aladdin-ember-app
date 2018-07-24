@@ -5,7 +5,7 @@
     width: 100%;
     
     md-card {
-        background: #272822;
+        background: aladdin-color('background');
         height: 100%;
         md-card-title {
             background-color: aladdin-color('secondary'); //#ff5722;
@@ -14,16 +14,23 @@
             max-height: 32px;
         }
         md-card-content {
-            
             overflow: scroll;
             padding: 0em;
             margin: auto;
             height: calc(100% - 72px);
 
             svg {
-              ellipse {
-                fill: #F8F8F2;
+              .node>text {
+                font-family: Roboto, "Helvetica Neue", sans-serif;
+                font-weight: 500;
+                fill: aladdin-color('background');
               }
+
+              ellipse {
+                fill: aladdin-color('foreground');
+                stroke: aladdin-color('secondary');
+              }
+
               polygon { 
                 fill: transparent;
                 stroke: transparent;
@@ -31,8 +38,8 @@
 
               g>.edge {
                 polygon, path {
-                  stroke: #F8F8F2; 
-                  fill: #F8F8F2;
+                  stroke: aladdin-color('secondary');
+                  fill: aladdin-color('secondary');
                 }
               }
             }
