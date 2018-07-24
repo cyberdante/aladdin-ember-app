@@ -29,5 +29,17 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('node_modules/viz.js/viz.js', {
+    using: [
+      { transformation: 'amd', as: 'viz' }
+    ]
+  });
+
+  app.import('node_modules/viz.js/full.render.js', {
+    using: [
+      { transformation: 'amd', as: 'viz-full-render' }
+    ]
+  });
+
   return app.toTree();
 };
