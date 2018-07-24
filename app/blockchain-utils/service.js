@@ -1,5 +1,4 @@
 import Service from '@ember/service';
-
 import mocks from './mocks';
 
 export default Service.extend({
