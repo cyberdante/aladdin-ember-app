@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-// import mocks from './mocks';
+import mocks from './mocks';
 
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
@@ -80,6 +80,7 @@ export default Service.extend({
         
         // let jsonSchema = JSON.stringify(schema).replace(/[\[\]']+/g,'');
         // return jsonSchema;
+        return mocks.schema;
       },
 
       generateSchemaYaml(title){
@@ -191,7 +192,7 @@ export default Service.extend({
       return dot.write(g);
     },
     
-    generateSolFile(schemaString){
+    generateContract(schemaString){
         // let schema = JSON.parse(schemaString);
         // fs.appendFileSync(schema.title + '.so', 'pragma solidity ^0.4.18; contract ' + schema.title + '{');
         // Object.keys(schema).forEach(function(key) {
@@ -227,6 +228,7 @@ export default Service.extend({
         //     }
         // });
         // fs.appendFileSync(schema.title + '.so', '}');
+        return mocks.contract;
     },
     
     generateSolFileYaml (schemaString){
