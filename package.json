@@ -52,13 +52,11 @@
     "ember-welcome-page": "^3.0.0",
     "eslint-plugin-ember": "^5.0.0",
     "json-beautify": "^1.0.1",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "viz.js": "^2.0.0"
   },
   "engines": {
     "lodash": "^4.17.10",
     "node": "^4.5 || 6.* || >= 7.*"
-  },
-  "dependencies": {
-    "viz.js": "^2.0.0"
   }
 }
