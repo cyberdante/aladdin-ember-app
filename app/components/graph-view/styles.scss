@@ -1,3 +1,41 @@
+@import '../../../styles/palette';
+
 & {
-  background: white;
+    height: 100%;
+    width: 100%;
+    
+    md-card {
+        background: #272822;
+        height: 100%;
+        md-card-title {
+            background-color: aladdin-color('secondary'); //#ff5722;
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            
+            overflow: scroll;
+            padding: 0em;
+            margin: auto;
+            height: calc(100% - 72px);
+
+            svg {
+              ellipse {
+                fill: #F8F8F2;
+              }
+              polygon { 
+                fill: transparent;
+                stroke: transparent;
+              }
+
+              g>.edge {
+                polygon, path {
+                  stroke: #F8F8F2; 
+                  fill: #F8F8F2;
+                }
+              }
+            }
+        }  
+    } 
 }

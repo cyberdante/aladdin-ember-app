@@ -1,1 +1,10 @@
-{{yield}}
+{{#paper-card as |card|}}
+    {{#card.title as |title|}}
+        {{#title.text as |text|}}
+            {{#text.headline}}Graph View{{/text.headline}}
+        {{/title.text}}
+    {{/card.title}}
+    {{#card.content}}
+      {{svg}}
+    {{/card.content}}
+{{/paper-card}}
