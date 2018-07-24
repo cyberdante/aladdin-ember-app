@@ -27,13 +27,15 @@
               }
 
               ellipse {
-                fill: aladdin-color('foreground');
                 stroke: aladdin-color('secondary');
               }
 
-              polygon { 
+              .graph>polygon {
                 fill: transparent;
-                stroke: transparent;
+              }
+              
+              g>.node>polygon { 
+                stroke: aladdin-color('secondary');
               }
 
               g>.edge {

@@ -41,5 +41,23 @@ module.exports = function(defaults) {
     ]
   });
 
+  app.import('node_modules/js-yaml/dist/js-yaml.js', {
+    using: [
+      { transformation: 'amd', as: 'js-yaml' }
+    ]
+  });
+
+  app.import('node_modules/dagre-d3/dist/dagre-d3.js', {
+    using: [
+      { transformation: 'amd', as: 'dagre-d3' }
+    ]
+  });
+
+  app.import('node_modules/graphlib-dot/index.js', {
+    using: [
+      { transformation: 'cjs', as: 'graphlib-dot' }
+    ]
+  });
+
   return app.toTree();
 };

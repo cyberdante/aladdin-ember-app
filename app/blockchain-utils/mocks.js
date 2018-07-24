@@ -89,9 +89,14 @@ contract Voting {
   `,
   schema: JSON.parse('{"$schema":"http://json-schema.org/draft-04/schema","title":"title","description":"Smart Contract Form for the demo","type":"object","properties":{"totalVotesFor":{"type":"object","properties":{"candidate":{"name":"candidate","type":"string"}},"title":"totalVotesFor"},"voteForCandidate":{"type":"object","properties":{"candidate":{"name":"candidate","type":"string"},"rnd":{"name":"rnd","type":"number"},"yn":{"name":"yn","type":"bool"},"test":{"name":"test","type":"string"}},"title":"voteForCandidate"},"validCandidate":{"type":"object","properties":{"candidate":{"name":"candidate","type":"string"}},"title":"validCandidate"},"votesReceived":{"type":"object","properties":{"":{"name":"","type":"string"}},"title":"votesReceived"},"candidateList":{"type":"object","properties":{"":{"name":"","type":"number"}},"title":"candidateList"}}}'),
   graphvz: `
-digraph graphname {
-  a -> b -> c;
-  b -> d;
-}
+  strict digraph {
+    vote [style=filled,fillcolor=grey92]
+    candidate [asset=true,shape=diamond,style=filled,fillcolor=slategray3]
+    totalVotes [style=filled,fillcolor=grey92]
+    addCandidate [style=filled,fillcolor=grey92]
+    vote -> candidate [style=filled,fillcolor=snow3]
+    totalVotes -> candidate [style=filled,fillcolor=snow3]
+    addCandidate -> candidate [style=filled,fillcolor=snow3]
+   }
   `
 };
