@@ -38,12 +38,7 @@ export default Component.extend({
     }),
 
     overlays: computed('overlay.{type,text}', 'overlay.range.{start,end}.{row,column}', function() {
-        console.log('Output: ' + this.get('overlay'));
-        return [this.get('overlay'), {
-            type: 'error',
-            text: 'Error text on line 11',
-            range: new Range(10, 4, 11, 7)
-        }];
+        return [this.get('overlay')];
     }),
 
     init() {
@@ -52,6 +47,7 @@ export default Component.extend({
     
     setUpdatedValueLazily(newValue) {
         console.log(newValue);
+        // call syntax checkers from Sarah's service here
         this.set('value', newValue);
     },
 
