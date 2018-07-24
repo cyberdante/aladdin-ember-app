@@ -11,7 +11,7 @@ export default Component.extend({
 
   actions: {
     onViewChange(schema) {
-      let graph = this.blockchainUtils.generate_graph(schema);
+      let graph = this.blockchainUtils.generateGraph(schema);
       graph;
     }
   }

@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import { Range } from 'ember-ace';
 
 export default Component.extend({
+    blockchainUtils: service(),
     classNames: ['md-padding'],
     newValue: '',
     value: '',
@@ -28,6 +29,8 @@ export default Component.extend({
             'ace/theme/chaos',
         ];
     }),
+
+    mode: 'ace/mode/yaml',
 
     overlay: computed(function() {
         return {

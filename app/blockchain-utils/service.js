@@ -1,18 +1,17 @@
 import Service from '@ember/service';
-
 import mocks from './mocks';
 
 export default Service.extend({
 
-  generate_schema: function() {
+  generateSchema: function() {
     return mocks.schema;
   },
 
-  generate_graph: function() {
+  generateGraph: function() {
     return mocks.graphvz;
   },
 
-  generate_contract: function() {
+  generateContract: function() {
     return mocks.contract;
   }
 
