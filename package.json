@@ -13,7 +13,7 @@
   "scripts": {
     "build": "ember build",
     "lint:js": "eslint ./*.js app blueprints config lib server tests",
-    "start": "ember serve",
+    "start": "./node_modules/.bin/ember serve --environment=development",
     "test": "ember test"
   },
   "devDependencies": {
@@ -57,5 +57,8 @@
   "engines": {
     "lodash": "^4.17.10",
     "node": "^4.5 || 6.* || >= 7.*"
+  },
+  "dependencies": {
+    "viz.js": "^2.0.0"
   }
 }
