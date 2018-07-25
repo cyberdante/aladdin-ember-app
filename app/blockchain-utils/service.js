@@ -113,43 +113,43 @@ export default Service.extend({
     
     },
     generateGraph(schemaString){
-   
-        // let schema = JSON.parse(schemaString);
-        // //Graph styles 
-        // let nodeAsset = {};
-        // nodeAsset.color = 'slategray3';
-        // nodeAsset.shape = 'diamond';
-        // nodeAsset.style = 'filled';
+        let schema = JSON.parse(schemaString);
+        //Graph styles 
+        let nodeAsset = {};
+        nodeAsset.color = 'slategray3';
+        nodeAsset.shape = 'diamond';
+        nodeAsset.style = 'filled';
         
-        // let nodeTransaction = {};
-        // nodeTransaction.style = 'filled';
-        // nodeTransaction.color = 'grey92';
+        let nodeTransaction = {};
+        nodeTransaction.style = 'filled';
+        nodeTransaction.color = 'grey92';
         
-        // let edge= {};
-        // edge.color = 'snow3';
-        // edge.style = 'filled';
+        let edge= {};
+        edge.color = 'snow3';
+        edge.style = 'filled';
         
-        // let g = new dagreD3.graphlib.Graph({compound:true})
-        // .setGraph({})
-        // .setDefaultEdgeLabel(function() { return {}; }); 
+        let g = new dagreD3.graphlib.Graph({compound:true})
+        .setGraph({})
+        .setDefaultEdgeLabel(function() { return {}; }); 
         
-        // Object.keys(schema).forEach(function(key) {
-        //     for(let ikey in schema[key]){
-        //         if(schema[key][ikey].type == 'object' ){
-        //             if(schema[key][ikey].properties.dependencies){
-        //                 g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {style: edge.style, fillcolor: edge.color});
-        //                 g.setNode(schema[key][ikey].properties.dependencies.assetId.type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
-        //             }
-        //     }
-        //    }
-        // });
+        Object.keys(schema).forEach(function(key) {
+            for(let ikey in schema[key]){
+                if(schema[key][ikey].type == 'object' ){
+                    if(schema[key][ikey].properties.dependencies){
+                        g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {style: edge.style, fillcolor: edge.color});
+                        g.setNode(schema[key][ikey].properties.dependencies.assetId.type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
+                    }
+            }
+           }
+        });
         
-        // g.nodes().forEach(function(v) {
-        //     let x = JSON.stringify(g.node(v));
-        //     if(x==undefined)
-        //      g.setNode(v, { style: nodeTransaction.style, fillcolor: nodeTransaction.color});
-        // });
+        g.nodes().forEach(function(v) {
+            let x = JSON.stringify(g.node(v));
+            if(x==undefined)
+             g.setNode(v, { style: nodeTransaction.style, fillcolor: nodeTransaction.color});
+        });
         // fs.appendFileSync("nodes.gv", dot.write(g));
+        return dot.write(g);
     },
     
     generateGraphYaml(schemaString){
@@ -175,8 +175,8 @@ export default Service.extend({
         for(let ikey in schema[key]){
           Object.keys(schema[key][ikey]).forEach(function(pkey){
             if(pkey=='dependencies'){
-              g.setEdge(schema[key][ikey].title, schema[key][ikey][pkey].asset_id.type, {style: edge.style, fillcolor: edge.color});
-              g.setNode(schema[key][ikey][pkey].asset_id.type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
+              g.setEdge(schema[key][ikey].title, schema[key][ikey][pkey].type, {style: edge.style, fillcolor: edge.color});
+              g.setNode(schema[key][ikey][pkey].type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
             }
           });
           }
