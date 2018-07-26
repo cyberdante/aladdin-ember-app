@@ -1,0 +1,16 @@
+{{#paper-card as |card|}}
+    {{#card.content}}
+        {{#paper-tabs selected=selectedTab onChange=(action 'onChange') as |tabs|}}
+            {{#tabs.tab}}
+                Errors Log
+            {{/tabs.tab}}
+            {{#tabs.tab}}
+                Smart Contract
+            {{/tabs.tab}}
+            {{#tabs.tab}}
+                AST List
+            {{/tabs.tab}}
+        {{/paper-tabs}}
+        {{component selectedComponent}}
+    {{/card.content}}
+{{/paper-card}}

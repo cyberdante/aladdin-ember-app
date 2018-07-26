@@ -1,0 +1,24 @@
+
+{{#paper-card as |card|}}
+    {{#card.content}}
+
+        {{#ember-ace
+            minlines=10
+            value=value
+            mode=mode
+            highlightActiveLine=highlightActiveLine
+            showPrintMargin=showPrintMargin
+            readOnly=readOnly
+            tabSize=tabSize
+            useSoftTabs=useSoftTabs
+            useWrapMode=useWrapMode
+            editorClass="contract-editor-wrapper"
+            showInvisibles=showInvisibles
+            showGutter=showGutter
+            showIndentGuides=showIndentGuides
+            theme=theme
+            overlays=overlays as |editor|}}
+            {{/ember-ace}}
+
+    {{/card.content}}
+{{/paper-card}}

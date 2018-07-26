@@ -1,11 +1,5 @@
 {{#paper-card as |card|}}
-    {{#card.title as |title|}}
-        {{#title.text as |text|}}
-            {{#text.headline}}Errors Log{{/text.headline}}
-        {{/title.text}}
-    {{/card.title}}
     {{#card.content}}
-        {{paper-divider}}
         {{#paper-list}}
             {{#each outputs as |output|}}
                 {{#paper-item class="md-1-line"}}

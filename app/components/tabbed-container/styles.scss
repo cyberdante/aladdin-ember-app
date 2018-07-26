@@ -1,0 +1,47 @@
+@import '../../../styles/palette';
+
+& {
+    height: 100%;
+    width: 100%;
+
+    md-card {
+        height: 100%;
+        md-card-title {
+            background-color: aladdin-color('secondary'); //#ff5722;
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            padding: 0;
+            margin: 0;
+            height: calc(100% - 72px);
+            div {
+                height: 100%;
+                opacity: 1;
+                &.ace_tooltip {
+                    height: auto;
+                }
+            }
+        }
+
+        .md-tab,
+        .md-tab.md-active,
+        .md-tab.md-focused {
+            font-size: 24px;
+            font-weight: 400;
+            line-height: 32px;
+            text-transform: none;
+            color: aladdin-color('foreground');
+        }
+
+        .md-tab.md-focused {
+            background: aladdin-color('secondary');
+        }
+
+        .md-ink-bar {
+            color: aladdin-color('foreground');
+            background: aladdin-color('foreground');
+        }
+    }
+}
