@@ -25,6 +25,7 @@ simba.db
 **.DS_Store
 **target*
 .testrpc
+package-lock.json
 
 # ember-try
 .node_modules.ember-try/
