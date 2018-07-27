@@ -7,19 +7,7 @@ import { Range } from 'ember-ace';
 export default Component.extend({
   blockchainUtils: service(),
   classNames: ['md-padding'],
-  value: 'pragma solidity ^0.4.0;\n' +
-  '\n' +
-  'contract SimpleStorage {\n' +
-  '    uint storedData;\n' +
-  '\n' +
-  '    function set(uint x) public {\n' +
-  '        storedData = x;\n' +
-  '    }\n' +
-  '\n' +
-  '    function get() public view returns (uint) {\n' +
-  '        return storedData;\n' +
-  '    }\n' +
-  '}',
+  value: '',
 
   highlightActiveLine: true,
   showPrintMargin: true,
@@ -57,17 +45,13 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-  },
-
-  setUpdatedValueLazily(newValue) {
-    // call syntax checkers from Sarah's service here
-    this.set('value', newValue);
+    this.set('value', this.get('blockchainUtils').generateContract('{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"vote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"}}}'));
   },
 
   actions: {
     valueUpdated(newValue) {
-      let component = this;
-      debounce(component, component.setUpdatedValueLazily, newValue, 500);
+      let utils = this.get('blockchainUtils');
+      debounce(this, () => this.set('value', utils.generateContract(newValue)), newValue, 500);
     }
   }
 })
