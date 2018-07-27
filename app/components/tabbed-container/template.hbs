@@ -10,7 +10,7 @@
         {{#if (not-eq selectedComponent 'contract-viewer')}}
             {{component selectedComponent}}
         {{else}}
-            {{component selectedComponent mode=(concat 'ace/mode/' contractLanguage)}}
+            {{component selectedComponent mode=(concat 'ace/mode/' contractLanguage) value=contractCode}}
         {{/if}}
     {{/card.content}}
 {{/paper-card}}

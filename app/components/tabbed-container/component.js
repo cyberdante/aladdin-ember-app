@@ -1,11 +1,22 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
+  blockchainUtils: service(),
   selectedTab: 0,
   selectedComponent: 'schema-validator-log',
   contractLanguage: 'solidity',
   tabTitles: computed(() => ['Errors Log', 'Smart Contract', 'AST List']),
+  schemaString: '',
+  contractCode: computed('schemaString', function() {
+    let utils = this.get('blockchainUtils');
+    return utils.generateContract(this.get('schemaString'));
+  }),
+  init(){
+    this._super(...arguments);
+    this.set('schemaString', '{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"vote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"}}}');
+  },
   actions: {
     onChange(selected){
       this.set('selectedTab', selected);
