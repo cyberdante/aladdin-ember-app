@@ -1,8 +1,11 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   selectedTab: 0,
   selectedComponent: 'schema-validator-log',
+  contractLanguage: 'solidity',
+  tabTitles: computed(() => ['Errors Log', 'Smart Contract', 'AST List']),
   actions: {
     onChange(selected){
       this.set('selectedTab', selected);

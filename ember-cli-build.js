@@ -10,7 +10,7 @@ module.exports = function(defaults) {
     },
     ace: {
       themes: ['monokai', 'ambiance', 'chaos'],
-      modes: ['yaml'],
+      modes: ['yaml', 'golang'],
       workers: ['yaml'],
       exts: ['language_tools']
     }
@@ -58,6 +58,8 @@ module.exports = function(defaults) {
       { transformation: 'cjs', as: 'graphlib-dot' }
     ]
   });
+
+  app.import('node_modules/ace-mode-solidity/build/v1.3.3/src-noconflict/mode-solidity.js', { outputFile: 'mode-solidity.js' });
 
   return app.toTree();
 };

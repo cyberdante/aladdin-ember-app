@@ -7,7 +7,19 @@ import { Range } from 'ember-ace';
 export default Component.extend({
   blockchainUtils: service(),
   classNames: ['md-padding'],
-  value: ' --- # Shopping list\n [milk, pumpkin pie, eggs, juice]',
+  value: 'pragma solidity ^0.4.0;\n' +
+  '\n' +
+  'contract SimpleStorage {\n' +
+  '    uint storedData;\n' +
+  '\n' +
+  '    function set(uint x) public {\n' +
+  '        storedData = x;\n' +
+  '    }\n' +
+  '\n' +
+  '    function get() public view returns (uint) {\n' +
+  '        return storedData;\n' +
+  '    }\n' +
+  '}',
 
   highlightActiveLine: true,
   showPrintMargin: true,
@@ -29,7 +41,7 @@ export default Component.extend({
     ];
   }),
 
-  mode: 'ace/mode/yaml',
+  mode: 'ace/mode/solidity',
 
   overlay: computed(function() {
     return {
@@ -48,7 +60,6 @@ export default Component.extend({
   },
 
   setUpdatedValueLazily(newValue) {
-    console.log(newValue);
     // call syntax checkers from Sarah's service here
     this.set('value', newValue);
   },
@@ -59,4 +70,4 @@ export default Component.extend({
       debounce(component, component.setUpdatedValueLazily, newValue, 500);
     }
   }
-});
+})

@@ -17,6 +17,7 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "ace-mode-solidity": "^0.1.0",
     "broccoli-asset-rev": "^2.4.5",
     "d3": "^5.5.0",
     "dagre": "^0.8.2",

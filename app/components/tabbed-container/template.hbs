@@ -1,16 +1,16 @@
 {{#paper-card as |card|}}
     {{#card.content}}
         {{#paper-tabs selected=selectedTab onChange=(action 'onChange') as |tabs|}}
-            {{#tabs.tab}}
-                Errors Log
-            {{/tabs.tab}}
-            {{#tabs.tab}}
-                Smart Contract
-            {{/tabs.tab}}
-            {{#tabs.tab}}
-                AST List
-            {{/tabs.tab}}
+            {{#each tabTitles as |title|}}
+                {{#tabs.tab}}
+                    {{title}}
+                {{/tabs.tab}}
+            {{/each}}
         {{/paper-tabs}}
-        {{component selectedComponent}}
+        {{#if (not-eq selectedComponent 'contract-viewer')}}
+            {{component selectedComponent}}
+        {{else}}
+            {{component selectedComponent mode=(concat 'ace/mode/' contractLanguage)}}
+        {{/if}}
     {{/card.content}}
 {{/paper-card}}
