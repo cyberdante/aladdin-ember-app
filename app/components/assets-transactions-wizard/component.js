@@ -11,7 +11,7 @@ export default Component.extend({
 
   assets: A([]),
 
-  selectedAsset: Ember.Object.create({}),
+  selectedAsset: O.create({}),
 
   init() {
     this._super(...arguments);

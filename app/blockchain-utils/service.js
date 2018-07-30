@@ -283,10 +283,33 @@ export default Service.extend({
     },
 
     extractAssetsTransactions(schema) {
-      return A([
-        O.create({title:'Container', transactions:A(['arrived', 'deported', 'isIdle', 'saveManifest', 'verify', 'received'])}), 
-        O.create({title:'Lock', transactions:A(['lock', 'unlock', 'tampered'])})
-      ]);
+      let assets = {};
+      
+      if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+      } 
+        
+      Object.keys(schema).forEach(function(key) {
+        for(let ikey in schema[key]){
+          if(schema[key][ikey].type == 'object' ){
+            if(schema[key][ikey].properties.dependencies){
+              let assetMeta = schema[key][ikey];
+              let assetType = assetMeta.properties.dependencies.assetId.type;
+              if (!assets[assetType]) {
+                assets[assetType] = {transactions:[]};
+              }
+              assets[assetType].transactions.push({title:assetMeta.title, meta:assetMeta});
+            }
+          }
+        }
+      });
+      
+      let _assets = Object.keys(assets).reduce((acc, key) => {
+        acc.pushObject({title:key, transactions:assets[key].transactions});
+        return acc;
+      }, A([]));
+
+      return _assets;
     },
 
 });
