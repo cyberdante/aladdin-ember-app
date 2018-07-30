@@ -6,8 +6,7 @@ import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
 
 export default Service.extend({
-
-    //*************************************************
+    // *************************************************
     // Inputs: schemaInterface- An ABI definition object 
     //        corresponding to the given JSON text
     //
@@ -18,7 +17,7 @@ export default Service.extend({
     //        the JSON schema. NOTE: within the JSON 
     //        schema the keyword \textit{dependencies} 
     //        signifies an asset relationship
-    //*************************************************
+    // *************************************************
     generateSchema(schemaInterface, title){
         let schema = {}; 
         schema.$schema = "http://json-schema.org/draft-04/schema"; 
@@ -57,7 +56,7 @@ export default Service.extend({
                        else{
                         fn.properties[func[key][ikey].name] = func[key][ikey];
                         if(func[key][ikey].type.startsWith("byte")) func[key][ikey].type = "string";
-                        if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) func[key][ikey].type = "number";
+                        if(func[key][ikey].type.startsWith("uint") || func[key][ikey].type.startsWith("uint") ) func[key][ikey].type = "number";
                        }
                       }            
                 }
@@ -78,10 +77,8 @@ export default Service.extend({
             }
         });
         
-        // let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g,'');
-        // return jsonSchema;
-
-        return mocks.schema;
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g,'');
+        return jsonSchema;
       },
 
       generateSchemaYaml(yamlString, title){
@@ -112,44 +109,46 @@ export default Service.extend({
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g,'');
         return jsonSchema;
     },
+    
     generateGraph(schemaString){
-        let schema = JSON.parse(schemaString);
-        //Graph styles 
-        let nodeAsset = {};
-        nodeAsset.color = 'slategray3';
-        nodeAsset.shape = 'diamond';
-        nodeAsset.style = 'filled';
-        
-        let nodeTransaction = {};
-        nodeTransaction.style = 'filled';
-        nodeTransaction.color = 'grey92';
-        
-        let edge= {};
-        edge.color = 'snow3';
-        edge.style = 'filled';
-        
-        let g = new dagreD3.graphlib.Graph({compound:true})
+      let schema = JSON.parse(schemaString);
+      //Graph styles 
+      let nodeAsset = {};
+      nodeAsset.color = 'slategray3';
+      nodeAsset.shape = 'diamond';
+      nodeAsset.style = 'filled';
+      
+      let nodeTransaction = {};
+      nodeTransaction.style = 'filled';
+      nodeTransaction.color = 'grey92';
+      
+      let edge = {};
+      edge.color = 'snow3';
+      edge.style = 'filled';
+      
+      let g = new dagreD3.graphlib.Graph({compound:true})
         .setGraph({})
-        .setDefaultEdgeLabel(function() { return {}; }); 
-        
-        Object.keys(schema).forEach(function(key) {
-            for(let ikey in schema[key]){
-                if(schema[key][ikey].type == 'object' ){
-                    if(schema[key][ikey].properties.dependencies){
-                        g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {style: edge.style, fillcolor: edge.color});
-                        g.setNode(schema[key][ikey].properties.dependencies.assetId.type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
-                    }
+        .setDefaultEdgeLabel(function() { return {}; })
+      ; 
+      
+      Object.keys(schema).forEach(function(key) {
+        for(let ikey in schema[key]){
+          if(schema[key][ikey].type == 'object' ){
+            if(schema[key][ikey].properties.dependencies){
+              g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {style: edge.style, fillcolor: edge.color});
+              g.setNode(schema[key][ikey].properties.dependencies.assetId.type, {asset: 'true', shape: nodeAsset.shape, style: nodeAsset.style, fillcolor: nodeAsset.color});
             }
-           }
-        });
-        
-        g.nodes().forEach(function(v) {
-            let x = JSON.stringify(g.node(v));
-            if(x==undefined)
-             g.setNode(v, { style: nodeTransaction.style, fillcolor: nodeTransaction.color});
-        });
-        // fs.appendFileSync("nodes.gv", dot.write(g));
-        return dot.write(g);
+          }
+        }
+      });
+      
+      g.nodes().forEach(function(v) {
+        let x = JSON.stringify(g.node(v));
+        if(x==undefined) {
+          g.setNode(v, { style: nodeTransaction.style, fillcolor: nodeTransaction.color});
+        }
+      });
+      return dot.write(g);
     },
     
     generateGraphYaml(schemaString){
