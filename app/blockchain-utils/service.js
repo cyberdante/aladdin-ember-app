@@ -305,7 +305,7 @@ export default Service.extend({
       });
       
       let _assets = Object.keys(assets).reduce((acc, key) => {
-        acc.pushObject({title:key, transactions:assets[key].transactions});
+        acc.pushObject(O.create({title:key, transactions:assets[key].transactions}));
         return acc;
       }, A([]));
 
