@@ -1,29 +1,17 @@
 import Component from '@ember/component';
-import { A } from '@ember/array';
-import { observer } from '@ember/object';
+// import { observer } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
+import O from '@ember/object';
 
 export default Component.extend({
   blockchainUtils: service(),
 
   schema: '',
 
-  assets: Ember.A(['Hi', 'There']),
-  activeChip: -1,
-  selectedAsset: -1,
+  assets: A([]),
 
-  handleAssetFocused: observer('activeChip', function() {
-    if (this.activeChip === -1) {
-      this.set('activeChip', this.selectedAsset);
-    }
-    if (this.selectedAsset !== this.activeChip) {
-      this.selectAsset(this.activeChip);
-    }
-  }),
-
-  selectAsset(activeChip) {
-    this.set('selectedAsset', activeChip);
-  },
+  selectedAsset: Ember.Object.create({}),
 
   init() {
     this._super(...arguments);
@@ -35,11 +23,14 @@ export default Component.extend({
     // so we need to update this view in response.
     onViewChange(schema) {
       this.set('schema', schema);
-      
+      let assets = this.blockchainUtils.extractAssetsTransactions(schema);
+      this.set('assets', assets);
     },
-    
-    addItems(item) { 
-      this.set('assets', Ember.A([...this.assets, item]));
+
+    selectAsset(asset) {
+      this.set('selectedAsset.isSelected', false);
+      asset.set('isSelected', true);
+      this.set('selectedAsset', asset);
     }
   }
 });

@@ -1,5 +1,7 @@
 import Service from '@ember/service';
-import mocks from './mocks';
+import { A } from '@ember/array';
+import O from '@ember/object';
+// import mocks from './mocks';
 
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
@@ -278,6 +280,13 @@ export default Service.extend({
         });
         sol = sol.appendLine( '}');
         return sol;
-    }
+    },
+
+    extractAssetsTransactions(schema) {
+      return A([
+        O.create({title:'Container', transactions:A(['arrived', 'deported', 'isIdle', 'saveManifest', 'verify', 'received'])}), 
+        O.create({title:'Lock', transactions:A(['lock', 'unlock', 'tampered'])})
+      ]);
+    },
 
 });

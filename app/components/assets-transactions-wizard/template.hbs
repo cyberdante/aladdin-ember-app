@@ -7,9 +7,8 @@
         {{/title.text}}
     {{/card.title}}
     {{#card.content}}
-        {{paper-chips 
-          content=assets 
-          activeChip=activeChip
-          isFocused=true}}
+    {{#each assets as |asset|}}
+      {{paper-button raised=true label=asset.title primary=asset.isSelected onClick=(action "selectAsset" asset)}}
+    {{/each}}
     {{/card.content}}
 {{/paper-card}}
