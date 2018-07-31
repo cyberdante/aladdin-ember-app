@@ -2,6 +2,13 @@
 @import 'ember-paper';
 @import 'palette';
 
+#main {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
 .bold-text {
     font-weight: 500;
 }

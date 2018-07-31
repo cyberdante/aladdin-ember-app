@@ -1,4 +1,5 @@
 @import '../../../styles/palette';
+@import '../../../styles/mixins';
 
 & {
     height: 100%;
@@ -9,13 +10,24 @@
         md-card-title {
             background-color: aladdin-color('secondary'); //#ff5722;
             color: #fff;
-            height: 32px;
-            max-height: 32px;
+            height: 48px;
+            max-height: 48px;
+            padding: 0;
+
+            md-card-title-text {
+                @include aladdin-card-title-text;
+
+                .md-headline {
+                  font-size: 14px;
+                  font-weight: 500;
+                  line-height: 24px;
+                }
+            }
         }
         md-card-content {
             padding: 0;
             margin: 0;
-            height: calc(100% - 72px);
+            height: calc(100% - 48px);
             div {
                 height: 100%;
                 opacity: 1;

@@ -49,9 +49,13 @@ export default Component.extend({
     },
     
     setUpdatedValueLazily(newValue) {
-        console.log(newValue);
+        // console.log(newValue);
         // call syntax checkers from Sarah's service here
         this.set('value', newValue);
+        let blockchainService = this.get('blockchainUtils');
+        let schema = blockchainService.generateSchemaYaml(this.get('value'));
+        console.log(JSON.stringify(JSON.parse(schema), null, 2));
+        blockchainService.generateGraph(schema);
     },
 
     actions: {
