@@ -1,13 +1,16 @@
 import Service from '@ember/service';
-import mocks from './mocks';
+import {
+    A
+} from '@ember/array';
+import O from '@ember/object';
+// import mocks from './mocks';
 
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
 
 export default Service.extend({
-
-    //*************************************************
+    // *************************************************
     // Inputs: schemaInterface- An ABI definition object 
     //        corresponding to the given JSON text
     //
@@ -18,7 +21,7 @@ export default Service.extend({
     //        the JSON schema. NOTE: within the JSON 
     //        schema the keyword \textit{dependencies} 
     //        signifies an asset relationship
-    //*************************************************
+    // *************************************************
     generateSchema(schemaInterface, title) {
         let schema = {};
         schema.$schema = "http://json-schema.org/draft-04/schema";
@@ -34,7 +37,7 @@ export default Service.extend({
                 fn.type = typeof (fn);
                 fn.properties = {};
                 let assetName;
-                let dummyReturn = {};
+                // let dummyReturn = {}; // unused variable
                 let isAsset = false;
 
                 for (let key in func) {
@@ -60,27 +63,13 @@ export default Service.extend({
                             }
                         }
                     }
-                    //Do we need returns?
-                    if (key == 'outputs') {
-                        if (func[key].length < 1) {
-                            dummyReturn = {}
-                            fn.properties.returns = dummyReturn;
-                        }
-                        for (let ikey in func[key]) {
-                            fn.properties.returns = func[key][ikey];
-                            if (fn.properties.returns.type.startsWith("byte")) func[key][ikey].type = "string";
-                            if (fn.properties.returns.type.startsWith("uint")) func[key][ikey].type = "number";
-                        }
-                    }
+                    schema.properties[fn.title] = fn;
                 }
-                schema.properties[fn.title] = fn;
             }
         });
 
-        // let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g,'');
-        // return jsonSchema;
-
-        return mocks.schema;
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+        return jsonSchema;
     },
 
     generateSchemaYaml(yamlString, title) {
@@ -111,6 +100,7 @@ export default Service.extend({
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
     },
+
     generateGraph(schemaString) {
         let schema = JSON.parse(schemaString);
         //Graph styles 
@@ -156,13 +146,13 @@ export default Service.extend({
 
         g.nodes().forEach(function (v) {
             let x = JSON.stringify(g.node(v));
-            if (x == undefined)
+            if (x == undefined) {
                 g.setNode(v, {
                     style: nodeTransaction.style,
                     fillcolor: nodeTransaction.color
                 });
+            }
         });
-        // fs.appendFileSync("nodes.gv", dot.write(g));
         return dot.write(g);
     },
 
@@ -309,6 +299,44 @@ export default Service.extend({
         });
         sol = sol.appendLine('}');
         return sol;
+    },
+
+    extractAssetsTransactions(schema) {
+        let assets = {};
+
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
+
+        Object.keys(schema).forEach(function (key) {
+            for (let ikey in schema[key]) {
+                if (schema[key][ikey].type == 'object') {
+                    if (schema[key][ikey].properties.dependencies) {
+                        let assetMeta = schema[key][ikey];
+                        let assetType = assetMeta.properties.dependencies.assetId.type;
+                        if (!assets[assetType]) {
+                            assets[assetType] = {
+                                transactions: []
+                            };
+                        }
+                        assets[assetType].transactions.push({
+                            title: assetMeta.title,
+                            meta: assetMeta
+                        });
+                    }
+                }
+            }
+        });
+
+        let _assets = Object.keys(assets).reduce((acc, key) => {
+            acc.pushObject(O.create({
+                title: key,
+                transactions: assets[key].transactions
+            }));
+            return acc;
+        }, A([]));
+
+        return _assets;
     }
 
 });
