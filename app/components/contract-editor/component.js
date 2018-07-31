@@ -54,7 +54,7 @@ export default Component.extend({
         this.set('value', newValue);
         let blockchainService = this.get('blockchainUtils');
         let schema = blockchainService.generateSchemaYaml(this.get('value'));
-        // console.log(JSON.stringify(JSON.parse(schema), null, 2));
+        console.log(JSON.stringify(JSON.parse(schema), null, 2));
         blockchainService.generateGraph(schema);
     },
 
