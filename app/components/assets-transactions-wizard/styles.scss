@@ -29,46 +29,27 @@
         md-card-content {
             overflow: auto;
             padding: 0em;
-            width: 50%;
+            width: 100%;
             height: calc(100% - 48px);
 
-            .md-button.md-primary.md-raised, 
-            .md-button.md-primary.md-raised:not([disabled]):hover,
-            .md-button.md-primary.md-raised:not([disabled]).md-focused {
-              background: aladdin-color('secondary');
+            .md-button.md-default-theme:not([disabled]):hover, .md-button:not([disabled]):hover {
+              background-color: rgba(158, 158, 158, 0.5);
             }
 
-            .md-button.md-raised {
-              background: aladdin-color('foreground');
-              color: aladdin-color('background');
+            .md-button.md-default-theme.md-primary, .md-button.md-primary {
+              color: aladdin-color('secondary');
             }
 
-            // .md-chip-input-container {
-            //   display: none;
-            // }
+            md-list-item .md-list-item-inner > p, md-list-item .md-list-item-inner, #transaction-meta  {
+              color: aladdin-color('foreground');
+              background: aladdin-color('background');
+            }
 
-            // .md-chips.md-focused {
-            //   -webkit-box-shadow: 0 2px aladdin-color('foreground');
-            //   box-shadow: 0 2px aladdin-color('foreground');
-            // }
-
-            // md-chips md-chip {
-            //   background: aladdin-color('foreground');
-            //   color: aladdin-color('background');
-            // }
-
-            // md-chips md-chip.md-focused {
-            //   background: aladdin-color('secondary');
-            //   color: aladdin-color('foreground');
-            // }
-
-            // .md-chip-content {
-            //   font-family: Roboto, "Helvetica Neue", sans-serif;
-            // }
-
-            // .md-chip-remove-container {
-            //   display: none;
-            // }
+            .md-subheader-content {
+              font-weight: bold;
+              color: #989892;
+              background: aladdin-color('background');
+            }
         }  
     } 
 }

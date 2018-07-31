@@ -319,10 +319,10 @@ export default Service.extend({
                                 transactions: []
                             };
                         }
-                        assets[assetType].transactions.push({
+                        assets[assetType].transactions.push(O.create({
                             title: assetMeta.title,
                             meta: assetMeta
-                        });
+                        }));
                     }
                 }
             }

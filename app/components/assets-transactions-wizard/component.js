@@ -12,6 +12,7 @@ export default Component.extend({
   assets: A([]),
 
   selectedAsset: O.create({}),
+  selectedTxn: O.create({}),
 
   init() {
     this._super(...arguments);
@@ -31,6 +32,12 @@ export default Component.extend({
       this.set('selectedAsset.isSelected', false);
       asset.set('isSelected', true);
       this.set('selectedAsset', asset);
+    },
+
+    selectTxn(txn) {
+      this.set('selectedTxn.isSelected', false);
+      txn.set('isSelected', true);
+      this.set('selectedTxn', txn);
     }
   }
 });

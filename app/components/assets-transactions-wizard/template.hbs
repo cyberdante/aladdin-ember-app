@@ -7,17 +7,46 @@
       {{/title.text}}
     {{/card.title}}
     {{#card.content}}
-      {{#paper-grid-list
-        cols="1 md-2 gt-md-6"
-        rowHeight="gt-md-1:1 2:2"
-        gutter="12px gt-sm-8px" as |grid|}}
-        {{#grid.tile class="white" colspan="sm-1 gt-sm-2" as |tile|}}
-          {{#each assets as |asset|}}
-            {{paper-button raised=true label=asset.title primary=asset.isSelected onClick=(action "selectAsset" asset)}}
-          {{/each}}
-        {{/grid.tile}}
-        {{#grid.tile class="green" colspan="sm-1 gt-sm-2" as |tile|}}
-        {{/grid.tile}}
-      {{/paper-grid-list}}
+    {{#paper-grid-list
+      cols="2 md-2"
+      rowHeight="gt-md-1:1"
+      gutter="8px gt-sm-8px" as |grid|}}
+
+    {{#grid.tile class="gray" as |tile|}}
+    {{#paper-list}}
+
+      {{#paper-subheader}}Assets{{/paper-subheader}}
+      {{#each assets as |asset|}}
+         {{#paper-item as |controls|}}
+          <p>{{asset.title}}</p>
+          <div class="md-secondary-container">
+            {{#controls.button primary=asset.isSelected onClick=(action "selectAsset" asset)}}
+              View Transactions
+            {{/controls.button}}
+          </div>
+        {{/paper-item}}
+      {{/each}}
+      {{paper-divider}}
+      {{#paper-subheader}}Transactions{{/paper-subheader}}
+      {{#each selectedAsset.transactions as |txn| }}
+        {{#paper-item as |controls|}}
+          <p>{{txn.title}}</p>
+          <div class="md-secondary-container">
+            {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
+              View Properties
+            {{/controls.button}}
+          </div>
+        {{/paper-item}}
+      {{/each}}
+    {{/paper-list}}
+    {{/grid.tile}}
+
+    {{#grid.tile class="gray" as |tile|}}
+      <pre id="transaction-meta">
+        {{json-prettify selectedTxn.meta}}
+      </pre>
+    {{/grid.tile}}
+    {{/paper-grid-list}}
+     
     {{/card.content}}
 {{/paper-card}}
