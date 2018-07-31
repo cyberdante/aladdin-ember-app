@@ -38,6 +38,16 @@ export default Component.extend({
       this.set('selectedTxn.isSelected', false);
       txn.set('isSelected', true);
       this.set('selectedTxn', txn);
+
+      let params = Object.keys(txn.meta.properties).reduce((acc, paramTitle) => {
+        if (paramTitle !== 'dependencies' && paramTitle !== 'returns') {
+          acc.push({title:paramTitle, type:txn.meta.properties[paramTitle].type});
+        }
+        return acc;
+      }, []);
+
+      this.set('txnReturnsType', txn.meta.properties.returns.type || 'void');
+      this.set('txnParameters', A(params));
     }
   }
 });

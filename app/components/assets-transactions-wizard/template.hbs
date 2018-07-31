@@ -41,10 +41,27 @@
     {{/paper-list}}
     {{/grid.tile}}
 
-    {{#grid.tile class="gray" as |tile|}}
-      <pre id="transaction-meta">
-        {{json-prettify selectedTxn.meta}}
-      </pre>
+    {{#grid.tile class="gray left bordered" as |tile|}}
+       {{#paper-list}}
+          {{#paper-subheader}}Parameters{{/paper-subheader}}
+          {{#each txnParameters as |param|}}
+            {{#paper-item as |controls|}}
+              <p>{{param.title}}</p>
+              <div class="md-secondary-container">
+                {{#controls.button primary=true}}
+                  {{param.type}}
+                {{/controls.button}}
+              </div>
+            {{/paper-item}}
+          {{/each}}
+          {{paper-divider}}
+          {{#paper-subheader}}Returns{{/paper-subheader}}
+          {{#paper-item as |controls|}}
+            {{#controls.button primary=true}}
+              {{txnReturnsType}}
+            {{/controls.button}}
+          {{/paper-item}}
+      {{/paper-list}}
     {{/grid.tile}}
     {{/paper-grid-list}}
      

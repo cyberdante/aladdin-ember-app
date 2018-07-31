@@ -45,6 +45,10 @@
               background: aladdin-color('background');
             }
 
+            .left.bordered {
+              border-left: 1px solid #989892;
+            }
+
             .md-subheader-content {
               font-weight: bold;
               color: #989892;
