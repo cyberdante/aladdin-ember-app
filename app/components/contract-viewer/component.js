@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
+import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 
 export default Component.extend({
@@ -43,6 +44,13 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+  },
+
+  didInsertElement() {
+    let beautify = ace.require('ace/ext/beautify');
+    let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
+    let editor = ace.edit(element);
+    beautify.beautify(editor.session);
   },
 
   actions: {

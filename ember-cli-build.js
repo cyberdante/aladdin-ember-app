@@ -12,7 +12,7 @@ module.exports = function(defaults) {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
       workers: ['yaml'],
-      exts: ['language_tools']
+      exts: ['language_tools', 'beautify']
     }
   });
 

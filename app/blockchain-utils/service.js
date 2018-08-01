@@ -217,14 +217,18 @@ export default Service.extend({
             return `${this}\n${s}`
         };
         let schema = JSON.parse(schemaString);
-        let sol = 'pragma solidity ^0.4.18; contract ' + schema.title + '{';
-        Object.keys(schema).forEach(function (key) {
+        let sol = 'pragma solidity ^0.4.18;';
+        sol = sol.appendLine('');
+        sol = sol.appendLine('contract ' + schema.title + '{');
+        Object.keys(schema).forEach(function(key) {
             for (let ikey in schema[key]) {
-                if (schema[key][ikey].type == 'object') {
-                    sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
+                if (schema[key][ikey].type == 'object' ) {
+                    sol = sol.appendLine('');
+                    sol = sol.appendLine( 'function '  + schema[key][ikey].title + ' (' );
                     Object.keys(schema[key][ikey].properties).forEach(function (inkey) {
                         if (inkey == "dependencies") {
-                            sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.name + ", bytes32  " + schema[key][ikey].properties[inkey].assetId.type + ' )');
+                            sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.name + ',');
+                            sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.type + ')');
                         } else if (inkey == 'returns') {
                             if ((schema[key][ikey].properties[inkey].type) != undefined) {
                                 if (schema[key][ikey].properties[inkey].type == 'number') {
@@ -244,8 +248,7 @@ export default Service.extend({
                             if (schema[key][ikey].properties[inkey].type == 'string') {
                                 schema[key][ikey].properties[inkey].type = 'bytes32'
                             }
-                            sol = sol.appendLine(schema[key][ikey].properties[inkey].type + " ");
-                            sol = sol.appendLine(schema[key][ikey].properties[inkey].name + ", ");
+                            sol = sol.appendLine(`${schema[key][ikey].properties[inkey].type} ${schema[key][ikey].properties[inkey].name},`);
                         }
 
                     });
