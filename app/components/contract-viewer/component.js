@@ -28,7 +28,14 @@ export default Component.extend({
     ];
   }),
 
-  mode: 'ace/mode/solidity',
+  contractType: 'ethereum',
+  computedMode: computed('contractType', function(){
+    switch(this.get('contractType')){
+      case 'ethereum': return 'ace/mode/solidity';
+      case 'fabric': return 'ace/mode/golang';
+      default: return 'ace/mode/text'
+    }
+  }),
 
   overlay: computed(function() {
     return {
