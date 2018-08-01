@@ -9,6 +9,7 @@ import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
 
+
 export default Service.extend({
     // *************************************************
     // Inputs: schemaInterface- An ABI definition object 
@@ -335,6 +336,61 @@ export default Service.extend({
             }));
             return acc;
         }, A([]));
-    }
+    },
+    //dependency error checking
+    depErr(yamlString){
+        var array = []; 
+        var result = [];
+        array.push({ regex: /asset:\s{2,4}[^&]/ , msg: "Assets must have & symbol" });
+        array.push({ regex: /dependencies:\s{2,12}[^*]/, msg: "Transactions must have * symbol" });
+        var res = yamlString.split("\n"); 
+        
+        for( let r = 0; r < array.length; ++ r){
+            let myRe = new RegExp(array[r].regex);
+            for( let i = 0; i < res.length; ++i){
+                if(myRe.exec(res[i])){
+                    result.push({type: 'error', text:  array[r].msg, range: [i+1, myRe.exec(res[i]).index+1, i+1, 0] });
+                    return result;
+                } 
+            }
+    
+        }
+        //checking rules that asset id and type is set for an asset
+        let myRe = new RegExp(/[-]\sasset:/); 
+        let nameReg = new RegExp(/\s{2,8}\sname:/);
+        let typeReg = new RegExp(/\s{2,8}\stype:/);
+        for( let i = 0; i < res.length; ++i){
+            if(myRe.exec(res[i])){
+                if (!nameReg.exec(res[i+1])){
+                    result.push({type: 'error', text:  'Asset must be followed by key name: ', range: [i+2, myRe.exec(res[i]).index+1, i+1, 0] });
+                    return result;
+                }
+                if (!typeReg.exec(res[i+2])){
+                    result.push({type: 'error', text:  'Asset must be followed by keys name: type:', range: [i+3, myRe.exec(res[i]).index+1, i+1, 0] });
+                    return result;
+                 }
+             }
+         }
+
+},
+
+validateYaml(yamlString){
+    var result = [];
+    var depResult = []; //error result from our asset and transaction rules
+    try{   
+        let str = yaml.safeLoad(yamlString);
+        result = depErr(yamlString);
+       }catch(err){
+            depResult = depErr(yamlString);
+            if (depResult == undefined){
+                result.push({type: 'error', text:  err.message, range: [err.mark.line,err.mark.column, err.mark.line, 0] });
+                return result; 
+            }
+            else{
+                return depResult;
+            }
+        } 
+        return result; 
+}
 
 });
