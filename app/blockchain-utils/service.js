@@ -378,10 +378,10 @@ validateYaml(yamlString){
     var result = [];
     var depResult = []; //error result from our asset and transaction rules
     try{   
-        let str = yaml.safeLoad(yamlString);
-        result = depErr(yamlString);
+        yaml.safeLoad(yamlString);
+        result = this.depErr(yamlString);
        }catch(err){
-            depResult = depErr(yamlString);
+            depResult = this.depErr(yamlString);
             if (depResult == undefined){
                 result.push({type: 'error', text:  err.message, range: [err.mark.line,err.mark.column, err.mark.line, 0] });
                 return result; 
