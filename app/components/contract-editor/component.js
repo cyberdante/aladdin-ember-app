@@ -30,7 +30,7 @@ export default Component.extend({
         ];
     }),
 
-    mode: 'ace/mode/yaml',
+    mode: 'ace/mode/aladdin',
 
     overlay: computed(function() {
         return {

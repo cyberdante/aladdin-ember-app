@@ -11,7 +11,6 @@ module.exports = function(defaults) {
     ace: {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
-      workers: ['yaml'],
       exts: ['language_tools', 'beautify']
     }
   });
@@ -61,9 +60,10 @@ module.exports = function(defaults) {
 
   app.import({
     development: 'node_modules/ace-mode-solidity/build/v1.3.3/src-noconflict/mode-solidity.js',
-    production: 'node_modules/ace-mode-solidity/build/v1.3.3/src-min-noconflict/mode-solidity.js',
-    outputFile: 'mode-solidity.js'
+    production: 'node_modules/ace-mode-solidity/build/v1.3.3/src-min-noconflict/mode-solidity.js'
   });
+
+  app.import('vendor/ace-editor/mode-aladdin.js');
 
   return app.toTree();
 };
