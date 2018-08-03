@@ -1,4 +1,10 @@
-<div id="main" class="flex layout-column">
+<div class="flex layout-row">
+  {{outlet}}
+  {{!-- {{aladdin-main-container}} --}}
+</div>
+{{ember-load-remover}}
+
+{{!-- <div id="main-app" class="flex layout-column">
     {{#paper-content scroll-y=true class="layout-padding flex"}}
         {{#paper-grid-list 
             cols="12 md-12 gt-md-12" 
@@ -7,15 +13,16 @@
             {{#grid.tile rowspan="4" colspan="sm-1 gt-sm-6" as |tile|}}
                 {{contract-editor}}
             {{/grid.tile}}
-            {{#grid.tile rowspan="4" colspan="sm-1 gt-sm-6" as |tile|}}
-                {{!-- {{graph-view}} --}}
-                {{assets-transactions-wizard}}
-            {{/grid.tile}}
-            {{#grid.tile rowspan="4" colspan="sm-2 gt-sm-12" as |tile|}}
+            {{#grid.tile rowspan="6" colspan="sm-1 gt-sm-6" as |tile|}}
                 {{tabbed-container}}
             {{/grid.tile}}
+            {{#grid.tile rowspan="2" colspan="sm-1 gt-sm-12" as |tile|}}
+                {{schema-validator-log}}
+            {{/grid.tile}}
         {{/paper-grid-list}}
-        {{outlet}}
     {{/paper-content}}
 </div>
-{{paper-toaster parent="#main"}}
+{{paper-toaster parent="#main-app"}} --}}
+
+{{!-- {{graph-view}} --}}
+{{!-- {{assets-transactions-wizard}} --}}

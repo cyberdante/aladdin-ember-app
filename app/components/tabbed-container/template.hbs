@@ -13,9 +13,9 @@
             {{/each}}
         {{/paper-tabs}}
         {{#if (not-eq selectedComponent 'contract-viewer')}}
-            {{component selectedComponent}}
+            {{component selectedComponent useTitle=useInnerComponentsTitle}}
         {{else}}
-            {{component selectedComponent mode=(concat 'ace/mode/' contractLanguage) value=contractCode}}
+            {{component selectedComponent mode=(concat 'ace/mode/' contractLanguage) value=contractCode useTitle=useInnerComponentsTitle}}
         {{/if}}
     {{/card.content}}
 {{/paper-card}}

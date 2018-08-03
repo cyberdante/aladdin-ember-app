@@ -12,16 +12,20 @@ export default Component.extend({
   selectedTab: 0,
   selectedComponent: 'contract-viewer',
   contractLanguage: 'solidity',
-  tabTitles: computed(() => ['Smart Contract', 'Assets & Transactions', 'Errors Log']),
+  useInnerComponentsTitle: false,
   schemaString: '',
+
+  tabTitles: computed(() => ['Smart Contract', 'Graph View', 'Assets & Transactions']),
   contractCode: computed('schemaString', function () {
     let utils = this.get('blockchainUtils');
     return utils.generateContract(this.get('schemaString'));
   }),
+
   init() {
     this._super(...arguments);
     this.set('schemaString', '{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"vote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"}}}');
   },
+  
   actions: {
     onChange(selected) {
       this.set('selectedTab', selected);
@@ -31,14 +35,14 @@ export default Component.extend({
           this.set('selectedComponent', 'contract-viewer');
           break;
         case 1:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'graph-view');
           break;
           // TODO update to display AST list component
         case 2:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'assets-transactions-wizard');
           break;
         default:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'contract-viewer');
       }
     }
   }
