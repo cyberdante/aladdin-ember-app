@@ -7,13 +7,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  // found this typical error:
-  // this.route("search", { path: "/search" });
-  // this.route("search", { path: "/search/:query" });
-  // MUST be changed into:
-  // this.resource("search", { path: "/search" }, function() {
-  //   this.route(':query');
-  // });
+  this.route('aladdin-main-container', { path: '/main' });
 });
 
 export default Router;

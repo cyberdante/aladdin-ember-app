@@ -1,0 +1,26 @@
+button {
+  @extend .md-button;
+  @extend .md-primary;
+  @extend .md-raised;
+}
+
+body {
+  font-family: 'Maven Pro', sans-serif;
+  width: 100%;
+}
+
+#root {
+  position: absolute;
+}
+
+.light-gray {
+  color: $grey-5;
+}
+
+.yellow {
+  color: $yellow;
+}
+
+.flip-horizontal {
+  transform: scale(-1, 1);
+}

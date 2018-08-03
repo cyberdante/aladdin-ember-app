@@ -1,11 +1,13 @@
 {{#paper-card as |card|}}
-    {{#card.title as |title|}}
-      {{#title.text as |text|}}
-        {{#text.headline}}
-          Assets & Transactions Wizard
-        {{/text.headline}}
-      {{/title.text}}
-    {{/card.title}}
+    {{#if useTitle}}
+        {{#card.title as |title|}}
+            {{#title.text as |text|}}
+                {{#text.headline}}
+                Assets & Transactions Wizard
+                {{/text.headline}}
+            {{/title.text}}
+        {{/card.title}}
+    {{/if}}
     {{#card.content}}
     {{#paper-grid-list
       cols="2 md-2"

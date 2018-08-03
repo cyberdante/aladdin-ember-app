@@ -1,0 +1,19 @@
+<div class="header">
+  {{#if noColumns}}
+    <span class="glyphicon glyphicon-plus" {{action (action this.addColumn)}} title="Show a new panel"></span>
+  {{/if}}
+  <div class="nav-left">
+    <span class="hint--bottom hint--rounded" data-hint="Hide this column">
+        <span class="glyphicon glyphicon-chevron-right" {{action 'hideRightColumn'}}></span>
+    </span>
+  </div>
+</div>
+{{#if isBuilding}}
+    <div class="ember-load-indicator">Building...</div>
+{{/if}}
+<div class="content">
+    <p>RIGHT COLUMN PLACEHOLDER</p>
+</div>
+{{#if fullScreen}}
+    <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
+{{/if}}

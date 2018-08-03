@@ -1,0 +1,27 @@
+<div class="header">
+  {{#if showLeftColumnOpenIcon}}
+    <span class="nav-left">
+      <span class="hint--bottom hint--rounded" data-hint="Show left column" >
+        <span class="glyphicon glyphicon-chevron-right" {{action 'showLeftColumn'}}></span>
+      </span>
+    </span>
+  {{/if}}
+
+  <span class="nav-right">
+    <span class="hint--bottom hint--rounded" data-hint="Hide this panel">
+      <span class="glyphicon glyphicon-remove" {{action 'removeColumn' col}}></span>
+    </span>
+    {{#if isLastColumn}}
+      <span class="hint--bottom hint--rounded" data-hint="Show another panel">
+        <span class="glyphicon glyphicon-plus hint--bottom hint--rounded" {{action 'addColumn'}}></span>
+      </span>
+      {{#if showRightColumnOpenIcon}}
+        <span class="hint--bottom hint--rounded" data-hint="Show right column">
+            <span class="glyphicon glyphicon-chevron-left" {{action 'showRightColumn'}}></span>
+        </span>
+      {{/if}}
+    {{/if}}
+  </span>
+</div>
+
+<p>CENTER COLUMN CONTENT PLACEHOLDER</p>
