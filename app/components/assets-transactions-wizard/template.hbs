@@ -29,6 +29,7 @@
         {{/paper-item}}
       {{/each}}
       {{paper-divider}}
+      {{#if selectedAsset.transactions}}
       {{#paper-subheader}}Transactions{{/paper-subheader}}
       {{#each selectedAsset.transactions as |txn| }}
         {{#paper-item as |controls|}}
@@ -40,10 +41,12 @@
           </div>
         {{/paper-item}}
       {{/each}}
+      {{/if}}
     {{/paper-list}}
     {{/grid.tile}}
 
     {{#grid.tile class="gray left bordered" as |tile|}}
+       {{#if txnParameters}}
        {{#paper-list}}
           {{#paper-subheader}}Parameters{{/paper-subheader}}
           {{#each txnParameters as |param|}}
@@ -64,6 +67,7 @@
             {{/controls.button}}
           {{/paper-item}}
       {{/paper-list}}
+      {{/if}}
     {{/grid.tile}}
     {{/paper-grid-list}}
      
