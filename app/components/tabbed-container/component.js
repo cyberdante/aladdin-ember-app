@@ -9,18 +9,18 @@ import {
 export default Component.extend({
   classNames: ['md-padding'],
   blockchainUtils: service(),
-  selectedTab: 1,
-  selectedComponent: 'graph-view',
+  selectedTab: 0,
+  selectedComponent: 'contract-viewer',
   contractLanguage: 'solidity',
   tabTitles: computed(() => ['Smart Contract', 'Graph', 'Asset & Transactions']),
   schemaString: '',
-  contractCode: computed('schemaString', function () {
+  contractCode: computed('schema', function () {
     let utils = this.get('blockchainUtils');
-    return utils.generateContract(this.get('schemaString'));
+    return utils.generateContract(this.get('schema'));
   }),
   init() {
     this._super(...arguments);
-    this.set('schemaString', '{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"vote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"}}}');
+    // this.set('schemaString', '{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"vote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"}}}');
   },
   actions: {
     onChange(selected) {

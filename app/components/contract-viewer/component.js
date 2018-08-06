@@ -1,11 +1,12 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 
 export default Component.extend({
   classNames: ['md-padding'],
+
   value: '',
 
   highlightActiveLine: true,
@@ -30,7 +31,7 @@ export default Component.extend({
 
   contractType: 'ethereum',
   computedMode: computed('contractType', function(){
-    switch(this.get('contractType')){
+    switch(this.get('contractType')) {
       case 'ethereum': return 'ace/mode/solidity';
       case 'fabric': return 'ace/mode/golang';
       default: return 'ace/mode/text'
@@ -52,8 +53,8 @@ export default Component.extend({
   init() {
     this._super(...arguments);
   },
-
-  didInsertElement() {
+  
+  didRender() {
     let beautify = ace.require('ace/ext/beautify');
     let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
     let editor = ace.edit(element);
