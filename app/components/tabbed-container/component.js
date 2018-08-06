@@ -9,10 +9,10 @@ import {
 export default Component.extend({
   classNames: ['md-padding'],
   blockchainUtils: service(),
-  selectedTab: 0,
-  selectedComponent: 'contract-viewer',
+  selectedTab: 1,
+  selectedComponent: 'graph-view',
   contractLanguage: 'solidity',
-  tabTitles: computed(() => ['Smart Contract', 'Assets & Transactions', 'Errors Log']),
+  tabTitles: computed(() => ['Smart Contract', 'Graph', 'Asset & Transactions']),
   schemaString: '',
   contractCode: computed('schemaString', function () {
     let utils = this.get('blockchainUtils');
@@ -31,14 +31,14 @@ export default Component.extend({
           this.set('selectedComponent', 'contract-viewer');
           break;
         case 1:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'graph-view');
           break;
           // TODO update to display AST list component
         case 2:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'assets-transactions-wizard');
           break;
         default:
-          this.set('selectedComponent', 'schema-validator-log');
+          this.set('selectedComponent', 'graph-view');
       }
     }
   }

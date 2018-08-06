@@ -1,4 +1,9 @@
 {{#paper-card as |card|}}
+    {{#card.title as |title|}}
+        {{#title.text as |text|}}
+            {{#text.headline}}Log{{/text.headline}}
+        {{/title.text}}
+    {{/card.title}}
     {{#card.content}}
         {{#paper-list}}
             {{#each outputs as |output|}}

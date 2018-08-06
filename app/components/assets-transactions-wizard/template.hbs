@@ -1,4 +1,5 @@
 {{#paper-card as |card|}}
+    {{#if showTitle}}
     {{#card.title as |title|}}
       {{#title.text as |text|}}
         {{#text.headline}}
@@ -6,6 +7,7 @@
         {{/text.headline}}
       {{/title.text}}
     {{/card.title}}
+    {{/if}}
     {{#card.content}}
     {{#paper-grid-list
       cols="2 md-2"
