@@ -6,9 +6,13 @@
 
     md-card {
         height: 100%;
+        margin: 0px;
         padding: 0;
         &.aladdin-tabs-container {
             width: 100%;
+        }
+        md-tabs-canvas {
+          background: aladdin-color('secondary');
         }
         md-card-title {
             background-color: aladdin-color('secondary'); //#ff5722;
@@ -52,8 +56,8 @@
                     background-color: aladdin-color('secondary');
 
                     &.md-active {
-                        color: aladdin-color('primary');
-                        background-color: aladdin-color('foreground');
+                        color: aladdin-color('primary') !important;
+                        background-color: aladdin-color('foreground') !important;
                     }
                 }
             }
