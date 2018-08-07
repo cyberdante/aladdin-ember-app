@@ -8,6 +8,7 @@ import O from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
+import solc from 'solc';
 
 
 export default Service.extend({
@@ -394,6 +395,69 @@ validateYaml(yamlString){
             }
         } 
         return result; 
-}
+},
+
+solToYaml(code){
+    const compiledCode = solc.compile(code)
+    const interface = JSON.parse(compiledCode.contracts[':Container'].interface)
+    let schema = {}; 
+    schema.transaction = {};
+    schema.transaction.properties = (typeof schema);
+    var assetList =[];
+    interface.forEach(func =>{
+        if(func.type != 'constructor'){
+            let fn = {};      
+            fn.title;
+            fn.type = typeof(fn);
+            fn.properties = {};
+            let asset_name;
+            let isAsset = false;
+            
+            for (var key in func){
+                let asset = {};
+                
+                if(key =="name"){
+                    fn.title = func[key];
+                  }
+                  if(key == "inputs"){
+                      for(var ikey in func[key]){
+                          if(isAsset == true){
+                              isAsset = false;
+                              assetList[func[key][ikey].name]+=1;
+                              fn.properties.dependencies  = "*" + func[key][ikey].name;
+                              break;
+                          }
+                          if(func[key][ikey].name == "asset_id"){
+                              asset = func[key][ikey].name;
+                              isAsset = true;
+                          }
+                          else{
+                              fn.properties[func[key][ikey].name] = func[key][ikey];
+                              if(func[key][ikey].type.startsWith("byte")){
+                                  func[key][ikey].type = "string";
+                              }
+                              if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
+                                  func[key][ikey].type = "number";
+                              
+                              }
+                          }
+                       }            
+                  }
+  
+              }
+              schema.transaction[fn.title] = fn;      
+          }
+    });
+  
+  var yamlString='---';
+    for (var assets in assetList) {
+        yamlString += "\n- asset:  &" + assets +" \n      name:   asset_id\n      type:   "+assets;
+    }
+    yamlString+="\n";
+    ymlText = YAML.stringify(schema).replace(/["]+/g,'');
+    stripedYml = ymlText.replace("---", '')
+    let outputYaml = yamlString + stripedYml; 
+    return outputYaml;
+  }
 
 });
