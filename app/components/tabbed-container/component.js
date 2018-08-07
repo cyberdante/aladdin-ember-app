@@ -15,7 +15,7 @@ export default Component.extend({
   tabTitles: computed(() => ['Smart Contract', 'Graph', 'Asset & Transactions']),
   contractCode: computed('schema', function () {
     let utils = this.get('blockchainUtils');
-    return utils.generateContract(this.get('schema'));
+    // return utils.generateContract(this.get('schema'));
   }),
   init() {
     this._super(...arguments);

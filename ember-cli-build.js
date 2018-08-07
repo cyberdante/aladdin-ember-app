@@ -64,6 +64,7 @@ module.exports = function(defaults) {
   });
 
   app.import('vendor/ace-editor/mode-aladdin.js');
+  app.import('vendor/ace-editor/worker-aladdin.js', { outputFile: 'worker-aladdin.js' });
 
   return app.toTree();
 };
