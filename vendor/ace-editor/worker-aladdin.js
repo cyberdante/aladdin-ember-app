@@ -1664,7 +1664,13 @@ ace.define("ace/mode/aladdin/yaml_parse",[], function(require, exports, module) 
       let myRe = new RegExp(array[r].regex);
       for( let i = 0; i < res.length; ++i){
         if(myRe.exec(res[i])){
-          result.push({type: 'error', text:  array[r].msg, range: [i+1, myRe.exec(res[i]).index+1, i+1, 0] });
+          result.push({
+            type: 'error',
+            text:  array[r].msg,
+            range: [i+1, myRe.exec(res[i]).index+1, i+1, 0],
+            line: i+1,
+            column: myRe.exec(res[i]).index+1
+          });
           return result;
         }
       }
@@ -1677,11 +1683,23 @@ ace.define("ace/mode/aladdin/yaml_parse",[], function(require, exports, module) 
     for( let i = 0; i < res.length; ++i){
       if(myRe.exec(res[i])){
         if (!nameReg.exec(res[i+1])){
-          result.push({type: 'error', text:  'Asset must be followed by key name: ', range: [i+2, myRe.exec(res[i]).index+1, i+1, 0] });
+          result.push({
+            type: 'error',
+            text: 'Asset must be followed by key name: ',
+            range: [i+2, myRe.exec(res[i]).index+1, i+2, 0],
+            line: i+2,
+            column: myRe.exec(res[i]).index+1
+          });
           return result;
         }
         if (!typeReg.exec(res[i+2])){
-          result.push({type: 'error', text:  'Asset must be followed by keys name: type:', range: [i+3, myRe.exec(res[i]).index+1, i+1, 0] });
+          result.push({
+            type: 'error',
+            text: 'Asset must be followed by keys name: type:',
+            range: [i+3, myRe.exec(res[i]).index+1, i+3, 0],
+            line: i+3,
+            column: myRe.exec(res[i]).index+1
+          });
           return result;
         }
       }
