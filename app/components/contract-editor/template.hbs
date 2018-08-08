@@ -7,7 +7,7 @@
     {{#card.content}}
         {{#ember-ace
             minlines=10
-            value=value
+            value=yaml
             mode=mode
             highlightActiveLine=highlightActiveLine
             showPrintMargin=showPrintMargin
@@ -28,7 +28,5 @@
                 Caption: {{suggestion.caption}}
             {{/editor.completion-tooltip}}
         {{/ember-ace}}
-
-        {{!-- <pre>{{value}}</pre> --}}
     {{/card.content}}
 {{/paper-card}}

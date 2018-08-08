@@ -7,7 +7,6 @@
       {{contract-editor yaml=yaml onViewChange=(action viewChange 'contract-editor')}}
     {{/grid.tile}}
     {{#grid.tile rowspan="4" colspan="sm-1 gt-sm-6" as |tile|}}
-      {{!-- {{graph-view schema=schema onViewChange=(action viewChange)}} --}}
       {{tabbed-container schema=schema code=code yaml=yaml onViewChange=(action viewChange 'tabbed-container')}}
     {{/grid.tile}}
     {{#grid.tile rowspan="4" colspan="sm-2 gt-sm-12" as |tile|}}

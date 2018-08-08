@@ -8,24 +8,7 @@ export default Component.extend({
     blockchainUtils: service(),
     classNames: ['md-padding'],
     newValue: '',
-    value: '---\n' +
-      '- asset:  &container           # must have &\n' +
-      '     name:   asset_id          # assets must be followed by name field\n' +
-      '     type:   container         # assets must have type filed\n' +
-      '\n' +
-      '- transaction:        \n' +
-      '  properties: object\n' +
-      '  arrive:                      # _keys must end in \':\'\n' +
-      '   type: object\n' +
-      '   properties:                \n' +
-      '     sNum:\n' +
-      '       name: sNum\n' +
-      '       type: number\n' +
-      '     arrived:\n' +
-      '       name: arrived            # _keys must end in \':\'\n' +
-      '       type: number\n' +
-      '     dependencies:  *container  # dependencies end with *\n' +
-      '   title: arrived \n',
+    value: '',
 
     highlightActiveLine: true,
     showPrintMargin: true,
