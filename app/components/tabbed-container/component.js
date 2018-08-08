@@ -29,14 +29,14 @@ export default Component.extend({
           this.set('selectedComponent', 'contract-viewer');
           break;
         case 1:
-          this.set('selectedComponent', 'graph-view');
+          this.set('selectedComponent', 'aladdin-graph-view');
           break;
           // TODO update to display AST list component
         case 2:
           this.set('selectedComponent', 'assets-transactions-wizard');
           break;
         default:
-          this.set('selectedComponent', 'graph-view');
+          this.set('selectedComponent', 'aladdin-graph-view');
       }
     }
   }
