@@ -14,7 +14,7 @@ export default Component.extend({
   contractLanguage: 'solidity',
   tabTitles: computed(() => ['Smart Contract', 'Graph', 'Asset & Transactions']),
   contractCode: computed('schema', function () {
-    let utils = this.get('blockchainUtils');
+    // let utils = this.get('blockchainUtils');
     // return utils.generateContract(this.get('schema'));
   }),
   init() {
@@ -31,7 +31,6 @@ export default Component.extend({
         case 1:
           this.set('selectedComponent', 'aladdin-graph-view');
           break;
-          // TODO update to display AST list component
         case 2:
           this.set('selectedComponent', 'assets-transactions-wizard');
           break;

@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
