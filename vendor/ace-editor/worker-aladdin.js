@@ -1667,8 +1667,8 @@ ace.define("ace/mode/aladdin/yaml_parse",[], function(require, exports, module) 
           result.push({
             type: 'error',
             text:  array[r].msg,
-            range: [i+1, myRe.exec(res[i]).index+1, i+1, 0],
-            line: i+1,
+            range: [i, myRe.exec(res[i]).index+1, i, 0],
+            row: i,
             column: myRe.exec(res[i]).index+1
           });
           return result;
@@ -1686,8 +1686,8 @@ ace.define("ace/mode/aladdin/yaml_parse",[], function(require, exports, module) 
           result.push({
             type: 'error',
             text: 'Asset must be followed by key name: ',
-            range: [i+2, myRe.exec(res[i]).index+1, i+2, 0],
-            line: i+2,
+            range: [i+1, myRe.exec(res[i]).index+1, i+1, 0],
+            row: i+1,
             column: myRe.exec(res[i]).index+1
           });
           return result;
@@ -1696,8 +1696,8 @@ ace.define("ace/mode/aladdin/yaml_parse",[], function(require, exports, module) 
           result.push({
             type: 'error',
             text: 'Asset must be followed by keys name: type:',
-            range: [i+3, myRe.exec(res[i]).index+1, i+3, 0],
-            line: i+3,
+            range: [i+2, myRe.exec(res[i]).index+1, i+2, 0],
+            row: i+2,
             column: myRe.exec(res[i]).index+1
           });
           return result;

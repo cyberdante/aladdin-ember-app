@@ -8,27 +8,24 @@ export default Component.extend({
     blockchainUtils: service(),
     classNames: ['md-padding'],
     newValue: '',
-    value: '# sequencer protocols for Laser eye surgery\n' +
-    '---\n' +
-    '- step:  &id001                  # defines anchor label &id001\n' +
-    '    instrument:      Lasik 2000\n' +
-    '    pulseEnergy:     5.4\n' +
-    '    pulseDuration:   12\n' +
-    '    repetition:      1000\n' +
-    '    spotSize:        1mm\n' +
-    '\n' +
-    '- step: &id002\n' +
-    '    instrument:      Lasik 2000\n' +
-    '    pulseEnergy:     5.0\n' +
-    '    pulseDuration:   10\n' +
-    '    repetition:      500\n' +
-    '    spotSize:        2mm\n' +
-    '- step: *id001                   # refers to the first step (with anchor &id001)\n' +
-    '- step: *id002                   # refers to the second step\n' +
-    '- step:\n' +
-    '    <<: *id001\n' +
-    '    spotSize: 2mm                # redefines just this key, refers rest from &id001\n' +
-    '- step: *id002',
+    value: '---\n' +
+      '- asset:  &container           # must have &\n' +
+      '     name:   asset_id          # assets must be followed by name field\n' +
+      '     type:   container         # assets must have type filed\n' +
+      '\n' +
+      '- transaction:        \n' +
+      '  properties: object\n' +
+      '  arrive:                      # _keys must end in \':\'\n' +
+      '   type: object\n' +
+      '   properties:                \n' +
+      '     sNum:\n' +
+      '       name: sNum\n' +
+      '       type: number\n' +
+      '     arrived:\n' +
+      '       name: arrived            # _keys must end in \':\'\n' +
+      '       type: number\n' +
+      '     dependencies:  *container  # dependencies end with *\n' +
+      '   title: arrived \n',
 
     highlightActiveLine: true,
     showPrintMargin: true,
