@@ -44,14 +44,15 @@ export default Component.extend({
       txn.set('isSelected', true);
       this.set('selectedTxn', txn);
 
-      let params = Object.keys(txn.meta.properties).reduce((acc, paramTitle) => {
-        if (paramTitle !== 'dependencies' && paramTitle !== 'returns') {
-          acc.push({title:paramTitle, type:txn.meta.properties[paramTitle].type});
+      let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
+        if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
+          acc.push({title:paramTitle, type:txn.meta[paramTitle].type});
         }
         return acc;
       }, []);
 
-      this.set('txnReturnsType', txn.meta.properties.returns.type || 'void');
+      // this.set('txnReturnsType', txn.meta.returns.type || 'void');
+      this.set('txnReturnsType', 'void');
       this.set('txnParameters', A(params));
     }
   }

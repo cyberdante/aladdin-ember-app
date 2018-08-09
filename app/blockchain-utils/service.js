@@ -318,25 +318,21 @@ export default Service.extend({
             schema = JSON.parse(schema);
         }
 
-        Object.keys(schema).forEach(function (key) {
-            for (let ikey in schema[key]) {
-                if (schema[key][ikey].type == 'object') {
-                    if (schema[key][ikey].properties.dependencies) {
-                        let assetMeta = schema[key][ikey];
-                        let assetType = assetMeta.properties.dependencies.assetId.type;
-                        if (!assets[assetType]) {
-                            assets[assetType] = {
-                                transactions: []
-                            };
-                        }
-                        assets[assetType].transactions.push(O.create({
-                            title: assetMeta.title,
-                            meta: assetMeta
-                        }));
+        for(const property in schema.properties) {
+            if (schema.properties.hasOwnProperty(property)) {
+                let assetMeta = schema.properties[property];
+                let assetType = assetMeta.dependencies.type;
+                if (!assets[assetType]) {
+                    assets[assetType] = {
+                      transactions: []
                     }
                 }
+                assets[assetType].transactions.push(O.create({
+                    title: assetMeta.title,
+                    meta: assetMeta
+                }));
             }
-        });
+        }
 
         return Object.keys(assets).reduce((acc, key) => {
             acc.pushObject(O.create({

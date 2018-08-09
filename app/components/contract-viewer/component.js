@@ -47,7 +47,7 @@ export default Component.extend({
   }),
 
   overlays: computed('overlay.{type,text}', 'overlay.range.{start,end}.{row,column}', function() {
-    return [this.get('overlay')];
+    return [/*this.get('overlay')*/];
   }),
 
   init() {
