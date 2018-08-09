@@ -266,14 +266,19 @@ export default Service.extend({
             return `${this}\n${s}`
         };
         let schema = JSON.parse(schemaString);
-        let sol = 'pragma solidity ^0.4.18; contract ' + schema.title + '{';
+        let sol = 'pragma solidity ^0.4.18;';
+        sol = sol.appendLine('');
+        sol = sol.appendLine(' contract ' + schema.title + '{');
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] == 'object') {
+                    sol = sol.appendLine('');
                     sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
                         if (inkey == "dependencies") {
-                            sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ", bytes32  " + schema[key][ikey][inkey].type + ' ) public{} ');
+                            sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ',');
+                            sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].type + ' )');
+                            sol = sol.appendLine('public{}');
                         }
                         // else if (inkey =='returns'){
                         //     if((schema[key][ikey][inkey].type)!=undefined) {
@@ -294,8 +299,7 @@ export default Service.extend({
                                 if (schema[key][ikey][inkey].type == 'string') {
                                     schema[key][ikey][inkey].type = 'bytes32';
                                 }
-                                sol = sol.appendLine(schema[key][ikey][inkey].type + " ");
-                                sol = sol.appendLine(schema[key][ikey][inkey].name + ", ");
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},`);
                             }
                         }
 
