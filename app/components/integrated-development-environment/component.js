@@ -186,7 +186,7 @@ export default Component.extend({
     this._super(...arguments);
   },
 
-  viewChange(view, schema) {
-    this.set('schema', schema);
+  viewChange(view, yamlString) {
+    this.set('yaml', yamlString);
   },
 });

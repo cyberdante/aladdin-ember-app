@@ -46,19 +46,12 @@ export default Component.extend({
 
     init() {
         this._super(...arguments);
-        // this.send(this.get('value'));
-        // this.send('valueUpdated', '{"$schema":"http://json-schema.org/draft-04/schema","title":"Voting","description":"Smart Contract Form for the demo","type":"object","properties":{"vote":{"type":"object","properties":{"uid":{"name":"uid","type":"string"},"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"castVote"},"totalVotes":{"type":"object","properties":{"candidateID":{"name":"candidateID","type":"number"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{"name":"","type":"number"}},"title":"totalVotes"},"addCandidate":{"type":"object","properties":{"name":{"name":"name","type":"string"},"party":{"name":"party","type":"string"},"dependencies":{"assetId":{"name":"assetId","type":"candidate"}},"returns":{}},"title":"addCandidate"},"AddedCandidate":{"type":"object","properties":{"candidateID":{"indexed":false,"name":"candidateID","type":"number"}},"title":"AddedCandidate"}}}');
     },
     
     setUpdatedValueLazily(newValue) {
-        // console.log(newValue);
-        // call syntax checkers from Sarah's service here
-        // this.set('value', JSON.stringify(JSON.parse(newValue), null, 2));
         this.set('value', newValue);
-        // let blockchainService = this.get('blockchainUtils');
-        // let schema = blockchainService.generateSchemaYaml(this.get('value'));
-        // console.log(JSON.stringify(JSON.parse(schema), null, 2));
-        // blockchainService.generateGraph(schema);
+      // Call parent component with the new yaml value
+        this.get('onViewChange')(newValue);
     },
 
     actions: {
@@ -71,7 +64,6 @@ export default Component.extend({
         valueUpdated(newValue) {
             let component = this;
             debounce(component, component.setUpdatedValueLazily, newValue, 500);
-            this.onViewChange(newValue);
         }
     }
 });
