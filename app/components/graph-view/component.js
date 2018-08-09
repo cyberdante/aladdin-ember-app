@@ -18,7 +18,7 @@ export default Component.extend({
   
   generateGraph(schema) {
     const self = this;
-    let graph = this.blockchainUtils.generateGraph(schema);
+    let graph = this.blockchainUtils.generateGraphYaml(schema);
     this.viz.renderSVGElement(graph).then(svg => {
       self.set('svg', svg);
     });
