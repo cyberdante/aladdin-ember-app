@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import { Range } from 'ember-ace';
+import ace, { Range } from 'ember-ace';
 
 export default Component.extend({
     blockchainUtils: service(),
@@ -31,6 +31,7 @@ export default Component.extend({
     }),
 
     mode: 'ace/mode/aladdin',
+    editorSession: null,
 
     overlay: computed(function() {
         return {
@@ -47,11 +48,19 @@ export default Component.extend({
     init() {
         this._super(...arguments);
     },
+
+    didRender(){
+        let element = document.getElementsByClassName('contract-editor-wrapper')[0];
+        let editor = ace.edit(element);
+        this.set('editorSession', editor.getSession());
+    },
     
     setUpdatedValueLazily(newValue) {
         this.set('value', newValue);
-      // Call parent component with the new yaml value
-        this.get('onViewChange')(newValue);
+        let errors = this.get('editorSession').getAnnotations();
+        // Call parent component with the new yaml value only if there are currently no errors
+        if(!errors.length)
+            this.get('onViewChange')(newValue);
     },
 
     actions: {
