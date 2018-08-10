@@ -8,9 +8,7 @@ import O from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
-// import solc from 'solc';
-// import YAML from 'json2yaml';
-
+import solc from 'solc';
 
 export default Service.extend({
     // *************************************************
@@ -276,9 +274,17 @@ export default Service.extend({
                     sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
                         if (inkey == "dependencies") {
+                          let depend = schema[key][ikey][inkey];
+                          if (depend !== 'none') {
                             sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ',');
                             sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].type + ' )');
-                            sol = sol.appendLine('public{}');
+                          } else {
+                            if (sol.substr(-1)===',') {
+                              sol = sol.substr(0, sol.length-1);
+                            }
+                            sol = sol+')';
+                          }
+                          sol = sol.appendLine('public{}');
                         }
                         // else if (inkey =='returns'){
                         //     if((schema[key][ikey][inkey].type)!=undefined) {
@@ -396,17 +402,17 @@ validateYaml(yamlString){
             }
         } 
         return result; 
-}
-/*,
+},
 
-solToYaml(code){
-    const compiledCode = solc.compile(code)
-    const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
-    let schema = {}; 
-    schema.transaction = {};
-    schema.transaction.properties = (typeof schema);
-    var assetList =[];
-    codeInterface.forEach(func =>{
+solToYaml(code, cb){
+  solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+      const compiledCode = compiler.compile(code)
+      const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
+      let schema = {}; 
+      schema.transaction = {};
+      schema.transaction.properties = (typeof schema);
+      var assetList =[];
+      codeInterface.forEach(func =>{
         if(func.type != 'constructor'){
             let fn = {};      
             fn.title;
@@ -445,17 +451,17 @@ solToYaml(code){
               }
               schema.transaction[fn.title] = fn;      
           }
-    });
+      });
   
-  var yamlString='---';
-    for (var assets in assetList) {
-        yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
-    }
-    yamlString+="\n";
-    var ymlText = YAML.stringify(schema).replace(/["]+/g,'');
-    var strYml = ymlText.replace("---", '')
-    let outputYaml = yamlString + strYml; 
-    return outputYaml;
-  }*/
-
+      var yamlString='---';
+      for (var assets in assetList) {
+          yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
+      }
+      yamlString+="\n";
+      var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
+      var strYml = ymlText.replace("---", '')
+      let outputYaml = yamlString + strYml; 
+      cb(outputYaml);
+    });
+  },
 });
