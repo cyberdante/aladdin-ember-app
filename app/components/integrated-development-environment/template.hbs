@@ -3,13 +3,13 @@
     cols="12 md-12 gt-md-12" 
     rowHeight="gt-md-1:1 2:2"
     gutter="12px gt-sm-8px" as |grid|}}
-    {{#grid.tile rowspan="6" colspan="sm-1 gt-sm-6" as |tile|}}
+    {{#grid.tile rowspan="5" colspan="sm-1 gt-sm-6" as |tile|}}
       {{contract-editor yaml=yaml onViewChange=(action viewChange 'contract-editor')}}
     {{/grid.tile}}
-    {{#grid.tile rowspan="6" colspan="sm-1 gt-sm-6" as |tile|}}
+    {{#grid.tile rowspan="5" colspan="sm-1 gt-sm-6" as |tile|}}
       {{tabbed-container schema=schema code=code yaml=yaml onViewChange=(action viewChange 'tabbed-container')}}
     {{/grid.tile}}
-    {{#grid.tile rowspan="4" colspan="sm-2 gt-sm-12" as |tile|}}
+    {{#grid.tile rowspan="2" colspan="sm-1 gt-sm-12" as |tile|}}
       {{schema-validator-log}}
     {{/grid.tile}}
   {{/paper-grid-list}}
