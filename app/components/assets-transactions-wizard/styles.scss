@@ -58,6 +58,12 @@
             md-grid-list, md-grid-tile {
               height: 100%;
             }
+
+             md-list {
+              left: 0;
+              right: 0;
+              position: absolute;
+            }
         }  
     } 
 }
