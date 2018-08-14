@@ -3,7 +3,7 @@ import { visit, settled } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import ace from 'ember-ace';
 
-module('Acceptance | yaml -> schema -> contract', function(hooks) {
+module('Acceptance | convert YAML to smart contract', function(hooks) {
   setupApplicationTest(hooks);
 
   const getEditorSession = (currentTest, selector) => {
@@ -17,7 +17,7 @@ module('Acceptance | yaml -> schema -> contract', function(hooks) {
 
     const expectedContract = `pragma solidity ^0.4.18;
 
-contract Container {
+contract Application {
 
     function arrived (
         uint sNum,
@@ -60,7 +60,9 @@ contract Container {
   test('Parse empty YAML', async function(assert){
     await visit('/');
 
-    const expectedContract = '';
+    const expectedContract = `pragma solidity ^0.4.18;
+
+contract Application {}`;
     const inputYaml = '';
 
     // Set the yaml
@@ -74,46 +76,4 @@ contract Container {
 
     assert.equal(resultContract, expectedContract);
   });
-
-  test('Parse invalid YAML', async function(assert){
-    await visit('/');
-
-    const expectedContract = '';
-    const inputYaml = `---
-- asset:  container              # must have '&'
-      nme:   assetId             # assets must be followed by name field
-      tpe:   container           # assets must have type field
-
-  transaction:
-    properties: object
-    arrived                      # keys must end in ':'
-      type: object
-      properties:
-        sNum:
-          name: sNum
-          type: number
-        arrived:
-          name arrived           # keys must end in ':'
-          type: number
-        dependencies: container  # dependencies must have '*'
-      title: arrived`;
-
-    let editorSession = getEditorSession(this, '.contract-editor-wrapper');
-
-    // Clear the editor first
-    editorSession.setValue('');
-    await settled();
-
-    // Set the yaml
-    editorSession.setValue(inputYaml);
-
-    // wait for the debounce action to resolve before checking the resulting smart contract
-    await settled();
-
-    // Get the smart contract
-    let resultContract = getEditorSession(this, '.contract-viewer-wrapper').getValue();
-
-    assert.equal(resultContract, expectedContract);
-  });
-
 });
