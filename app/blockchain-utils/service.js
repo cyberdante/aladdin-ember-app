@@ -8,7 +8,7 @@ import O from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
-import solc from 'solc';
+// import solc from 'solc';
 
 export default Service.extend({
     // *************************************************
@@ -83,9 +83,9 @@ export default Service.extend({
 
         const config = yaml.safeLoad(yamlString);
 
-        if(typeof(config) !== 'undefined'){
+        if(Array.isArray(config)){
             config.forEach(func => {
-                if (Object.keys(func) != 'asset') {
+                if (func !== null && Object.keys(func) != 'asset') {
                     for (let key in func) {
                         for (let ikey in func[key]) {
                             if (typeof func[key][ikey].properties != 'undefined')
