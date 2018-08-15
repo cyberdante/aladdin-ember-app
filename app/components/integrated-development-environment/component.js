@@ -171,10 +171,12 @@ export default Component.extend({
         dependencies: *Output
       title: revisionIPOutput
       `,
-  schema: computed('yaml', function(){
+  title: 'Application',
+  schema: computed('yaml', 'title', function(){
     let yaml = this.get('yaml');
+    let title = this.get('title');
     let utils = this.get('blockchainUtils');
-    return utils.generateSchemaYaml(yaml, 'Container');
+    return utils.generateSchemaYaml(yaml, title);
   }),
   code: computed('schema', function(){
     let schema = this.get('schema');

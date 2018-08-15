@@ -77,27 +77,29 @@ export default Service.extend({
         let schema = {};
         schema.$schema = "http://json-schema.org/draft-04/schema";
         schema.title = title;
-        schema.description = "Smart Contract Form for the demo"
+        schema.description = "Smart Contract Form for the demo";
         schema.type = typeof (schema);
         schema.properties = {};
 
         const config = yaml.safeLoad(yamlString);
 
-        config.forEach(func => {
-            if (Object.keys(func) != 'asset') {
-                for (let key in func) {
-                    for (let ikey in func[key]) {
-                        if (typeof func[key][ikey].properties != 'undefined')
-                            schema.properties[func[key][ikey].title] = func[key][ikey].properties
-                        Object.keys(func[key][ikey]).forEach(function (pkey) {
-                            if (pkey == 'title') {
-                                schema.properties[func[key][ikey].title].title = func[key][ikey].title;
-                            }
-                        });
+        if(Array.isArray(config)){
+            config.forEach(func => {
+                if (func !== null && Object.keys(func) != 'asset') {
+                    for (let key in func) {
+                        for (let ikey in func[key]) {
+                            if (typeof func[key][ikey].properties != 'undefined')
+                                schema.properties[func[key][ikey].title] = func[key][ikey].properties
+                            Object.keys(func[key][ikey]).forEach(function (pkey) {
+                                if (pkey == 'title') {
+                                    schema.properties[func[key][ikey].title].title = func[key][ikey].title;
+                                }
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
     },
