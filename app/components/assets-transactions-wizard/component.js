@@ -11,6 +11,11 @@ export default Component.extend({
 
   assets: A([]),
 
+  editingAssetTitle:false,
+  editingTxnTitle:false,
+  origTitle: '',
+  origTxnTitle:'',
+
   selectedAsset: O.create({}),
   selectedTxn: O.create({}),
 
@@ -54,6 +59,25 @@ export default Component.extend({
       // this.set('txnReturnsType', txn.meta.returns.type || 'void');
       this.set('txnReturnsType', 'void');
       this.set('txnParameters', A(params));
+    },
+
+    toggleAsset(origAsset){
+        this.set('origTitle', origAsset);
+        this.set('editingAssetTitle', true);
+    },
+    toggleOff(newAsset){
+        this.set('editingAssetTitle', false);
+        let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
+        this.set('schema', schema);
+    },
+    toggleTxn(origTxn){
+        this.set('origTxnTitle', origTxn);
+        this.set('editingTxnTitle', true);
+    },
+    toggleOffTxn(newTxn){
+        this.set('editingTxnTitle', false);
+        let schema = this.blockchainUtils.updateTxnSchema(newTxn, this.origTxnTitle, this.schema);
+        this.set('schema', schema);
     }
   }
 });

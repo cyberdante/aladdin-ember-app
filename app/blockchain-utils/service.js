@@ -8,7 +8,7 @@ import O from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
-import solc from 'solc';
+// import solc from 'solc';
 
 export default Service.extend({
     // *************************************************
@@ -404,64 +404,147 @@ validateYaml(yamlString){
         return result; 
 },
 
-solToYaml(code, cb){
-  solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
-      const compiledCode = compiler.compile(code)
-      const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
-      let schema = {}; 
-      schema.transaction = {};
-      schema.transaction.properties = (typeof schema);
-      var assetList =[];
-      codeInterface.forEach(func =>{
-        if(func.type != 'constructor'){
+updateAssetSchema(newAssetTitle, oldAssetTitle, schema){
+
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+
+    for(const property in schema.properties) {
+        if (schema.properties.hasOwnProperty(property)) {
+            let assetMeta = schema.properties[property];
+            let assetType = assetMeta.dependencies.type;
+            if(assetType==oldAssetTitle){
+               schema.properties[property].dependencies.type = newAssetTitle;
+            }
+        }
+    }
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema;   
+},
+updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
+
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+
+    for(const property in schema.properties) {
+        if (schema.properties.hasOwnProperty(property)) {
+            if(oldTxnTitle == schema.properties[property].title){
+                schema.properties[property].title = newTxnTitle;
+            }
+        }
+    }
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema;   
+
+},
+schemaToYaml(genSchema){
+    let schemaToParse = JSON.parse(genSchema);
+    let schema = {}; 
+    schema.transaction = {};
+    schema.transaction.properties = (typeof schema);
+    var assetList =[];
+
+    Object.keys(schemaToParse).forEach(function(key) {
+        for(var ikey in schemaToParse[key]){
             let fn = {};      
             fn.title;
-            fn.type = typeof(fn); 
+            fn.type = typeof(fn);
             fn.properties = {};
-            let isAsset = false;
-            
-            for (var key in func){
-                if(key =="name"){
-                    fn.title = func[key];
-                  }
-                  if(key == "inputs"){
-                      for(var ikey in func[key]){
-                          if(isAsset == true){
-                              isAsset = false;
-                              assetList[func[key][ikey].name]+=1;
-                              fn.properties.dependencies  = "*" + func[key][ikey].name;
-                              break;
-                          }
-                          if(func[key][ikey].name == "assetId"){
-                              isAsset = true;
-                          }
-                          else{
-                              fn.properties[func[key][ikey].name] = func[key][ikey];
-                              if(func[key][ikey].type.startsWith("byte")){
-                                  func[key][ikey].type = "string";
-                              }
-                              if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
-                                  func[key][ikey].type = "number";
-                              
-                              }
-                          }
-                       }            
-                  }
-  
-              }
-              schema.transaction[fn.title] = fn;      
-          }
-      });
-  
-      var yamlString='---';
-      for (var assets in assetList) {
-          yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
-      }
-      yamlString+="\n";
-      var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
-      var strYml = ymlText.replace("---", '')
-      let outputYaml = yamlString + strYml; 
-      cb(outputYaml);
+            if (schemaToParse[key][ikey].hasOwnProperty('title') ) {
+                fn.title = schemaToParse[key][ikey].title;
+            }          
+
+            for(var pkey in schemaToParse[key][ikey].properties){
+                if(schemaToParse[key][ikey].properties[pkey].hasOwnProperty('assetId')){
+                    assetList[schemaToParse[key][ikey].properties[pkey].assetId.type]+=1;
+                    fn.properties.dependencies  = "*" + schemaToParse[key][ikey].properties[pkey].assetId.type
+                }
+                else if(schemaToParse[key][ikey].properties[pkey].name!=undefined){
+                    fn.properties[schemaToParse[key][ikey].properties[pkey].name] = schemaToParse[key][ikey].properties[pkey];
+                }
+            }
+            if(fn.hasOwnProperty('title')){
+                schema.transaction[fn.title] = fn;    
+            }
+        }
     });
-  },
+
+    var yamlString='---';
+    for (var assets in assetList) {
+        yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
+    }
+    yamlString+="\n";
+    var ymlText = YAML.stringify(schema).replace(/["]+/g,'');
+    var stripedYml = ymlText.replace("---", '')
+    let outputYaml = yamlString + stripedYml; 
+
+    return outputYaml;
+  }
+
+// solToYaml(code, cb){
+//   solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+//       const compiledCode = compiler.compile(code)
+//       const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
+//       let schema = {}; 
+//       schema.transaction = {};
+//       schema.transaction.properties = (typeof schema);
+//       var assetList =[];
+//       codeInterface.forEach(func =>{
+//         if(func.type != 'constructor'){
+//             let fn = {};      
+//             fn.title;
+//             fn.type = typeof(fn); 
+//             fn.properties = {};
+//             let isAsset = false;
+            
+//             for (var key in func){
+//                 if(key =="name"){
+//                     fn.title = func[key];
+//                   }
+//                   if(key == "inputs"){
+//                       for(var ikey in func[key]){
+//                           if(isAsset == true){
+//                               isAsset = false;
+//                               assetList[func[key][ikey].name]+=1;
+//                               fn.properties.dependencies  = "*" + func[key][ikey].name;
+//                               break;
+//                           }
+//                           if(func[key][ikey].name == "assetId"){
+//                               isAsset = true;
+//                           }
+//                           else{
+//                               fn.properties[func[key][ikey].name] = func[key][ikey];
+//                               if(func[key][ikey].type.startsWith("byte")){
+//                                   func[key][ikey].type = "string";
+//                               }
+//                               if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
+//                                   func[key][ikey].type = "number";
+                              
+//                               }
+//                           }
+//                        }            
+//                   }
+  
+//               }
+//               schema.transaction[fn.title] = fn;      
+//           }
+//       });
+  
+//       var yamlString='---';
+//       for (var assets in assetList) {
+//           yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
+//       }
+//       yamlString+="\n";
+//       var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
+//       var strYml = ymlText.replace("---", '')
+//       let outputYaml = yamlString + strYml; 
+//       cb(outputYaml);
+//     });
+//   },
 });

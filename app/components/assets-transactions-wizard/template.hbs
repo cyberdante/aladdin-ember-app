@@ -20,7 +20,11 @@
       {{#paper-subheader}}Assets{{/paper-subheader}}
       {{#each assets as |asset|}}
          {{#paper-item as |controls|}}
-          <p>{{asset.title}}</p>
+          {{#if editingAssetTitle}}
+          {{ input value=asset.title enter =(action 'toggleOff' asset.title ) }}
+          {{else}}
+          <p onClick= {{action "toggleAsset" asset.title}}>{{asset.title}}</p>
+          {{/if}}
           <div class="md-secondary-container">
             {{#controls.button primary=asset.isSelected onClick=(action "selectAsset" asset)}}
               View Transactions
@@ -33,7 +37,11 @@
       {{#paper-subheader}}Transactions{{/paper-subheader}}
       {{#each selectedAsset.transactions as |txn| }}
         {{#paper-item as |controls|}}
-          <p>{{txn.title}}</p>
+          {{#if editingTxnTitle}}
+          {{input value=txn.title enter =(action 'toggleOffTxn' txn.title) }}
+          {{else}}
+          <p onClick= {{action "toggleTxn" txn.title}}>{{txn.title}}</p>
+          {{/if}}
           <div class="md-secondary-container">
             {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
               View Properties
@@ -52,11 +60,15 @@
           {{#each txnParameters as |param|}}
             {{#paper-item as |controls|}}
               <p>{{param.title}}</p>
-              <div class="md-secondary-container">
+              <div class="md-secondary-container"> </div>
                 {{#controls.button primary=true}}
                   {{param.type}}
                 {{/controls.button}}
-              </div>
+                {{!-- {{#basic-dropdown as |dd|}} 
+                {{#dd.trigger}}  {{param.type}} {{/dd.trigger}}
+                {{#dd.content}}<p> string</p> <p>uint</p>{{/dd.content}}
+                {{/basic-dropdown}}  --}}
+              {{!-- </div> --}}
             {{/paper-item}}
           {{/each}}
           {{paper-divider}}
