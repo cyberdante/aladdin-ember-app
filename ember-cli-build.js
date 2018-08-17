@@ -64,6 +64,12 @@ module.exports = function(defaults) {
     ]
   });
 
+  app.import('node_modules/remedial/index.js', {
+    using: [
+      { transformation: 'cjs', as: 'remedial' }
+    ]
+  });
+
   app.import({
     development: 'node_modules/ace-mode-solidity/build/v1.3.3/src-noconflict/mode-solidity.js',
     production: 'node_modules/ace-mode-solidity/build/v1.3.3/src-min-noconflict/mode-solidity.js'

@@ -170,18 +170,21 @@ export default Component.extend({
           type: number
         dependencies: *Output
       title: revisionIPOutput
-      `,
+  `,  
+
   title: 'Application',
+
   schema: computed('yaml', 'title', function(){
     let yaml = this.get('yaml');
     let title = this.get('title');
     let utils = this.get('blockchainUtils');
     return utils.generateSchemaYaml(yaml, title);
   }),
-  code: computed('schema', function(){
-    let schema = this.get('schema');
+
+  code: computed('schema', function() {
+    console.log('asdf');
     let utils = this.get('blockchainUtils');
-    return utils.generateSolFileYaml(schema);
+    return utils.generateSolFileYaml(this.schema);
   }),
 
   init() {

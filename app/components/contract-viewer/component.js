@@ -3,15 +3,19 @@ import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
+import { inject as service } from '@ember/service';
 
 export default Component.extend({
   classNames: ['md-padding'],
 
+  blockchainUtils: service(),
+
   value: '',
+  editorSession: null, 
 
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: true,
+  readOnly: false,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
@@ -50,6 +54,15 @@ export default Component.extend({
     return [/*this.get('overlay')*/];
   }),
 
+  setUpdatedValueLazily(newValue) {
+    this.set('value', newValue);
+    let errors = this.get('editorSession').getAnnotations();
+    // Call parent component with the new yaml value only if there are currently no errors
+    if(!errors.length) {
+      this.blockchainUtils.solToYaml(newValue, this.onViewChange);
+    }
+  },
+
   init() {
     this._super(...arguments);
   },
@@ -59,11 +72,12 @@ export default Component.extend({
     let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
     let editor = ace.edit(element);
     beautify.beautify(editor.session);
+    this.set('editorSession', editor.getSession());
   },
 
   actions: {
     valueUpdated(newValue) {
-      debounce(this, () => this.set('value', newValue), newValue, 500);
+      debounce(this, this.setUpdatedValueLazily, newValue, 500);
     }
   }
 })

@@ -9,6 +9,7 @@ import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
 import solc from 'solc';
+import { typeOf } from 'remedial';
 
 export default Service.extend({
     // *************************************************
@@ -492,7 +493,8 @@ schemaToYaml(genSchema){
   solToYaml(code, cb){
     solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
       const compiledCode = compiler.compile(code)
-      const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
+      let className = /contract\s+(\w+)\s?{/.exec(code)[1];
+      const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
       let schema = {}; 
       schema.transaction = {};
       schema.transaction.properties = (typeof schema);
@@ -540,13 +542,109 @@ schemaToYaml(genSchema){
   
       var yamlString='---';
       for (var assets in assetList) {
-          yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
+          yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
       }
       yamlString+="\n";
-      var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
+      var ymlText = YAMLStringify(schema).replace(/["]+/g,'');
       var strYml = ymlText.replace("---", '')
       let outputYaml = yamlString + strYml; 
       cb(outputYaml);
     });
   }
 });
+
+
+function YAMLStringify(data) {
+  var handlers
+    , indentLevel = ''
+    ;
+
+  handlers = {
+      "undefined": function () {
+        // objects will not have `undefined` converted to `null`
+        // as this may have unintended consequences
+        // For arrays, however, this behavior seems appropriate
+        return 'null';
+      }
+    , "null": function () {
+        return 'null';
+      }
+    , "number": function (x) {
+        return x;
+      }
+    , "boolean": function (x) {
+        return x ? 'true' : 'false';
+      }
+    , "string": function (x) {
+        // to avoid the string "true" being confused with the
+        // the literal `true`, we always wrap strings in quotes
+        return JSON.stringify(x);
+      }
+    , "array": function (x) {
+        var output = ''
+          ;
+
+        if (0 === x.length) {
+          output += '[]';
+          return output;
+        }
+
+        indentLevel = indentLevel.replace(/$/, '  ');
+        x.forEach(function (y) {
+          // TODO how should `undefined` be handled?
+          var handler = handlers[typeOf(y)]
+            ;
+
+          if (!handler) {
+            throw new Error('what the crap: ' + typeOf(y));
+          }
+
+          output += '\n' + indentLevel + '- ' + handler(y);
+            
+        });
+        indentLevel = indentLevel.replace(/  /, '');
+        
+        return output;
+      }
+    , "object": function (x) {
+        var output = ''
+          ;
+
+        if (0 === Object.keys(x).length) {
+          output += '{}';
+          return output;
+        }
+
+        indentLevel = indentLevel.replace(/$/, '  ');
+        Object.keys(x).forEach(function (k) {
+          var val = x[k]
+            , handler = handlers[typeOf(val)]
+            ;
+
+          if ('undefined' === typeof val) {
+            // the user should do
+            // delete obj.key
+            // and not
+            // obj.key = undefined
+            // but we'll error on the side of caution
+            return;
+          }
+
+          if (!handler) {
+            throw new Error('what the crap: ' + typeOf(val));
+          }
+
+          output += '\n' + indentLevel + k + ': ' + handler(val);
+        });
+        indentLevel = indentLevel.replace(/  /, '');
+
+        return output;
+      }
+    , "function": function () {
+        // TODO this should throw or otherwise be ignored
+        return '[object Function]';
+      }
+  };
+
+  return '---' + handlers[typeOf(data)](data) + '\n';
+}
