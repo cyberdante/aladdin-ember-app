@@ -8,7 +8,7 @@ import O from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
-// import solc from 'solc';
+import solc from 'solc';
 
 export default Service.extend({
     // *************************************************
@@ -487,66 +487,66 @@ schemaToYaml(genSchema){
     let outputYaml = yamlString + stripedYml; 
 
     return outputYaml;
-  }
+  },
 
-// solToYaml(code, cb){
-//   solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
-//       const compiledCode = compiler.compile(code)
-//       const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
-//       let schema = {}; 
-//       schema.transaction = {};
-//       schema.transaction.properties = (typeof schema);
-//       var assetList =[];
-//       codeInterface.forEach(func =>{
-//         if(func.type != 'constructor'){
-//             let fn = {};      
-//             fn.title;
-//             fn.type = typeof(fn); 
-//             fn.properties = {};
-//             let isAsset = false;
+  solToYaml(code, cb){
+    solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+      const compiledCode = compiler.compile(code)
+      const codeInterface = JSON.parse(compiledCode.contracts[':Container'].interface)
+      let schema = {}; 
+      schema.transaction = {};
+      schema.transaction.properties = (typeof schema);
+      var assetList =[];
+      codeInterface.forEach(func =>{
+        if(func.type != 'constructor'){
+            let fn = {};      
+            fn.title;
+            fn.type = typeof(fn); 
+            fn.properties = {};
+            let isAsset = false;
             
-//             for (var key in func){
-//                 if(key =="name"){
-//                     fn.title = func[key];
-//                   }
-//                   if(key == "inputs"){
-//                       for(var ikey in func[key]){
-//                           if(isAsset == true){
-//                               isAsset = false;
-//                               assetList[func[key][ikey].name]+=1;
-//                               fn.properties.dependencies  = "*" + func[key][ikey].name;
-//                               break;
-//                           }
-//                           if(func[key][ikey].name == "assetId"){
-//                               isAsset = true;
-//                           }
-//                           else{
-//                               fn.properties[func[key][ikey].name] = func[key][ikey];
-//                               if(func[key][ikey].type.startsWith("byte")){
-//                                   func[key][ikey].type = "string";
-//                               }
-//                               if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
-//                                   func[key][ikey].type = "number";
+            for (var key in func){
+                if(key =="name"){
+                    fn.title = func[key];
+                  }
+                  if(key == "inputs"){
+                      for(var ikey in func[key]){
+                          if(isAsset == true){
+                              isAsset = false;
+                              assetList[func[key][ikey].name]+=1;
+                              fn.properties.dependencies  = "*" + func[key][ikey].name;
+                              break;
+                          }
+                          if(func[key][ikey].name == "assetId"){
+                              isAsset = true;
+                          }
+                          else{
+                              fn.properties[func[key][ikey].name] = func[key][ikey];
+                              if(func[key][ikey].type.startsWith("byte")){
+                                  func[key][ikey].type = "string";
+                              }
+                              if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
+                                  func[key][ikey].type = "number";
                               
-//                               }
-//                           }
-//                        }            
-//                   }
+                              }
+                          }
+                       }            
+                  }
   
-//               }
-//               schema.transaction[fn.title] = fn;      
-//           }
-//       });
+              }
+              schema.transaction[fn.title] = fn;      
+          }
+      });
   
-//       var yamlString='---';
-//       for (var assets in assetList) {
-//           yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
-//       }
-//       yamlString+="\n";
-//       var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
-//       var strYml = ymlText.replace("---", '')
-//       let outputYaml = yamlString + strYml; 
-//       cb(outputYaml);
-//     });
-//   },
+      var yamlString='---';
+      for (var assets in assetList) {
+          yamlString += "\n- asset:  &" + assets +" \n      name:   assetIDd\n      type:   "+assets;
+      }
+      yamlString+="\n";
+      var ymlText = JSON.stringify(schema).replace(/["]+/g,'');
+      var strYml = ymlText.replace("---", '')
+      let outputYaml = yamlString + strYml; 
+      cb(outputYaml);
+    });
+  }
 });

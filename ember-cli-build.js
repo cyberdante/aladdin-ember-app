@@ -58,6 +58,12 @@ module.exports = function(defaults) {
     ]
   });
 
+  app.import('vendor/solc/browser-solc.min.js', {
+    using: [
+      { transformation: 'amd', as: 'solc' }
+    ]
+  });
+
   app.import({
     development: 'node_modules/ace-mode-solidity/build/v1.3.3/src-noconflict/mode-solidity.js',
     production: 'node_modules/ace-mode-solidity/build/v1.3.3/src-min-noconflict/mode-solidity.js'
