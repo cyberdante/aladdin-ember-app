@@ -1,16 +1,16 @@
 {{twiddle-panes-container model=model
                           numColumns=numColumns
                           fullScreen=fullScreen
-                          leftPanelShown=leftPanelShown
-                          rightPanelShown=rightPanelShown
+                          leftColumnShow=leftColumnShow
+                          rightColumnShow=rightColumnShow
+                          centerColumnShow=centerColumnShow
                           isBuilding=isBuilding
                           showLeftColumn=(action "showLeftColumn")
                           hideLeftColumn=(action "hideLeftColumn")
                           showRightColumn=(action "showRightColumn")
                           hideRightColumn=(action "hideRightColumn")
+                          openCentralColumn=(action "openCentralColumn")
+                          closeCentralColumn=(action "closeCentralColumn")
                           focusColumn=(action "focusColumn")
-                          removeColumn=(action "removeColumn")
-                          addColumn=(action "addColumn")
-                          updateColumn=(action "updateColumn")
                           exitFullScreen=(action "exitFullScreen")
 }}

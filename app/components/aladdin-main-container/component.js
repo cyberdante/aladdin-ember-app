@@ -26,6 +26,7 @@ export default Component.extend(ColumnsMixin, EKMixin, {
         });
         this.set('fullScreen', false);
         this.set('leftColumnShow', true);
+        this.set('centerColumnShow', true);
         this.set('rightColumnShow', true);
     },
 
@@ -43,7 +44,7 @@ export default Component.extend(ColumnsMixin, EKMixin, {
 
     settings: null,
 
-    /** Previously: fileTreeShown (boolean) - Whether the file tree is currently shown
+    /**
      * Whether the left column is currently shown
      * @type {boolean}
      */
@@ -53,6 +54,11 @@ export default Component.extend(ColumnsMixin, EKMixin, {
      * @type {boolean}
      */
     rightColumnShow: true,
+    /** 
+     * Whether the central column is currently shown
+     * @type {boolean}
+     */
+    centerColumnShow: true,
 
     /**
      * reinitialize component when the model has changed
@@ -79,7 +85,6 @@ export default Component.extend(ColumnsMixin, EKMixin, {
         },
 
         focusColumn(column) {
-            debugger;
             this.set('activeCol', column);
         },
 
@@ -88,8 +93,11 @@ export default Component.extend(ColumnsMixin, EKMixin, {
         },
 
         hideLeftColumn() {
-            debugger;
-            this.set('leftColumnShow', false);
+            if(this.get('rightColumnShow') || this.get('centerColumnShow')) {
+                this.set('leftColumnShow', false);
+            } else {
+                console.log('cannot close only remaining panel');
+            }
         },
 
         showRightColumn() {
@@ -97,30 +105,23 @@ export default Component.extend(ColumnsMixin, EKMixin, {
         },
 
         hideRightColumn() {
-            this.set('rightColumnShow', false);
-        },
-
-        removeColumn(col) {
-            this.removeColumn(col);
-            // this.get('transitionQueryParams')({numColumns: this.get('realNumColumns') - 1});
-        },
-
-        addColumn() {
-            let numColumns = this.get('realNumColumns');
-
-            //   this.get('transitionQueryParams')({
-            //     numColumns: numColumns + 1
-            //   }).then((queryParams) => {
-            //     this.setProperties(queryParams);
-            //     this.initializeColumns();
-            //   });
-        },
-
-        updateColumn(isUserChange, content) {
-            if (isUserChange) {
-                this.set('activeFile.content', content);
-                this.send('contentsChanged');
+            if(this.get('leftColumnShow') || this.get('centerColumnShow')) {
+                this.set('rightColumnShow', false);
+            } else {
+                console.log('cannot close only remaining panel');
             }
+        },
+
+        closeCentralColumn() {
+            if(this.get('leftColumnShow') || this.get('rightColumnShow')) {
+                this.set('centerColumnShow', false);
+            } else {
+                console.log('cannot close only remaining panel');
+            }
+        },
+
+        openCentralColumn() {
+            this.set('centerColumnShow', true);
         },
 
         exitFullScreen() {

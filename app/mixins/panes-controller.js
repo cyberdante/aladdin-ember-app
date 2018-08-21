@@ -7,12 +7,13 @@ import {
 } from '@ember/runloop';
 
 export default Mixin.create({
-    queryParams: ['numColumns', 'fullScreen', 'leftColumnShown', 'rightColumnShown'],
+    queryParams: ['numColumns', 'fullScreen', 'leftColumnShow', 'rightColumnShow'],
     numColumns: 1,
     fullScreen: false,
     // openFiles: "",
-    leftColumnShown: true,
-    rightColumnShown: true,
+    leftColumnShow: true,
+    rightColumnShow: true,
+    centerColumnShow: true,
     // route: undefined,
     // applicationUrl: undefined,
     // unsaved: true,
@@ -27,7 +28,7 @@ export default Mixin.create({
         //         queryParams
         //     }).then(() => queryParams);
         // }
-    }//,
+    } //,
 
     // setupWindowUpdate() {
     //     // TODO: this in a controller seems suspect, rather this should likely be

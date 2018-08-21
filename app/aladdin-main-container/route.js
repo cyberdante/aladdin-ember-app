@@ -4,12 +4,11 @@ import {
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-    // templateName: 'components/aladdin-main-container',
 
     renderTemplate(controller, model) {
         const mainController = this.controllerFor('aladdin-main-container');
-        this.render('components/aladdin-main-container', {
-            outlet: 'aladdin-main-container',
+        this.render('aladdin-main-container', {
+            outlet: 'application',
             controller: mainController
         });
     },

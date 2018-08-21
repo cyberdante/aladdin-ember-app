@@ -1,19 +1,14 @@
 <div class="header">
-  <div class="nav-left">
-    &nbsp;
-    <span class="hint--bottom hint--rounded" data-hint="Expand All">
-      <span class="twiddlicon twiddlicon-expand-all" {{action 'expandAll'}}></span>
-    </span>
-    &nbsp;
-    <span class="hint--bottom hint--rounded" data-hint="Collapse All">
-      <span class="twiddlicon twiddlicon-collapse-all" {{action 'collapseAll'}}></span>
-    </span>
-  </div>
   <div class="nav-right">
-    <span class="hint--bottom hint--rounded" data-hint="Hide this column">
+    {{#if canHideLeftColumn}}
+      <span class="hint--bottom hint--rounded" title="Hide this column">
         <span class="glyphicon glyphicon-chevron-left" {{action 'hideLeftColumn'}}></span>
-    </span>
+      </span>
+    {{/if}}
+    {{#unless centerColumnShow}}
+        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
+    {{/unless}}
   </div>
 </div>
 
-<p>LEFT COLUMN CONTENT PLACEHOLDER</p>
+{{contract-editor}}

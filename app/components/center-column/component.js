@@ -14,12 +14,16 @@ export default Component.extend(ResizeMixin, {
 
     isFirstColumn: computed.equal('col', '1'),
 
-    showLeftColumnOpenIcon: computed('isFirstColumn', 'leftColumnShown', function () {
-        return this.get('isFirstColumn') && !this.get('leftColumnShown');
+    canCloseCentralColumn: computed('leftColumnShow', 'rightColumnShow', function() {
+        return this.get('leftColumnShow') || this.get('rightColumnShow');
     }),
 
-    showRightColumnOpenIcon: computed('isLastColumn', 'rightColumnShown', function () {
-        return this.get('isLastColumn') && !this.get('rightColumnShown');
+    showLeftColumnOpenIcon: computed('isFirstColumn', 'leftColumnShow', function () {
+        return this.get('isFirstColumn') && !this.get('leftColumnShow');
+    }),
+
+    showRightColumnOpenIcon: computed('isLastColumn', 'rightColumnShow', function () {
+        return this.get('isLastColumn') && !this.get('rightColumnShow');
     }),
 
     focusIn() {
@@ -27,17 +31,21 @@ export default Component.extend(ResizeMixin, {
     },
 
     actions: {
+        didBecomeReady() {
+          if(this.didBecomeReady) {
+            this.didBecomeReady();
+          }
+        },
+    
+        didChange() {
+          if (this.didChange) {
+            this.didChange();
+          }
+        },
+
         valueUpdated(value, __, changeObj) {
             const isUserChange = changeObj.origin !== 'setValue';
             this.contentChanged(isUserChange, value);
-        },
-
-        removeColumn(col) {
-            this.removeColumn(col);
-        },
-
-        addColumn() {
-            this.addColumn();
         },
 
         showLeftColumn() {
@@ -46,6 +54,10 @@ export default Component.extend(ResizeMixin, {
 
         showRightColumn() {
             this.showRightColumn();
+        },
+
+        closeCentralColumn() {
+            this.closeCentralColumn();
         }
     }
 });
