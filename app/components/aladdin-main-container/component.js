@@ -27,7 +27,7 @@ export default Component.extend(ColumnsMixin, EKMixin, {
         this.set('fullScreen', false);
         this.set('leftColumnShow', true);
         this.set('centerColumnShow', true);
-        this.set('rightColumnShow', true);
+        this.set('rightColumnShow', false);
     },
 
     /**
@@ -53,7 +53,7 @@ export default Component.extend(ColumnsMixin, EKMixin, {
      * Whether the right column is currently shown
      * @type {boolean}
      */
-    rightColumnShow: true,
+    rightColumnShow: false,
     /** 
      * Whether the central column is currently shown
      * @type {boolean}
