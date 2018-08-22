@@ -3,7 +3,7 @@
   margin-left: 0;
   position: absolute;
   top: $topbar-height;
-  bottom: 0;
+  bottom: 20vh;
   left: 0;
   right: 0;
 
@@ -14,7 +14,7 @@
 
   .twiddle-pane {
     padding: 0;
-    height: 100%;
+    height: 80vh;
     // min-width: 200px;
     border-right: 1px solid #e4e2e2;
     cursor: normal;
@@ -25,13 +25,12 @@
     }
   }
 
-  .twiddle-pane.code, .twiddle-pane.right-column {
+  .twiddle-pane.code,
+  .twiddle-pane.right-column,
+  .twiddle-pane.left-column {
     -webkit-flex: 1;
     flex: 1;
-  }
 
-  .twiddle-pane.left-column {
-    flex: 1;
     @media (min-width: $screen-md-min) {
       max-width: 100%;
     }
@@ -40,12 +39,6 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-    }
-
-    .jstree {
-      height: 100%;
-      overflow-x: auto;
-      padding: 0 10px;
     }
   }
 

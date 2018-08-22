@@ -1,9 +1,8 @@
 import Component from '@ember/component';
 import config from '../../config/environment';
-import IDE from '../integrated-development-environment/component';
 import { computed } from '@ember/object';
 
-export default IDE.extend({
+export default Component.extend({
   canHideLeftColumn: computed('rightColumnShow', 'centerColumnShow', function() {
     return (this.get('rightColumnShow') || this.get('centerColumnShow'));
   }),
@@ -27,6 +26,10 @@ export default IDE.extend({
 
     openCentralColumn() {
       this.openCentralColumn();
+    },
+
+    viewChange() {
+      this.viewChange();
     }
   }
 

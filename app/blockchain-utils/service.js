@@ -33,7 +33,7 @@ export default Service.extend({
         schema.properties = {};
 
         schemaInterface.forEach(func => {
-            if (func.type != 'constructor') {
+            if (func.type !== 'constructor') {
                 let fn = {};
                 fn.title;
                 fn.type = typeof (fn);
@@ -44,16 +44,16 @@ export default Service.extend({
 
                 for (let key in func) {
                     let asset = {};
-                    if (key == "name") fn.title = func[key];
-                    if (key == "inputs") {
+                    if (key === "name") fn.title = func[key];
+                    if (key === "inputs") {
                         for (let ikey in func[key]) {
-                            if (isAsset == true) {
+                            if (isAsset === true) {
                                 isAsset = false;
                                 assetName = (func[key][ikey]);
                                 asset.type = assetName.name;
                                 break;
                             }
-                            if (func[key][ikey].name == "assetId") {
+                            if (func[key][ikey].name === "assetId") {
                                 fn.properties.dependencies = {}
                                 fn.properties.dependencies[func[key][ikey].name] = func[key][ikey];
                                 asset = fn.properties.dependencies[func[key][ikey].name]
@@ -81,18 +81,18 @@ export default Service.extend({
         schema.description = "Smart Contract Form for the demo";
         schema.type = typeof (schema);
         schema.properties = {};
-
+ 
         const config = yaml.safeLoad(yamlString);
-
+ 
         if(Array.isArray(config)){
             config.forEach(func => {
-                if (func !== null && Object.keys(func) != 'asset') {
+                if (func !== null && Object.keys(func) !== 'asset') {
                     for (let key in func) {
                         for (let ikey in func[key]) {
-                            if (typeof func[key][ikey].properties != 'undefined')
+                            if (typeof func[key][ikey].properties !== 'undefined')
                                 schema.properties[func[key][ikey].title] = func[key][ikey].properties
                             Object.keys(func[key][ikey]).forEach(function (pkey) {
-                                if (pkey == 'title') {
+                                if (pkey === 'title') {
                                     schema.properties[func[key][ikey].title].title = func[key][ikey].title;
                                 }
                             });
@@ -131,7 +131,7 @@ export default Service.extend({
 
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
-                if (schema[key][ikey].type == 'object') {
+                if (schema[key][ikey].type === 'object') {
                     if (schema[key][ikey].properties.dependencies) {
                         g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {
                             style: edge.style,
@@ -150,7 +150,7 @@ export default Service.extend({
 
         g.nodes().forEach(function (v) {
             let x = JSON.stringify(g.node(v));
-            if (x == undefined) {
+            if (x === undefined) {
                 g.setNode(v, {
                     style: nodeTransaction.style,
                     fillcolor: nodeTransaction.color
@@ -186,7 +186,7 @@ export default Service.extend({
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
                 Object.keys(schema[key][ikey]).forEach(function (pkey) {
-                    if (pkey == 'dependencies') {
+                    if (pkey === 'dependencies') {
                         g.setEdge(schema[key][ikey].title, schema[key][ikey][pkey].type, {
                             style: edge.style,
                             fillcolor: edge.color
@@ -204,7 +204,7 @@ export default Service.extend({
 
         g.nodes().forEach(function (v) {
             let x = JSON.stringify(g.node(v));
-            if (x == undefined) {
+            if (x === undefined) {
                 g.setNode(v, {
                     style: nodeTransaction.style,
                     fillcolor: nodeTransaction.color
@@ -225,19 +225,19 @@ export default Service.extend({
         sol = sol.appendLine('contract ' + schema.title + '{');
         Object.keys(schema).forEach(function(key) {
             for (let ikey in schema[key]) {
-                if (schema[key][ikey].type == 'object' ) {
+                if (schema[key][ikey].type === 'object' ) {
                     sol = sol.appendLine('');
                     sol = sol.appendLine( 'function '  + schema[key][ikey].title + ' (' );
                     Object.keys(schema[key][ikey].properties).forEach(function (inkey) {
-                        if (inkey == "dependencies") {
+                        if (inkey === "dependencies") {
                             sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.name + ',');
                             sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.type + ')');
-                        } else if (inkey == 'returns') {
-                            if ((schema[key][ikey].properties[inkey].type) != undefined) {
-                                if (schema[key][ikey].properties[inkey].type == 'number') {
+                        } else if (inkey === 'returns') {
+                            if ((schema[key][ikey].properties[inkey].type) !== undefined) {
+                                if (schema[key][ikey].properties[inkey].type === 'number') {
                                     schema[key][ikey].properties[inkey].type = 'uint'
                                 }
-                                if (schema[key][ikey].properties[inkey].type == 'string') {
+                                if (schema[key][ikey].properties[inkey].type === 'string') {
                                     schema[key][ikey].properties[inkey].type = 'bytes32'
                                 }
                                 sol = sol.appendLine('public constant returns(' + schema[key][ikey].properties[inkey].type + '){}');
@@ -245,10 +245,10 @@ export default Service.extend({
                                 sol = sol.appendLine('public{}');
                             }
                         } else {
-                            if (schema[key][ikey].properties[inkey].type == 'number') {
+                            if (schema[key][ikey].properties[inkey].type === 'number') {
                                 schema[key][ikey].properties[inkey].type = 'uint'
                             }
-                            if (schema[key][ikey].properties[inkey].type == 'string') {
+                            if (schema[key][ikey].properties[inkey].type === 'string') {
                                 schema[key][ikey].properties[inkey].type = 'bytes32'
                             }
                             sol = sol.appendLine(`${schema[key][ikey].properties[inkey].type} ${schema[key][ikey].properties[inkey].name},`);
@@ -272,11 +272,11 @@ export default Service.extend({
         sol = sol.appendLine(' contract ' + schema.title + '{');
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] == 'object') {
+                if (typeof schema[key][ikey] === 'object') {
                     sol = sol.appendLine('');
                     sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                        if (inkey == "dependencies") {
+                        if (inkey === "dependencies") {
                           let depend = schema[key][ikey][inkey];
                           if (depend !== 'none') {
                             sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ',');
@@ -291,9 +291,9 @@ export default Service.extend({
                         }
                         // else if (inkey =='returns'){
                         //     if((schema[key][ikey][inkey].type)!=undefined) {
-                        //         if (schema[key][ikey][inkey].type == 'number')
+                        //         if (schema[key][ikey][inkey].type === 'number')
                         //         schema[key][ikey][inkey].type = 'uint'
-                        //         if (schema[key][ikey][inkey].type == 'string')
+                        //         if (schema[key][ikey][inkey].type === 'string')
                         //         schema[key][ikey][inkey].type = 'bytes32'
                         //         sol = sol.appendLine( 'public constant returns(' + schema[key][ikey][inkey].type + '){}');
                         //     }
@@ -301,11 +301,11 @@ export default Service.extend({
                         //     sol = sol.appendLine( 'public{}');
                         // }
                         else {
-                            if (inkey != 'title') {
-                                if (schema[key][ikey][inkey].type == 'number') {
+                            if (inkey !== 'title') {
+                                if (schema[key][ikey][inkey].type === 'number') {
                                     schema[key][ikey][inkey].type = 'uint';
                                 }
-                                if (schema[key][ikey][inkey].type == 'string') {
+                                if (schema[key][ikey][inkey].type === 'string') {
                                     schema[key][ikey][inkey].type = 'bytes32';
                                 }
                                 sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},`);
@@ -353,11 +353,11 @@ export default Service.extend({
     },
     //dependency error checking
     depErr(yamlString){
-        var array = []; 
-        var result = [];
+        let array = []; 
+        let result = [];
         array.push({ regex: /asset:\s{2,4}[^&]/ , msg: "Assets must have & symbol" });
         array.push({ regex: /dependencies:\s{2,12}[^*]/, msg: "Transactions must have * symbol" });
-        var res = yamlString.split("\n"); 
+        let res = yamlString.split("\n"); 
         
         for( let r = 0; r < array.length; ++ r){
             let myRe = new RegExp(array[r].regex);
@@ -389,14 +389,14 @@ export default Service.extend({
 },
 
 validateYaml(yamlString){
-    var result = [];
-    var depResult = []; //error result from our asset and transaction rules
+    let result = [];
+    let depResult = []; //error result from our asset and transaction rules
     try{   
         yaml.safeLoad(yamlString);
         result = this.depErr(yamlString);
        }catch(err){
             depResult = this.depErr(yamlString);
-            if (depResult == undefined){
+            if (depResult === undefined){
                 result.push({type: 'error', text:  err.message, range: [err.mark.line,err.mark.column, err.mark.line, 0] });
                 return result; 
             }
@@ -435,7 +435,7 @@ updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
 
     for(const property in schema.properties) {
         if (schema.properties.hasOwnProperty(property)) {
-            if(oldTxnTitle == schema.properties[property].title){
+            if(oldTxnTitle === schema.properties[property].title){
                 schema.properties[property].title = newTxnTitle;
             }
         }
@@ -451,10 +451,10 @@ schemaToYaml(genSchema){
     let schema = {}; 
     schema.transaction = {};
     schema.transaction.properties = (typeof schema);
-    var assetList =[];
+    let assetList =[];
 
     Object.keys(schemaToParse).forEach(function(key) {
-        for(var ikey in schemaToParse[key]){
+        for(let ikey in schemaToParse[key]){
             let fn = {};      
             fn.title;
             fn.type = typeof(fn);
@@ -463,7 +463,7 @@ schemaToYaml(genSchema){
                 fn.title = schemaToParse[key][ikey].title;
             }          
 
-            for(var pkey in schemaToParse[key][ikey].properties){
+            for(let pkey in schemaToParse[key][ikey].properties){
                 if(schemaToParse[key][ikey].properties[pkey].hasOwnProperty('assetId')){
                     assetList[schemaToParse[key][ikey].properties[pkey].assetId.type]+=1;
                     fn.properties.dependencies  = "*" + schemaToParse[key][ikey].properties[pkey].assetId.type
@@ -478,13 +478,13 @@ schemaToYaml(genSchema){
         }
     });
 
-    var yamlString='---';
-    for (var assets in assetList) {
+    let yamlString='---';
+    for (let assets in assetList) {
         yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
     }
     yamlString+="\n";
-    var ymlText = YAML.stringify(schema).replace(/["]+/g,'');
-    var stripedYml = ymlText.replace("---", '')
+    let ymlText = YAML.stringify(schema).replace(/["]+/g,'');
+    let stripedYml = ymlText.replace("---", '')
     let outputYaml = yamlString + stripedYml; 
 
     return outputYaml;
@@ -498,28 +498,28 @@ schemaToYaml(genSchema){
       let schema = {}; 
       schema.transaction = {};
       schema.transaction.properties = (typeof schema);
-      var assetList =[];
+      let assetList =[];
       codeInterface.forEach(func =>{
-        if(func.type != 'constructor'){
+        if(func.type !== 'constructor'){
             let fn = {};      
             fn.title;
             fn.type = typeof(fn); 
             fn.properties = {};
             let isAsset = false;
             
-            for (var key in func){
+            for (let key in func){
                 if(key =="name"){
                     fn.title = func[key];
                   }
-                  if(key == "inputs"){
-                      for(var ikey in func[key]){
-                          if(isAsset == true){
+                  if(key === "inputs"){
+                      for(let ikey in func[key]){
+                          if(isAsset === true){
                               isAsset = false;
                               assetList[func[key][ikey].name]+=1;
                               fn.properties.dependencies  = "*" + func[key][ikey].name;
                               break;
                           }
-                          if(func[key][ikey].name == "assetId"){
+                          if(func[key][ikey].name === "assetId"){
                               isAsset = true;
                           }
                           else{
@@ -540,13 +540,13 @@ schemaToYaml(genSchema){
           }
       });
   
-      var yamlString='---';
-      for (var assets in assetList) {
+      let yamlString='---';
+      for (let assets in assetList) {
           yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
       }
       yamlString+="\n";
-      var ymlText = YAMLStringify(schema).replace(/["]+/g,'');
-      var strYml = ymlText.replace("---", '')
+      let ymlText = YAMLStringify(schema).replace(/["]+/g,'');
+      let strYml = ymlText.replace("---", '')
       let outputYaml = yamlString + strYml; 
       cb(outputYaml);
     });
@@ -555,7 +555,7 @@ schemaToYaml(genSchema){
 
 
 function YAMLStringify(data) {
-  var handlers
+  let handlers
     , indentLevel = ''
     ;
 
@@ -581,7 +581,7 @@ function YAMLStringify(data) {
         return JSON.stringify(x);
       }
     , "array": function (x) {
-        var output = ''
+        let output = ''
           ;
 
         if (0 === x.length) {
@@ -592,7 +592,7 @@ function YAMLStringify(data) {
         indentLevel = indentLevel.replace(/$/, '  ');
         x.forEach(function (y) {
           // TODO how should `undefined` be handled?
-          var handler = handlers[typeOf(y)]
+          let handler = handlers[typeOf(y)]
             ;
 
           if (!handler) {
@@ -607,7 +607,7 @@ function YAMLStringify(data) {
         return output;
       }
     , "object": function (x) {
-        var output = ''
+        let output = ''
           ;
 
         if (0 === Object.keys(x).length) {
@@ -617,7 +617,7 @@ function YAMLStringify(data) {
 
         indentLevel = indentLevel.replace(/$/, '  ');
         Object.keys(x).forEach(function (k) {
-          var val = x[k]
+          let val = x[k]
             , handler = handlers[typeOf(val)]
             ;
 

@@ -1,13 +1,12 @@
 import Component from '@ember/component';
 import ResizeMixin from '../../mixins/resize';
-import IDE from '../integrated-development-environment/component';
 import {
     computed
 } from '@ember/object';
 
 const MAX_COLUMNS = 3;
 
-export default IDE.extend(ResizeMixin, {
+export default Component.extend(ResizeMixin, {
     isLastColumn: computed('col', 'numColumns', function () {
         let numColumns = this.get('numColumns');
         return (this.get('col') | 0) === numColumns && numColumns < MAX_COLUMNS;
@@ -55,6 +54,10 @@ export default IDE.extend(ResizeMixin, {
 
         closeCentralColumn() {
             this.closeCentralColumn();
+        },
+
+        viewChange() {
+          this.viewChange();
         }
     }
 });

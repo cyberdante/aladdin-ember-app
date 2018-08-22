@@ -8,6 +8,10 @@
     {{#if leftColumnShow}}
       <div class="twiddle-pane left-column">
         {{left-column model=model
+                      yaml=yaml
+                      schema=schema
+                      code=code
+                      viewChange=(action this.viewChange)
                       leftColumnShow=leftColumnShow 
                       centerColumnShow=centerColumnShow
                       rightColumnShow=rightColumnShow
@@ -22,6 +26,10 @@
                         numColumns=numColumns
                         leftColumnShow=leftColumnShow
                         rightColumnShow=rightColumnShow
+                        yaml=yaml
+                        schema=schema
+                        code=code
+                        viewChange=(action this.viewChange)
                         showLeftColumnOpenIcon=(not leftColumnShow)
                         showRightColumnOpenIcon=(not rightColumnShow)
                         closeCentralColumn=(action this.closeCentralColumn)

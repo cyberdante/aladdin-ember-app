@@ -28,8 +28,8 @@ export default Component.extend({
           this.set('selectedComponent', 'graph-view');
       }
     },
-    onViewChange() {
-      this.onViewChange();
+    viewChange() {
+      this.viewChange();
     }
   }
 });

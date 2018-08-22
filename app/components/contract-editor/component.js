@@ -60,7 +60,7 @@ export default Component.extend({
     let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
     if(!errors.length) {
-      this.get('onViewChange')(newValue);
+      this.get('viewChange')(newValue);
     }
   },
 
