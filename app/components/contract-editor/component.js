@@ -74,6 +74,10 @@ export default Component.extend({
     valueUpdated(newValue) {
       let component = this;
       debounce(component, component.setUpdatedValueLazily, newValue, 500);
+    },
+
+    viewChange(view, yamlString) {
+      this.set('yaml', yamlString);
     }
   }
 });

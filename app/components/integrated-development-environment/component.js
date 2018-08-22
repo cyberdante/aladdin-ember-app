@@ -193,5 +193,5 @@ export default Component.extend({
 
   viewChange(view, yamlString) {
     this.set('yaml', yamlString);
-  },
+  }
 });

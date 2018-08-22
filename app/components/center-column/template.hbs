@@ -1,0 +1,26 @@
+<div class="header">
+  {{#if showLeftColumnOpenIcon}}
+    <span class="nav-left">
+      <span class="hint--bottom hint--rounded" title="Show left column" >
+        <span class="glyphicon glyphicon-chevron-right" {{action 'showLeftColumn'}}></span>
+      </span>
+    </span>
+  {{/if}}
+
+  <span class="nav-right">
+    {{#if canCloseCentralColumn}}
+      {{#unless centerColumnShow}}
+        <span class="hint--bottom hint--rounded" title="Hide this panel">
+          <span class="glyphicon glyphicon-remove" {{action 'closeCentralColumn'}}></span>
+        </span>
+      {{/unless}}
+    {{/if}}
+    {{#if showRightColumnOpenIcon}}
+      <span class="hint--bottom hint--rounded" title="Show right column">
+          <span class="glyphicon glyphicon-chevron-left" {{action 'showRightColumn'}}></span>
+      </span>
+    {{/if}}
+  </span>
+</div>
+
+{{tabbed-container schema=schema code=code yaml=yaml onViewChange=(action viewChange 'tabbed-container')}}

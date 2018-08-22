@@ -1,0 +1,14 @@
+<div class="header">
+  <div class="nav-right">
+    {{#if canHideLeftColumn}}
+      <span class="hint--bottom hint--rounded" title="Hide this column">
+        <span class="glyphicon glyphicon-chevron-left" {{action 'hideLeftColumn'}}></span>
+      </span>
+    {{/if}}
+    {{#unless centerColumnShow}}
+        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
+    {{/unless}}
+  </div>
+</div>
+
+{{contract-editor yaml=yaml onViewChange=(action viewChange 'contract-editor')}}

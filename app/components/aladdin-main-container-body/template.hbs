@@ -1,0 +1,46 @@
+{{#twiddle-panes numColumns=numColumns 
+                 fullScreen=fullScreen
+                 leftColumnShow=leftColumnShow 
+                 centerColumnShow=centerColumnShow
+                 rightColumnShow=rightColumnShow
+}}
+  {{#unless fullScreen}}
+    {{#if leftColumnShow}}
+      <div class="twiddle-pane left-column">
+        {{left-column model=model
+                      leftColumnShow=leftColumnShow 
+                      centerColumnShow=centerColumnShow
+                      rightColumnShow=rightColumnShow
+                      hideLeftColumn=(action this.hideLeftColumn)
+                      openCentralColumn=(action this.openCentralColumn)
+        }}
+      </div>
+    {{/if}}
+    {{#if centerColumnShow}}
+      <div class="twiddle-pane code {{if column.active 'active'}}">
+        {{center-column col=1
+                        numColumns=numColumns
+                        leftColumnShow=leftColumnShow
+                        rightColumnShow=rightColumnShow
+                        showLeftColumnOpenIcon=(not leftColumnShow)
+                        showRightColumnOpenIcon=(not rightColumnShow)
+                        closeCentralColumn=(action this.closeCentralColumn)
+                        showLeftColumn=(action this.showLeftColumn)
+                        showRightColumn=(action this.showRightColumn)
+        }}
+      </div>
+    {{/if}}
+  {{/unless}}
+  {{#if rightColumnShow}}
+    <div class="twiddle-pane right-column {{if fullScreen 'full-screen'}}">
+      {{right-column isBuilding=isBuilding
+                     leftColumnShow=leftColumnShow 
+                     centerColumnShow=centerColumnShow
+                     rightColumnShow=rightColumnShow
+                     openCentralColumn=(action this.openCentralColumn)
+                     hideRightColumn=(action this.hideRightColumn)
+      }}
+    </div>
+  {{/if}}
+
+{{/twiddle-panes}}
