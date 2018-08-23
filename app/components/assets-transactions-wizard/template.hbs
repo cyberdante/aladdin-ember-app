@@ -59,16 +59,19 @@
           {{#paper-subheader}}Parameters{{/paper-subheader}}
           {{#each txnParameters as |param|}}
             {{#paper-item as |controls|}}
-              <p>{{param.title}}</p>
+                 {{!-- <p>{{param.title}}</p> --}}
+            {{#if editingParamTitle}}
+            {{input value=param.title enter =(action 'toggleOffParam' param.txn param) }}
+            {{else}}
+            <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
+            {{/if}}
               <div class="md-secondary-container"> </div>
-                {{#controls.button primary=true}}
-                  {{param.type}}
-                {{/controls.button}}
-                {{!-- {{#basic-dropdown as |dd|}} 
-                {{#dd.trigger}}  {{param.type}} {{/dd.trigger}}
-                {{#dd.content}}<p> string</p> <p>uint</p>{{/dd.content}}
-                {{/basic-dropdown}}  --}}
-              {{!-- </div> --}}
+                 <select onchange={{action 'typeChange' param.txn param }}>
+                   <option value=>{{param.type}}</option>
+                    {{#each options as |option|}}
+                    <option value={{option}}>{{option}}</option>
+                    {{/each}}
+                </select>
             {{/paper-item}}
           {{/each}}
           {{paper-divider}}

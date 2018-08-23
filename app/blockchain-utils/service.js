@@ -3,8 +3,6 @@ import {
     A
 } from '@ember/array';
 import O from '@ember/object';
-// import mocks from './mocks';
-
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
@@ -91,7 +89,7 @@ export default Service.extend({
                         for (let ikey in func[key]) {
                             if (typeof func[key][ikey].properties != 'undefined')
                                 schema.properties[func[key][ikey].title] = func[key][ikey].properties
-                            Object.keys(func[key][ikey]).forEach(function (pkey) {
+                                Object.keys(func[key][ikey]).forEach(function (pkey) {
                                 if (pkey == 'title') {
                                     schema.properties[func[key][ikey].title].title = func[key][ikey].title;
                                 }
@@ -407,6 +405,56 @@ validateYaml(yamlString){
         return result; 
 },
 
+updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema){
+
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+    console.log(schema)
+    for(const property in schema.properties) {
+        if (schema.properties.hasOwnProperty(property)) {
+            if(txnTitle == schema.properties[property].title){
+                for(var pkey in schema.properties[property]){
+                    if(pkey == oldParamTitle){
+                        schema.properties[property][newParamTitle] = {}
+                        schema.properties[property][newParamTitle].name = newParamTitle;
+                        schema.properties[property][newParamTitle].type = paramType;
+                        delete(schema.properties[property][pkey]);
+                        
+                    }
+                }
+
+            }
+        }
+    }
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+    return jsonSchema;   
+
+},
+
+updateParamSchemaType(txnTitle, paramTitle, newParamType, schema){
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+    
+     for(const property in schema.properties) {
+        if (schema.properties.hasOwnProperty(property)) {
+            if(txnTitle == schema.properties[property].title){
+                for(var pkey in schema.properties[property]){
+                    if(pkey == paramTitle){
+                        schema.properties[property][pkey].type = newParamType;
+                    }
+                }
+
+            }
+        }
+    }
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+    return jsonSchema;   
+
+},
 updateAssetSchema(newAssetTitle, oldAssetTitle, schema){
 
     if (typeof schema === 'string') {
@@ -451,55 +499,59 @@ schemaToYaml(genSchema){
     let schema = {}; 
     schema.transaction = {};
     schema.transaction.properties = (typeof schema);
-    var assetList =[];
+    var assetList ={};
 
-    Object.keys(schemaToParse).forEach(function(key) {
-        for(var ikey in schemaToParse[key]){
+    Object.keys(schemaToParse).forEach(function(key) {        
+        if(key === 'properties'){
+        for(var ikey in schemaToParse[key]){            
             let fn = {};      
             fn.title;
             fn.type = typeof(fn);
             fn.properties = {};
             if (schemaToParse[key][ikey].hasOwnProperty('title') ) {
                 fn.title = schemaToParse[key][ikey].title;
-            }          
+            }  
 
-            for(var pkey in schemaToParse[key][ikey].properties){
-                if(schemaToParse[key][ikey].properties[pkey].hasOwnProperty('assetId')){
-                    assetList[schemaToParse[key][ikey].properties[pkey].assetId.type]+=1;
-                    fn.properties.dependencies  = "*" + schemaToParse[key][ikey].properties[pkey].assetId.type
-                }
-                else if(schemaToParse[key][ikey].properties[pkey].name!=undefined){
-                    fn.properties[schemaToParse[key][ikey].properties[pkey].name] = schemaToParse[key][ikey].properties[pkey];
-                }
-            }
-            if(fn.hasOwnProperty('title')){
-                schema.transaction[fn.title] = fn;    
-            }
+            if(schemaToParse[key][ikey].hasOwnProperty('dependencies')){
+            assetList[schemaToParse[key][ikey].dependencies.type]=0;
+            fn.properties.dependencies  = "*" + schemaToParse[key][ikey].dependencies.type;
+           }
+    for(var pkey in schemaToParse[key][ikey]){
+        if(pkey != 'dependencies' && pkey !='title' ) 
+          fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
         }
+        if(fn.hasOwnProperty('title')){
+            schema.transaction[fn.title] = fn;   
+          } 
+        }
+        
+    }
+        
     });
+    let yamlString='---';
 
-    var yamlString='---';
     for (var assets in assetList) {
         yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
     }
     yamlString+="\n";
-    var ymlText = YAML.stringify(schema).replace(/["]+/g,'');
+    var ymlText = YAMLStringify(schema).replace(/["]+/g,'');
     var stripedYml = ymlText.replace("---", '')
     let outputYaml = yamlString + stripedYml; 
-
     return outputYaml;
   },
 
   solToYaml(code, cb){
-    solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+    // solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+        solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
       const compiledCode = compiler.compile(code)
       let className = /contract\s+(\w+)\s?{/.exec(code)[1];
       const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
       let schema = {}; 
       schema.transaction = {};
       schema.transaction.properties = (typeof schema);
-      var assetList =[];
+      var assetList ={};
       codeInterface.forEach(func =>{
+        //   console.log(func)
         if(func.type != 'constructor'){
             let fn = {};      
             fn.title;
@@ -508,9 +560,11 @@ schemaToYaml(genSchema){
             let isAsset = false;
             
             for (var key in func){
-                if(key =="name"){
+
+                if(key ==="name"){
                     fn.title = func[key];
-                  }
+                    console.log(func[key])
+                }
                   if(key == "inputs"){
                       for(var ikey in func[key]){
                           if(isAsset == true){

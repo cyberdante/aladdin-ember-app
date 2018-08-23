@@ -1,179 +1,44 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object'
 import { inject as service } from '@ember/service';
+import { observer } from '@ember/object';
 
 export default Component.extend({
   blockchainUtils: service(),
+  schema:'', 
   yaml: `---
-- asset:  &IP 
-      name:   assetId
-      type:   IP
-- asset:  &Script 
-      name:   assetId
-      type:   Script
-- asset:  &Tool 
-      name:   assetId
-      type:   Tool
-- asset:  &Output 
-      name:   assetId
-      type:   Output
+- asset:  &container 
+      name:   asset_id
+      type:   container
 
 -  transaction: 
     properties: object
     arrived: 
       type: object
       properties: 
-        server_pub_key: 
-          name: server_pub_key
+        sNum: 
+          name: sNum
           type: number
-        user_eth_account: 
-          name: user_eth_account
+        arrived: 
+          name: arrived
           type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *IP
-      title: registerIP
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Script
-      title: registerIPScript
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Tool
-      title: registerIPTool
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Output
-      title: registerIPOutput
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *IP
-      title: revisionIP
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Script
-      title: revisionIPScript
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Tool
-      title: revisionIPTool
--  transaction: 
-    properties: object
-    arrived: 
-      type: object
-      properties: 
-        server_pub_key: 
-          name: server_pub_key
-          type: number
-        user_eth_account: 
-          name: user_eth_account
-          type: number
-        ip_hash: 
-          name: ip_hash
-          type: number
-        ip_signature: 
-          name: ip_signature
-          type: number
-        dependencies: *Output
-      title: revisionIPOutput
+        dependencies: *container
+      title: arrived
   `,  
 
   title: 'Application',
-
+  
+  schemaChanged: observer('schema', function() {
+    this.generateYaml(this.schema);
+  }),
+  generateYaml(schema) {
+    const self = this;
+    let yaml = this.blockchainUtils.schemaToYaml(schema);
+    // this.viz.renderSVGElement(graph).then(svg => {
+    //   self.set('svg', svg);
+    // });
+    this.set('yaml', yaml);
+  },
   schema: computed('yaml', 'title', function(){
     let yaml = this.get('yaml');
     let title = this.get('title');
@@ -182,7 +47,7 @@ export default Component.extend({
   }),
 
   code: computed('schema', function() {
-    console.log('asdf');
+    // console.log('asdf');
     let utils = this.get('blockchainUtils');
     return utils.generateSolFileYaml(this.schema);
   }),
