@@ -13,8 +13,13 @@ export default Component.extend({
 
   editingAssetTitle:false,
   editingTxnTitle:false,
+  editingParamTitle:false,
   origTitle: '',
   origTxnTitle:'',
+  origParamTitle:'',
+  options: ['string', 'byte32', 'number'],
+
+//   selectedType: '',
 
   selectedAsset: O.create({}),
   selectedTxn: O.create({}),
@@ -32,6 +37,7 @@ export default Component.extend({
   },
 
   generateView(schema) {
+      alert(schema)
     const self = this;
     let assets = this.blockchainUtils.extractAssetsTransactions(schema);
     self.set('assets', assets);
@@ -51,7 +57,7 @@ export default Component.extend({
 
       let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
         if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
-          acc.push({title:paramTitle, type:txn.meta[paramTitle].type});
+          acc.push({title:paramTitle, type:txn.meta[paramTitle].type, txn:txn});
         }
         return acc;
       }, []);
@@ -68,6 +74,7 @@ export default Component.extend({
     toggleOff(newAsset){
         this.set('editingAssetTitle', false);
         let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
+        alert(this.schema)
         this.set('schema', schema);
     },
     toggleTxn(origTxn){
@@ -78,6 +85,21 @@ export default Component.extend({
         this.set('editingTxnTitle', false);
         let schema = this.blockchainUtils.updateTxnSchema(newTxn, this.origTxnTitle, this.schema);
         this.set('schema', schema);
-    }
+    },
+    toggleParam(origParam){
+        this.set('origParamTitle', origParam);
+        this.set('editingParamTitle', true);
+    },
+    toggleOffParam(txnTitle, param){
+        this.set('editingParamTitle', false);
+        let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
+        this.set('schema', schema);
+    },
+
+    typeChange(txnTitle, param ){
+        var value = this.$('option:selected').val();
+        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, value, this.schema);
+        this.set('schema', schema);
+     },
   }
 });

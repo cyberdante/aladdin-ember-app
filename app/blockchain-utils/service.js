@@ -411,7 +411,7 @@ updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema){
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
     }
-    console.log(schema)
+
     for(const property in schema.properties) {
         if (schema.properties.hasOwnProperty(property)) {
             if(txnTitle == schema.properties[property].title){
@@ -513,18 +513,17 @@ schemaToYaml(genSchema){
             if (schemaToParse[key][ikey].hasOwnProperty('title') ) {
                 fn.title = schemaToParse[key][ikey].title;
             }  
-
             if(schemaToParse[key][ikey].hasOwnProperty('dependencies')){
-            assetList[schemaToParse[key][ikey].dependencies.type]=0;
-            fn.properties.dependencies  = "*" + schemaToParse[key][ikey].dependencies.type;
+                assetList[schemaToParse[key][ikey].dependencies.type]=0;
+                fn.properties.dependencies  = "*" + schemaToParse[key][ikey].dependencies.type;
            }
-    for(var pkey in schemaToParse[key][ikey]){
-        if(pkey != 'dependencies' && pkey !='title' ) 
-          fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
-        }
-        if(fn.hasOwnProperty('title')){
-            schema.transaction[fn.title] = fn;   
-          } 
+           for(var pkey in schemaToParse[key][ikey]){
+               if(pkey != 'dependencies' && pkey !='title' ) 
+               fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
+            }
+            if(fn.hasOwnProperty('title')){
+                schema.transaction[fn.title] = fn;   
+            } 
 
         }
         
@@ -555,24 +554,19 @@ schemaToYaml(genSchema){
 
       var assetList ={};
       codeInterface.forEach(func =>{
-        //   console.log(func)
         if(func.type != 'constructor'){
-
             let fn = {};      
             fn.title;
             fn.type = typeof(fn); 
             fn.properties = {};
             let isAsset = false;
             for (var key in func){
-
                 if(key ==="name"){
                     fn.title = func[key];
-                    console.log(func[key])
                 }
                   if(key == "inputs"){
                       for(var ikey in func[key]){
                           if(isAsset == true){
-
                               isAsset = false;
                               assetList[func[key][ikey].name]+=1;
                               fn.properties.dependencies  = "*" + func[key][ikey].name;
