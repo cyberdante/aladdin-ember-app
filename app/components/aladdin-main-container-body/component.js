@@ -184,7 +184,6 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
-        debugger;
         this.set('yaml', yamlString);
     }
 });
