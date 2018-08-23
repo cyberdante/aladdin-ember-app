@@ -37,7 +37,6 @@ export default Component.extend({
   },
 
   generateView(schema) {
-      alert(schema)
     const self = this;
     let assets = this.blockchainUtils.extractAssetsTransactions(schema);
     self.set('assets', assets);
@@ -74,7 +73,6 @@ export default Component.extend({
     toggleOff(newAsset){
         this.set('editingAssetTitle', false);
         let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
-        alert(this.schema)
         this.set('schema', schema);
     },
     toggleTxn(origTxn){
