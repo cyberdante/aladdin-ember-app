@@ -1,0 +1,21 @@
+<div class="header">
+  <div class="nav-left">
+    {{#unless centerColumnShow}}
+        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
+    {{/unless}}
+    {{#if canHideRightColumn}}
+        <span class="hint--bottom hint--rounded" title="Hide this column">
+            <span class="glyphicon glyphicon-chevron-right" {{action (action this.hideRightColumn)}}></span>
+        </span>
+    {{/if}}
+  </div>
+</div>
+{{#if isBuilding}}
+    <div class="ember-load-indicator">Building...</div>
+{{/if}}
+<div class="content">
+    <p>RIGHT COLUMN PLACEHOLDER</p>
+</div>
+{{#if fullScreen}}
+    <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
+{{/if}}

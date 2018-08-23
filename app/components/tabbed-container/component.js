@@ -9,6 +9,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
   },
+  
   actions: {
     onChange(selected) {
       this.set('selectedTab', selected);
@@ -26,6 +27,9 @@ export default Component.extend({
         default:
           this.set('selectedComponent', 'graph-view');
       }
+    },
+    viewChange() {
+      this.viewChange();
     }
   }
 });

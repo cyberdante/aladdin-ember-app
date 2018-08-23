@@ -24,6 +24,22 @@ export default Component.extend({
             id: 4,
             type: "other",
             value: "unknown output line"
+        }, {
+            id: 5,
+            type: "error",
+            value: "unknown syntax error"
+        }, {
+            id: 6,
+            type: "error",
+            value: "syntax error on schema. line:22"
+        }, {
+            id: 7,
+            type: "warning",
+            value: "unknown syntax warning"
+        }, {
+            id: 8,
+            type: "other",
+            value: "unknown output line"
         }]);
     }
 });

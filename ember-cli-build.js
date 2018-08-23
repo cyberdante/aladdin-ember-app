@@ -1,6 +1,8 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const funnel = require('broccoli-funnel');
+const path = require('path');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
@@ -12,7 +14,10 @@ module.exports = function(defaults) {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
       exts: ['language_tools', 'beautify']
-    }
+    },
+    'ember-cli-bootstrap-sassy': {
+      'js': ['dropdown', 'collapse']
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
@@ -78,5 +83,12 @@ module.exports = function(defaults) {
   app.import('vendor/ace-editor/mode-aladdin.js');
   app.import('vendor/ace-editor/worker-aladdin.js', { outputFile: 'worker-aladdin.js' });
 
-  return app.toTree();
+  let loaderTree = funnel(path.dirname(require.resolve('loader.js')), {
+    files: ['loader.js'],
+    destDir: '/assets'
+  });
+
+  app.import('vendor/drags.js');
+
+  return app.toTree([loaderTree]);
 };
