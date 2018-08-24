@@ -545,7 +545,7 @@ schemaToYaml(genSchema){
 
   solToYaml(code, cb){
     // solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
-        solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
+    solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
       const compiledCode = compiler.compile(code)
       let className = /contract\s+(\w+)\s?{/.exec(code)[1];
       const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
@@ -602,6 +602,7 @@ schemaToYaml(genSchema){
       let strYml = ymlText.replace("---", '')
       let outputYaml = yamlString + strYml; 
       cb(outputYaml);
+    //   console.log(outputYaml);
     });
   }
 });
