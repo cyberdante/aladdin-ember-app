@@ -9,8 +9,7 @@ export default Component.extend({
   classNames: ['md-padding'],
   newValue: '',
   value: '',
-  yaml:'',
-
+ 
   highlightActiveLine: true,
   showPrintMargin: true,
   readOnly: false,
@@ -78,8 +77,7 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
-        console.log("Here")
-      this.set('yaml', yamlString);
+        this.set('yaml', yamlString);
     }
   }
 });
