@@ -65,9 +65,9 @@
             {{else}}
             <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
             {{/if}}
-              <div class="md-secondary-container"> </div>
+                <div class="md-secondary-container"> </div>
                  <select onchange={{action 'typeChange' param.txn param }}>
-                   <option value=>{{param.type}}</option>
+                   <option value= {{param.type}}>{{param.type}}</option>
                     {{#each options as |option|}}
                     <option value={{option}}>{{option}}</option>
                     {{/each}}

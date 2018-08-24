@@ -42,9 +42,6 @@ export default Component.extend({
       }),
       generateYaml(schema) {
         let yaml = this.blockchainUtils.schemaToYaml(schema);
-        // this.viz.renderSVGElement(graph).then(svg => {
-        //   self.set('svg', svg);
-        // });
         this.set('yaml', yaml);
       },
 
@@ -65,7 +62,6 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
-        
         this.set('yaml', yamlString);
     }
 });

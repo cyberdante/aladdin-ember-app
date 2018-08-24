@@ -19,10 +19,10 @@ export default Component.extend({
   origParamTitle:'',
   options: ['string', 'byte32', 'number'],
 
-//   selectedType: '',
-
   selectedAsset: O.create({}),
   selectedTxn: O.create({}),
+
+  typeSelected:'',
 
   schemaChanged: observer('schema', function() {
     this.generateView(this.schema);
@@ -93,11 +93,9 @@ export default Component.extend({
         let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
         this.set('schema', schema);
     },
-
-    typeChange(txnTitle, param ){
-        var value = this.$('option:selected').val();
-        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, value, this.schema);
+    typeChange(txnTitle, param, event ){
+        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
         this.set('schema', schema);
-     },
+     }
   }
 });

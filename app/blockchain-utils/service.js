@@ -438,7 +438,6 @@ updateParamSchemaType(txnTitle, paramTitle, newParamType, schema){
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
     }
-    
      for(const property in schema.properties) {
         if (schema.properties.hasOwnProperty(property)) {
             if(txnTitle == schema.properties[property].title){
@@ -602,7 +601,6 @@ schemaToYaml(genSchema){
       let strYml = ymlText.replace("---", '')
       let outputYaml = yamlString + strYml; 
       cb(outputYaml);
-    //   console.log(outputYaml);
     });
   }
 });
