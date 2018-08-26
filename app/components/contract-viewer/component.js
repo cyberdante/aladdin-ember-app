@@ -77,7 +77,8 @@ export default Component.extend({
 
   actions: {
     valueUpdated(newValue) {
-      debounce(this, this.setUpdatedValueLazily, newValue, 500);
+        console.log(newValue)
+    //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
     }
   }
 })

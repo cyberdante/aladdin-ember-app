@@ -63,5 +63,10 @@ export default Component.extend({
 
     viewChange(view, yamlString) {
         this.set('yaml', yamlString);
+        let utils = this.get('blockchainUtils');
+        let schema = utils.generateSchemaYaml(this.yaml);
+        this.set('schema', schema)
+        let code= utils.generateSolFileYaml(this.schema)
+        this.set('code', code)
     }
 });

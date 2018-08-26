@@ -17,7 +17,7 @@ export default Component.extend({
   origTitle: '',
   origTxnTitle:'',
   origParamTitle:'',
-  options: ['string', 'byte32', 'number'],
+  options: ['string', 'bytes32', 'number'],
 
   selectedAsset: O.create({}),
   selectedTxn: O.create({}),
