@@ -15,7 +15,7 @@ export default Component.extend({
 
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: false,
+  readOnly: true,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
