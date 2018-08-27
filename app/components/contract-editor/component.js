@@ -73,7 +73,7 @@ export default Component.extend({
     },
     valueUpdated(newValue) {
       let component = this;
-      console.log(newValue)
+    //   console.log(newValue)
       debounce(component, component.setUpdatedValueLazily, newValue, 500);
     },
 
