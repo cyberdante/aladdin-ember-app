@@ -58,9 +58,9 @@ export default Component.extend({
     this.set('value', newValue);
     let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
-    if(!errors.length) {
-       this.blockchainUtils.solToYaml(newValue, this.viewChange);
-    }
+    // if(!errors.length) {
+    //    this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    // }
   },
 
   init() {
