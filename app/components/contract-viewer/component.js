@@ -69,10 +69,17 @@ export default Component.extend({
   
   didRender() {
     let beautify = ace.require('ace/ext/beautify');
-    let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
-    let editor = ace.edit(element);
-    beautify.beautify(editor.session);
-    this.set('editorSession', editor.getSession());
+    if (!this.editorSession) {
+      let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
+      let editor = ace.edit(element);
+      editor.on('change', function(evt) {
+        // console.log('viewer', evt);
+      });
+      this.set('editorSession', editor.getSession());
+      beautify.beautify(editor.session);
+    } else {
+      beautify.beautify(this.get('editorSession'));
+    }
   },
 
   actions: {
