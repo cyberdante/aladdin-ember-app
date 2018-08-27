@@ -11,28 +11,163 @@ export default Component.extend({
     blockchainUtils: service(),
     schema:'',
     yaml: `---
-  - asset:  &Script 
-        name:   assetId
-        type:   Script
-    transaction: 
-      properties: object
-      revisionIPScript: 
+    - asset:  &container                 # defines anchor label
+          name:   assetId
+          type:   container
+    - asset:  &lock                
+          name:   assetId
+          type:   lock
+    - asset:  &manifest                
+          name:   assetId
+          type:   manifest
+    
+    
+    - transaction: 
+       properties: object
+       arrived:
         type: object
-        properties: 
-          server_pub_key: 
-            name: server_pub_key
+        properties:				# method variable
+          sNum:
+            name: sNum
             type: number
-          user_eth_account: 
-            name: user_eth_account
+          arrived:
+            name: arrived
             type: number
-          ip_hash: 
-            name: ip_hash
+          dependencies:  *container
+        title: arrived
+    
+    - transaction: 
+       properties: object
+       tampered:
+        type: object
+        properties:
+          sNum:
+            name: sNum
             type: number
-          ip_signature: 
-            name: ip_signature
+          tampered:
+            name: tampered
             type: number
-          dependencies: *Script
-        title: revisionIPScript
+          dependencies:  *lock
+        title: tampered
+    
+    - transaction: 
+       properties: object
+       lock:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          locked:
+            name: locked
+            type: number
+          dependencies:  *container
+        title: lock
+    
+    - transaction: 
+       properties: object
+       idle:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          idle:
+            name: idle
+            type: number
+          dependencies:  *container
+        title: idle
+    
+    - transaction: 
+       properties: object
+       unlock:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          tampered:
+            name: tampered
+            type: number
+          unlocked:
+            name: unlocked
+            type: number
+          dependencies:  *lock
+        title: unlock
+    
+    - transaction: 
+       properties: object
+       locked:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          tampered:
+            name: tampered
+            type: number
+          locked:
+            name: locked
+            type: number
+          dependencies:  *lock
+        title: locked
+     
+    - transaction: 
+       properties: object
+       saveManifest:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          carNum:
+            name: carNum
+            type: number
+          dependencies:  *manifest
+        title: saveManifest
+    
+    - transaction: 
+       properties: object
+       departed:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          departed:
+            name: departed
+            type: number
+          dependencies:  *container
+        title: departed
+    
+    - assignAsset: 
+       properties: object
+       manifest:
+        type: object
+        properties:
+          contents:
+            name: contents
+            type: string
+          locked:
+            name: locked
+            type: number
+          dependencies:  *container
+        title: manifest
+    
+    - transaction: 
+       properties: object
+       received:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          received:
+            name: received
+            type: number
+          dependencies:  *container
+        title: received
+        
   `,
 
     title: 'Application',

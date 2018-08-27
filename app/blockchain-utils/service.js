@@ -378,6 +378,7 @@ export default Service.extend({
 
                     });
                     sol = sol + sol2
+                    sol2 = '';
                     sol = sol.appendLine('public{}');
                 }
 
