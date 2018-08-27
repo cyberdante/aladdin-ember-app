@@ -15,7 +15,7 @@ export default Component.extend({
 
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: false,
+  readOnly: true,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
@@ -58,9 +58,9 @@ export default Component.extend({
     this.set('value', newValue);
     let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
-    if(!errors.length) {
-       this.blockchainUtils.solToYaml(newValue, this.viewChange);
-    }
+    // if(!errors.length) {
+    //    this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    // }
   },
 
   init() {
@@ -69,10 +69,17 @@ export default Component.extend({
   
   didRender() {
     let beautify = ace.require('ace/ext/beautify');
-    let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
-    let editor = ace.edit(element);
-    beautify.beautify(editor.session);
-    this.set('editorSession', editor.getSession());
+    if (!this.editorSession) {
+      let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
+      let editor = ace.edit(element);
+      editor.on('change', function(evt) {
+        // console.log('viewer', evt);
+      });
+      this.set('editorSession', editor.getSession());
+      beautify.beautify(editor.session);
+    } else {
+      beautify.beautify(this.get('editorSession'));
+    }
   },
 
   actions: {

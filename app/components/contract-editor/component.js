@@ -19,6 +19,7 @@ export default Component.extend({
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,
+  cursorPosition: {row:0, column:0},
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {
@@ -50,9 +51,19 @@ export default Component.extend({
   },
 
   didRender(){
+    const self = this;
     let element = document.getElementsByClassName('contract-editor-wrapper')[0];
     let editor = ace.edit(element);
-    this.set('editorSession', editor.getSession());
+    if (!this.editorSession) {
+      this.set('editorSession', editor.getSession());
+
+      editor.on('change', function(evt) {
+        if (evt.end.row !== evt.lines.length-1) {
+          self.set('cursorPosition', evt.end);
+        } 
+      });
+    }
+    editor.moveCursorToPosition(this.get('cursorPosition'));
   },
   
   setUpdatedValueLazily(newValue) {
