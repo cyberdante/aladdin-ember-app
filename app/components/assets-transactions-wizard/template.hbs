@@ -29,12 +29,18 @@
             {{#controls.button primary=asset.isSelected onClick=(action "selectAsset" asset)}}
               View Transactions
             {{/controls.button}}
-          </div>
+            </div>
         {{/paper-item}}
       {{/each}}
       {{paper-divider}}
       {{#if selectedAsset.transactions}}
       {{#paper-subheader}}Transactions{{/paper-subheader}}
+      {{#if editingTxnAdd}}
+      {{#paper-button raised=true mini=true onClick=(action  'toggleOffAddTxn')}}+{{/paper-button}}
+      {{else}}
+       <label>txnName:</label>
+      {{ input  enter =(action 'toggleOnAddTxn' ) }}
+      {{/if}}
       {{#each selectedAsset.transactions as |txn| }}
         {{#paper-item as |controls|}}
           {{#if editingTxnTitle}}
@@ -46,6 +52,7 @@
             {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
               View Properties
             {{/controls.button}}
+             {{#paper-button raised=true mini=true}}-{{/paper-button}}
           </div>
         {{/paper-item}}
       {{/each}}

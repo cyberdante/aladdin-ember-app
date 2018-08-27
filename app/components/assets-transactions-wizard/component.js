@@ -14,9 +14,12 @@ export default Component.extend({
   editingAssetTitle:false,
   editingTxnTitle:false,
   editingParamTitle:false,
+  editingTxnAdd:true,
+  addParams:true,
   origTitle: '',
   origTxnTitle:'',
   origParamTitle:'',
+  txnName:'',
   options: ['string', 'bytes32', 'number'],
 
   selectedAsset: O.create({}),
@@ -96,6 +99,15 @@ export default Component.extend({
     typeChange(txnTitle, param, event ){
         let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
         this.set('schema', schema);
-     }
+     },
+     toggleOffAddTxn(){
+         this.set('editingTxnAdd', false);
+     },
+     toggleOnAddTxn(txnName){
+        // this.set('addParams', true);
+        this.set('editingTxnAdd', true)
+        this.set('txnName', txnName);
+        // this.set('editingTxnAdd', true)
+    }
   }
 });

@@ -25,7 +25,11 @@
                 }
             }
         }
-
+        label {
+            cursor: pointer;
+            color: #fff;
+       }
+        
         md-card-content {
             overflow: auto;
             padding: 0em;
