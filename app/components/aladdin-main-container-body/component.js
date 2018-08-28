@@ -174,11 +174,18 @@ export default Component.extend({
 
     schemaChanged: observer('schema', function() {
         this.generateYaml(this.schema);
-      }),
-      generateYaml(schema) {
-        let yaml = this.blockchainUtils.schemaToYaml(schema);
-        this.set('yaml', yaml);
-      },
+        // this.generateContract(this.schema);
+    }),
+    
+    generateYaml(schema) {
+      let yaml = this.blockchainUtils.schemaToYaml(schema);
+      this.set('yaml', yaml);
+    },
+
+    generateContract(schema) {
+      let contract = this.blockchainUtils.generateSolFileYaml(schema);
+      this.set('code', contract);
+    },
 
     schema: computed('yaml', 'title', function () {
         let yaml = this.get('yaml');
