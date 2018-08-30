@@ -26,6 +26,10 @@ export default Component.extend({
 
     openCentralColumn() {
       this.openCentralColumn();
+    },
+
+    viewChange() {
+      this.viewChange();
     }
   }
 
