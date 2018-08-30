@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function(/*environment*/) {
-/*  let ENV = {
-    modulePrefix: 'aladdin',
+module.exports = function(environment) {
+  let ENV = {
+    modulePrefix: 'dummy',
     environment,
     rootURL: '/',
     locationType: 'auto',
@@ -20,7 +20,7 @@ module.exports = function(/*environment*/) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      rootElement: '#main-app'
+     rootElement: '#main-app'
     }
   };
 
@@ -48,7 +48,5 @@ module.exports = function(/*environment*/) {
     // here you can enable a production-specific feature
   }
 
-  return ENV;*/
-
-  return {};
+  return ENV;
 };

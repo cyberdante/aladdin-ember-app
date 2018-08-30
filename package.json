@@ -1,5 +1,5 @@
 {
-  "name": "aladdin",
+  "name": "ember-cli-aladdin",
   "version": "0.0.0",
   "private": true,
   "description": "Ember application for Aladdin Blockchain Research Framework",
@@ -78,7 +78,12 @@
     "node": "^4.5 || 6.* || >= 7.*"
   },
   "dependencies": {
+    "ember-cli-babel": "^6.6.0",
     "remedial": "1.0.8",
     "npm": "^6.4.0"
+  },
+  "ember-addon": {
+    "configPath": "tests/dummy/config",
+    "defaultBlueprint": "ember-cli-aladdin"
   }
 }

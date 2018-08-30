@@ -1,0 +1,22 @@
+@import 'pod-styles.scss';
+@import 'ember-paper';
+@import 'palette';
+
+@import "variables";
+@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "vendor/twiddlicon/twiddlicon.scss";
+@import "main";
+@import "twiddle-panes";
+@import "code";
+@import "output-pane";
+
+#main-app {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.bold-text {
+    font-weight: 500;
+}

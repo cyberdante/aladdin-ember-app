@@ -1,0 +1,13 @@
+@import '../../../styles/palette';
+
+&.output-error {
+    p {
+        color: $color-error-tinted;
+        margin: 4px 0;
+    }
+}
+&.output-warning {
+    p {
+        color: aladdin-color('warning');
+    }
+}

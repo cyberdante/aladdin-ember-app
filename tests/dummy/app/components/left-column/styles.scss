@@ -1,0 +1,12 @@
+@import '../../../styles/palette';
+
+& {
+    .md-padding {
+        padding: 0;
+        height: calc(100% - 60px);
+
+        md-card {
+            margin: 0;
+        }
+    }
+}

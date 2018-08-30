@@ -7,7 +7,6 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  // this.route('aladdin-main-container', { path: '/' });
 });
 
 export default Router;
