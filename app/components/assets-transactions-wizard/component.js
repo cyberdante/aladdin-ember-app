@@ -104,8 +104,12 @@ txnParamType:'',
         let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
         this.set('schema', schema);
     },
-    typeChange(event ){
-        this.set('txnParamType', event.target.value);
+    typeChangeAdd(event){
+         this.set('txnParamType', event.target.value);
+     },
+     typeChange(txnTitle, param, event ){
+        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
+        this.set('schema', schema);
      },
      addNewTxn(){
         let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.paramName, this.txnParamType, this.schema)
