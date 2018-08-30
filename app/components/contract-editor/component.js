@@ -4,7 +4,7 @@ import { debounce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import ace, { Range } from 'ember-ace';
 
-var f;
+// var f;
 
 export default Component.extend({
   blockchainUtils: service(),
@@ -21,7 +21,14 @@ export default Component.extend({
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,
-  cursorPosition: {row:0, column:0},
+  showLineNumbers: true,
+  
+  cursorPosition: computed(function() {
+    return {
+      row: 0,
+      column: 0
+    };
+  }),
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {

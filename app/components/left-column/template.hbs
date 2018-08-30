@@ -1,12 +1,12 @@
 <div class="header">
   <div class="nav-right">
     {{#if canHideLeftColumn}}
-      <span class="hint--bottom hint--rounded" title="Hide this column">
+      <span class="hint--bottom hint--rounded" title="Hide Assets and Transactions">
         <span class="glyphicon glyphicon-chevron-left" {{action 'hideLeftColumn'}}></span>
       </span>
     {{/if}}
     {{#unless centerColumnShow}}
-        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
+        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show Smart Contract and Graph"></span>
     {{/unless}}
   </div>
 </div>

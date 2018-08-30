@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
-import Object, { computed, observer } from '@ember/object';
+import O, { computed, observer } from '@ember/object';
 
 export default Component.extend({
   blockchainUtils: service(),
@@ -18,8 +18,8 @@ export default Component.extend({
     return ['string', 'bytes32', 'number'];
   }),
 
-  selectedAsset: Object.create({}),
-  selectedTxn: Object.create({}),
+  selectedAsset: O.create({}),
+  selectedTxn: O.create({}),
 
   typeSelected:'',
 
@@ -53,7 +53,7 @@ export default Component.extend({
       txn.set('isSelected', true);
       this.set('selectedTxn', txn);
 
-      let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
+      let params = O.keys(txn.meta).reduce((acc, paramTitle) => {
         if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
           acc.push({title:paramTitle, type:txn.meta[paramTitle].type, txn:txn});
         }

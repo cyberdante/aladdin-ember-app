@@ -1,17 +1,17 @@
 <div class="header">
   <div class="nav-left">
     {{#unless centerColumnShow}}
-        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
+        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show Smart Contract and Graph"></span>
     {{/unless}}
     {{#if canHideRightColumn}}
-        <span class="hint--bottom hint--rounded" title="Hide this column">
+        <span class="hint--bottom hint--rounded" title="Hide Contract Editor">
             <span class="glyphicon glyphicon-chevron-right" {{action (action this.hideRightColumn)}}></span>
         </span>
     {{/if}}
   </div>
 </div>
-{{#if isBuilding}}
-    <div class="ember-load-indicator">Building...</div>
+{{#if isCompiling}}
+    <div class="ember-load-indicator">Compiling contract...</div>
 {{/if}}
 {{contract-editor yaml=yaml viewChange=(action viewChange 'contract-editor')}}
 {{#if fullScreen}}
