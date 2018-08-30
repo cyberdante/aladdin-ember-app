@@ -29,7 +29,15 @@
             cursor: pointer;
             color: #fff;
        }
-        
+       md-input-container{
+        font-weight: bold;
+        color: #989892;
+        background: aladdin-color('white');
+        font-size: 20px;
+        width: 200px;
+        height: 30px;
+        background-color: #989892
+        }
         md-card-content {
             overflow: auto;
             padding: 0em;
