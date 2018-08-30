@@ -21,7 +21,7 @@ export default Component.extend({
   origTitle: '',
   tranParamTitle:'',
   txnName:'',
-  options: ['string', 'bytes32', 'number'],
+  options: ['string', 'bytes32', 'uint'],
   origTxnTitle:'',
   origParamTitle:'',
   tranAssetTitle:'',
@@ -107,22 +107,27 @@ txnParamType:'',
         let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
         this.set('schema', schema);
     },
-    typeChangeAdd(event){
+    typeChange(event){
+        // console.log(event.target.value)
          this.set('txnParamType', event.target.value);
      },
-     typeChange(txnTitle, param, event ){
+     typeChangeAdd(txnTitle, param, event ){
         let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
         this.set('schema', schema);
+        console.log(this.schema)
      },
      addNewTxn(){
+        //  console.log(this.txnParamType)
         let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.paramName, this.txnParamType, this.schema)
         this.set('schema', schema);
+        console.log(this.schema)
         this.set('editingTxnAddName', false);
         this.set('editingTxnAdd', true);
         this.set('newTxnName', '');
         this.set('tranAssetTitle', '');
         this.set('paramName','');
         this.set('paramType','');
+        this.set('txnParamType', '');
     },
     toggleOffAddTxn(){
         this.set('editingTxnAdd', false);
@@ -135,7 +140,7 @@ txnParamType:'',
     deleteTxn(){
         let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema)
         this.set('schema', schema);
-        this.set('deleteTxnName', '')
+        this.set('deleteTxnName', '');
     }
   }
 });

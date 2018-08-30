@@ -3,7 +3,7 @@
       {{#card.title as |title|}}
         {{#title.text as |text|}}
           {{#text.headline}}
-            Assets & Transactions
+            Assets & Transactions Wizard
           {{/text.headline}}
         {{/title.text}}
       {{/card.title}}
@@ -120,9 +120,9 @@
                 <div class="md-secondary-container"> </div>
                 <select onchange={{action 'typeChange' param.txn param }}>
                   <option value= {{param.type}}>{{param.type}}</option>
-                    {{#each options as |option|}}
-                      <option value={{option}}>{{option}}</option>
-                    {{/each}}
+                  {{#each options as |option|}}
+                    <option value={{option}}>{{option}}</option>
+                  {{/each}}
                 </select>
               {{/paper-item}}
             {{/each}}

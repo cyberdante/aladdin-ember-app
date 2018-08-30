@@ -22,10 +22,10 @@ export default Component.extend({
         properties:				# method variable
           sNum:
             name: sNum
-            type: number
+            type: uint
           arrived:
             name: arrived
-            type: number
+            type: uint
           dependencies:  *container
         title: arrived
         
@@ -44,6 +44,7 @@ export default Component.extend({
     },
 
     generateContract(schema) {
+        console.log("changd schema")
       let contract = this.blockchainUtils.generateSolFileYaml(schema);
       this.set('code', contract);
     },
@@ -57,7 +58,9 @@ export default Component.extend({
 
     code: computed('schema', function () {
         let utils = this.get('blockchainUtils');
-        return utils.generateSolFileYaml(this.schema);
+        let code = utils.generateSolFileYaml(this.schema);
+        console.log("changd schema (computed)", code);
+        return code;
     }),
 
     init() {
@@ -65,11 +68,5 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
-        this.set('yaml', yamlString);
-        let utils = this.get('blockchainUtils');
-        let schema = utils.generateSchemaYaml(this.yaml);
-        this.set('schema', schema)
-        let code= utils.generateSolFileYaml(this.schema)
-        this.set('code', code)
     }
 });
