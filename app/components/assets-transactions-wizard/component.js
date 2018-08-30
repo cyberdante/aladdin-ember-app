@@ -133,9 +133,9 @@ txnParamType:'',
         this.set('editingTxnDeleteName', true);
     },
     deleteTxn(){
-        console.log(this.schema)
         let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema)
         this.set('schema', schema);
+        this.set('deleteTxnName', '')
     }
   }
 });
