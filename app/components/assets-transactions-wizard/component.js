@@ -21,7 +21,7 @@ export default Component.extend({
   origTitle: '',
   tranParamTitle:'',
   txnName:'',
-  options: ['string', 'bytes32', 'number'],
+  options: ['string', 'bytes32', 'uint'],
   origTxnTitle:'',
   origParamTitle:'',
   tranAssetTitle:'',
@@ -114,13 +114,13 @@ txnParamType:'',
      typeChangeAdd(txnTitle, param, event ){
         let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
         this.set('schema', schema);
-        // console.log(this.schema)
+        console.log(this.schema)
      },
      addNewTxn(){
         //  console.log(this.txnParamType)
         let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.paramName, this.txnParamType, this.schema)
         this.set('schema', schema);
-        // console.log(this.schema)
+        console.log(this.schema)
         this.set('editingTxnAddName', false);
         this.set('editingTxnAdd', true);
         this.set('newTxnName', '');
