@@ -22,5 +22,7 @@
     {{/if}}
   </span>
 </div>
-
+{{#if isCompiling}}
+    <div class="ember-load-indicator">Compiling contract...</div>
+{{/if}}
 {{tabbed-container schema=schema code=code yaml=yaml viewChange=(action viewChange 'tabbed-container')}}

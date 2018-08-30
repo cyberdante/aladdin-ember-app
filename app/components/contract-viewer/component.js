@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
-import ace from 'ember-ace';
-import { Range } from 'ember-ace';
+import ace, { Range } from 'ember-ace';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
@@ -22,6 +21,7 @@ export default Component.extend({
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,
+  showLineNumbers: true,
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {

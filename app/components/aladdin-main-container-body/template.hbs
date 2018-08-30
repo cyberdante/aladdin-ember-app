@@ -26,6 +26,7 @@
                         numColumns=numColumns
                         leftColumnShow=leftColumnShow
                         rightColumnShow=rightColumnShow
+                        isCompiling=isCompiling
                         yaml=yaml
                         schema=schema
                         code=code
@@ -41,7 +42,7 @@
   {{/unless}}
   {{#if rightColumnShow}}
     <div class="twiddle-pane right-column {{if fullScreen 'full-screen'}}">
-      {{right-column isBuilding=isBuilding
+      {{right-column isCompiling=isCompiling
                      leftColumnShow=leftColumnShow 
                      centerColumnShow=centerColumnShow
                      rightColumnShow=rightColumnShow

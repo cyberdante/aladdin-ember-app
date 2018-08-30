@@ -4,6 +4,7 @@ import { A } from '@ember/array';
 import O from '@ember/object';
 import { observer } from '@ember/object';
 
+
 export default Component.extend({
   blockchainUtils: service(),
   schema: '',
@@ -15,23 +16,23 @@ export default Component.extend({
   editingTxnAdd:true,
   editingTxnDelete:true,
   editingTxnAddName:false,
-  editingTxnDeleteName:false,
+  editingTxnDeleteName:false, 
   addParams:true,
   origTitle: '',
-  origTxnTitle:'',
-  origParamTitle:'',
-  tranAssetTitle:'',
   tranParamTitle:'',
   txnName:'',
   options: ['string', 'bytes32', 'number'],
+  origTxnTitle:'',
+  origParamTitle:'',
+  tranAssetTitle:'',
   newTxnName:'',
   deleteTxnName:'',
 //   tranParamType: O.create({}),
 txnParamType:'',
 
 
-  selectedAsset: Object.create({}),
-  selectedTxn: Object.create({}),
+  selectedAsset: O.create({}),
+  selectedTxn: O.create({}),
 
   typeSelected:'',
 
@@ -61,6 +62,7 @@ txnParamType:'',
     },
 
     selectTxn(txn) {
+
         this.set('selectedTxn.isSelected', false);
         txn.set('isSelected', true);
         this.set('selectedTxn', txn);
@@ -76,6 +78,7 @@ txnParamType:'',
         this.set('txnReturnsType', 'void');
         this.set('txnParameters', A(params));
       },
+
 
     toggleAsset(origAsset){
         this.set('origTitle', origAsset);

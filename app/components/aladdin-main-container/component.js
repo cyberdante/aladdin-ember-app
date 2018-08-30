@@ -34,7 +34,7 @@ export default Component.extend(ColumnsMixin, EKMixin, {
      * If the code is currently being built
      * @type {boolean}
      */
-    isBuilding: false,
+    isCompiling: false,
 
     /**
      * Column which has the currently focused editor

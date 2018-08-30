@@ -33,6 +33,8 @@
 
     @media (min-width: $screen-md-min) {
       max-width: 100%;
+      // -webkit-flex: 1;
+      // flex: 1;
     }
 
     > .ember-view {
