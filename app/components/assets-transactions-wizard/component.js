@@ -1,14 +1,11 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
-import O from '@ember/object';
-import { observer } from '@ember/object';
+import Object, { computed, observer } from '@ember/object';
 
 export default Component.extend({
   blockchainUtils: service(),
-
   schema: '',
-
   assets: A([]),
 
   editingAssetTitle:false,
@@ -31,8 +28,9 @@ export default Component.extend({
 //   tranParamType: O.create({}),
 txnParamType:'',
 
-  selectedAsset: O.create({}),
-  selectedTxn: O.create({}),
+
+  selectedAsset: Object.create({}),
+  selectedTxn: Object.create({}),
 
   typeSelected:'',
 

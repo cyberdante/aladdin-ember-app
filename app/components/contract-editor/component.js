@@ -4,6 +4,8 @@ import { debounce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import ace, { Range } from 'ember-ace';
 
+var f;
+
 export default Component.extend({
   blockchainUtils: service(),
   classNames: ['md-padding'],
@@ -49,14 +51,13 @@ export default Component.extend({
   init() {
     this._super(...arguments);
   },
-
+  
   didRender(){
     const self = this;
     let element = document.getElementsByClassName('contract-editor-wrapper')[0];
     let editor = ace.edit(element);
     if (!this.editorSession) {
       this.set('editorSession', editor.getSession());
-
       editor.on('change', function(evt) {
         if (evt.end.row !== evt.lines.length-1) {
           self.set('cursorPosition', evt.end);

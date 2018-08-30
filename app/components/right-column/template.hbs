@@ -13,9 +13,7 @@
 {{#if isBuilding}}
     <div class="ember-load-indicator">Building...</div>
 {{/if}}
-<div class="content">
-    <p>RIGHT COLUMN PLACEHOLDER</p>
-</div>
+{{contract-editor yaml=yaml viewChange=(action viewChange 'contract-editor')}}
 {{#if fullScreen}}
     <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
 {{/if}}
