@@ -72,6 +72,12 @@
 
             md-grid-list, md-grid-tile {
               height: 100%;
+
+              .atat-options {
+                position: absolute;
+                right: 0;
+                top: 0;
+              }
             }
 
              md-list {
