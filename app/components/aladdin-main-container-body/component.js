@@ -22,10 +22,10 @@ export default Component.extend({
         properties:				# method variable
           sNum:
             name: sNum
-            type: number
+            type: uint
           arrived:
             name: arrived
-            type: number
+            type: uint
           dependencies:  *container
         title: arrived
         
