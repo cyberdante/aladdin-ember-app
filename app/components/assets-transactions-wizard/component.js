@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
-import Object, { computed, observer } from '@ember/object';
+import O from '@ember/object';
+import { observer } from '@ember/object';
 
 export default Component.extend({
   blockchainUtils: service(),
@@ -60,19 +61,21 @@ txnParamType:'',
     },
 
     selectTxn(txn) {
-      this.set('selectedTxn.isSelected', false);
-      txn.set('isSelected', true);
-      this.set('selectedTxn', txn);
-
-      let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
-        if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
-          acc.push({title:paramTitle, type:txn.meta[paramTitle].type, txn:txn});
-        }
-        return acc;
-      }, []);
-      this.set('txnReturnsType', 'void');
-      this.set('txnParameters', A(params));
-    },
+        this.set('selectedTxn.isSelected', false);
+        txn.set('isSelected', true);
+        this.set('selectedTxn', txn);
+  
+        let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
+          if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
+            acc.push({title:paramTitle, type:txn.meta[paramTitle].type, txn:txn});
+          }
+          return acc;
+        }, []);
+  
+        // this.set('txnReturnsType', txn.meta.returns.type || 'void');
+        this.set('txnReturnsType', 'void');
+        this.set('txnParameters', A(params));
+      },
 
     toggleAsset(origAsset){
         this.set('origTitle', origAsset);
