@@ -11,12 +11,23 @@ export default Component.extend({
   editingAssetTitle:false,
   editingTxnTitle:false,
   editingParamTitle:false,
+  editingTxnAdd:true,
+  editingTxnDelete:true,
+  editingTxnAddName:false,
+  editingTxnDeleteName:false,
+  addParams:true,
   origTitle: '',
   origTxnTitle:'',
   origParamTitle:'',
-  options: computed(function() {
-    return ['string', 'bytes32', 'number'];
-  }),
+  tranAssetTitle:'',
+  tranParamTitle:'',
+  txnName:'',
+  options: ['string', 'bytes32', 'number'],
+  newTxnName:'',
+  deleteTxnName:'',
+//   tranParamType: O.create({}),
+txnParamType:'',
+
 
   selectedAsset: O.create({}),
   selectedTxn: O.create({}),
@@ -59,8 +70,6 @@ export default Component.extend({
         }
         return acc;
       }, []);
-
-      // this.set('txnReturnsType', txn.meta.returns.type || 'void');
       this.set('txnReturnsType', 'void');
       this.set('txnParameters', A(params));
     },
@@ -92,9 +101,31 @@ export default Component.extend({
         let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
         this.set('schema', schema);
     },
-    typeChange(txnTitle, param, event ){
-        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
+    typeChange(event ){
+        this.set('txnParamType', event.target.value);
+     },
+     addNewTxn(){
+        let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.paramName, this.txnParamType, this.schema)
         this.set('schema', schema);
-     }
+        this.set('editingTxnAddName', false);
+        this.set('editingTxnAdd', true);
+        this.set('newTxnName', '');
+        this.set('tranAssetTitle', '');
+        this.set('paramName','');
+        this.set('paramType','');
+    },
+    toggleOffAddTxn(){
+        this.set('editingTxnAdd', false);
+         this.set('editingTxnAddName', true);
+    },
+    toggleOffDeleteTxn(){
+        this.set('editingTxnDelete', false);
+        this.set('editingTxnDeleteName', true);
+    },
+    deleteTxn(){
+        console.log(this.schema)
+        let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema)
+        this.set('schema', schema);
+    }
   }
 });

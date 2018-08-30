@@ -3,86 +3,109 @@
       {{#card.title as |title|}}
         {{#title.text as |text|}}
           {{#text.headline}}
-            Assets & Transactions
+            Assets & Transactions Wizard
           {{/text.headline}}
         {{/title.text}}
       {{/card.title}}
     {{/if}}
     {{#card.content}}
-      {{#paper-grid-list
-        cols="2 md-2"
-        rowHeight="gt-md-1:1"
-        gutter="8px gt-sm-8px" as |grid|}}
+    {{#paper-grid-list
+      cols="2 md-2"
+      rowHeight="gt-md-1:1"
+      gutter="8px gt-sm-8px" as |grid|}}
 
-        {{#grid.tile class="gray" as |tile|}}
-          {{#paper-list}}
-        {{#paper-subheader}}Assets{{/paper-subheader}}
-        {{#each assets as |asset|}}
-          {{#paper-item as |controls|}}
-            {{#if editingAssetTitle}}
-            {{ input value=asset.title enter =(action 'toggleOff' asset.title ) }}
-            {{else}}
-            <p onClick= {{action "toggleAsset" asset.title}}>{{asset.title}}</p>
-            {{/if}}
-            <div class="md-secondary-container">
-              {{#controls.button primary=asset.isSelected onClick=(action "selectAsset" asset)}}
-                View Transactions
-              {{/controls.button}}
-            </div>
-          {{/paper-item}}
-        {{/each}}
-        {{paper-divider}}
-        {{#if selectedAsset.transactions}}
-          {{#paper-subheader}}Transactions{{/paper-subheader}}
-            {{#each selectedAsset.transactions as |txn| }}
-              {{#paper-item as |controls|}}
-                {{#if editingTxnTitle}}
-                  {{input value=txn.title enter =(action 'toggleOffTxn' txn.title) }}
-                {{else}}
-                  <p onClick= {{action "toggleTxn" txn.title}}>{{txn.title}}</p>
-                {{/if}}
-                <div class="md-secondary-container">
-                  {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
-                    View Properties
-                  {{/controls.button}}
-                </div>
-              {{/paper-item}}
-            {{/each}}
+    {{#grid.tile class="gray" as |tile|}}
+    {{#paper-list}}
+
+      {{#paper-subheader}}Assets{{/paper-subheader}}
+      {{#each assets as |asset|}}
+         {{#paper-item as |controls|}}
+          {{#if editingAssetTitle}}
+          {{ input value=asset.title enter =(action 'toggleOff' asset.title ) }}
+          {{else}}
+          <p onClick= {{action "toggleAsset" asset.title}}>{{asset.title}}</p>
           {{/if}}
-        {{/paper-list}}
-      {{/grid.tile}}
+          <div class="md-secondary-container">
+            {{#controls.button primary=asset.isSelected onClick=(action "selectAsset" asset)}}
+              View Transactions
+            {{/controls.button}}
+          </div>
+        {{/paper-item}}
+      {{/each}}
+      {{paper-divider}}
+      {{#if selectedAsset.transactions}}
+      {{#paper-subheader}}Transactions{{/paper-subheader}}
+      {{#each selectedAsset.transactions as |txn| }}
+        {{#paper-item as |controls|}}
+          {{#if editingTxnTitle}}
+          {{input value=txn.title enter =(action 'toggleOffTxn' txn.title) }}
+          {{else}}
+          <p onClick= {{action "toggleTxn" txn.title}}>{{txn.title}}</p>
+          {{/if}}
+          <div class="md-secondary-container">
+            {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
+              View Properties
+            {{/controls.button}}
+          </div>
+        {{/paper-item}}
+      {{/each}}
+      {{/if}}
+       {{#if editingTxnAdd}}
+      {{#paper-button mini=true onClick=(action 'toggleOffAddTxn')}} + {{/paper-button}}
+      {{#paper-button mini=true onClick=(action 'toggleOffDeleteTxn')}} - {{/paper-button}}
+      {{/if}}
+      {{#if editingTxnAddName}}
+        {{#paper-input input="text" label="Txn or AssetName" style="color: #DE2A00"  value=newTxnName onChange=(action (mut newTxnName))}}{{/paper-input}}
+        {{#paper-input input="text" label="Belongs to Asset:" style="color: #DE2A00"  value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}{{/paper-input}}
+             {{#paper-input input="text" label="Param Name" style="color: #DE2A00"  value=paramName onChange=(action (mut paramName))}}{{/paper-input}}
+                <select onchange={{action 'typeChange'  }}>
+                <option value= {{param.type}}>type</option>
+                {{#each options as |option|}}
+                 <option value={{option}}>{{option}}</option>
+             {{/each}}
+             </select>
+             {{#paper-button raised=true mini=true onClick=(action 'addNewTxn')}}+{{/paper-button}}
+             <hr> 
+     {{/if}}
+    
+     {{#if editingTxnDeleteName}}
+     {{#paper-input input="text" label="Txn to delete" style="color: #DE2A00"  value=deleteTxnName onChange=(action (mut deleteTxnName))}}{{/paper-input}}
+      {{#paper-button raised=true mini=true onClick=(action 'deleteTxn')}}-{{/paper-button}}
+     {{/if}}
+    {{/paper-list}}
+    {{/grid.tile}}
 
-      {{#grid.tile class="gray left bordered" as |tile|}}
-        {{#if txnParameters}}
-          {{#paper-list}}
-            {{#paper-subheader}}Parameters{{/paper-subheader}}
-            {{#each txnParameters as |param|}}
-              {{#paper-item as |controls|}}
-                {{!-- <p>{{param.title}}</p> --}}
-              {{#if editingParamTitle}}
-                {{input value=param.title enter =(action 'toggleOffParam' param.txn param) }}
-              {{else}}
-                <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
-              {{/if}}
-                  <div class="md-secondary-container"> </div>
-                  <select onchange={{action 'typeChange' param.txn param }}>
-                    <option value= {{param.type}}>{{param.type}}</option>
-                      {{#each options as |option|}}
-                        <option value={{option}}>{{option}}</option>
-                      {{/each}}
-                  </select>
-              {{/paper-item}}
-            {{/each}}
-            {{paper-divider}}
-            {{#paper-subheader}}Returns{{/paper-subheader}}
+    {{#grid.tile class="gray left bordered" as |tile|}}
+       {{#if txnParameters}}
+       {{#paper-list}}
+          {{#paper-subheader}}Parameters{{/paper-subheader}}
+          {{#each txnParameters as |param|}}
             {{#paper-item as |controls|}}
-              {{#controls.button primary=true}}
-                {{txnReturnsType}}
-              {{/controls.button}}
+            {{#if editingParamTitle}}
+            {{input value=param.title enter =(action 'toggleOffParam' param.txn param) }}
+            {{else}}
+            <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
+            {{/if}}
+                <div class="md-secondary-container"> </div>
+                 <select onchange={{action 'typeChange' param.txn param }}>
+                   <option value= {{param.type}}>{{param.type}}</option>
+                    {{#each options as |option|}}
+                    <option value={{option}}>{{option}}</option>
+                    {{/each}}
+                </select>
             {{/paper-item}}
-          {{/paper-list}}
-        {{/if}}
-      {{/grid.tile}}
+          {{/each}}
+          {{paper-divider}}
+          {{#paper-subheader}}Returns{{/paper-subheader}}
+          {{#paper-item as |controls|}}
+            {{#controls.button primary=true}}
+              {{txnReturnsType}}
+            {{/controls.button}}
+          {{/paper-item}}
+      {{/paper-list}}
+      {{/if}}
+    {{/grid.tile}}
     {{/paper-grid-list}}
-  {{/card.content}}
+     
+    {{/card.content}}
 {{/paper-card}}

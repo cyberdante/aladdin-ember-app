@@ -563,9 +563,40 @@ updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
     return jsonSchema;   
 
 },
+updateSchemaDeleteTxn(txnName, schema){
+    console.log(schema)
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    } 
+
+    delete(schema.properties[txnName]);
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema;   
+
+},
+
+updateSchemaAddTxn(txnName, assTitle, paramTitle, paramType, schema){
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+    schema.properties[txnName] = {}
+    schema.properties[txnName].title = txnName;
+    schema.properties[txnName].dependencies = {}
+    schema.properties[txnName].dependencies.type = assTitle;
+    schema.properties[txnName].dependencies.name = 'assetId';
+    schema.properties[txnName][paramTitle] = {}
+    schema.properties[txnName][paramTitle].name = paramTitle;
+    schema.properties[txnName][paramTitle].type = paramType;
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema; 
+
+},
 schemaToYaml(genSchema){
     let schemaToParse = JSON.parse(genSchema);
-    let schema = {}; 
+    let schema = {};
     schema.transaction = {};
     schema.transaction.properties = (typeof schema);
     var assetList ={};
