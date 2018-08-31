@@ -115,7 +115,7 @@
                 {{#if editingParamTitle}}
                   {{input value=param.title enter=(action 'toggleOffParam' param.txn param) }}
                 {{else}}
-                <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
+                  <p onClick= {{action "toggleParam" param.title}}>{{param.title}}</p>
                 {{/if}}
                 <div class="md-secondary-container"> </div>
                 <select onchange={{action 'typeChange' param.txn param }}>
