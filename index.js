@@ -10,25 +10,25 @@ module.exports = {
         { transformation: 'amd', as: 'viz' }
       ]
     });
-
+  
     app.import('node_modules/viz.js/full.render.js', {
       using: [
         { transformation: 'amd', as: 'viz-full-render' }
       ]
     });
-
+  
     app.import('node_modules/js-yaml/dist/js-yaml.js', {
       using: [
         { transformation: 'amd', as: 'js-yaml' }
       ]
     });
-
+  
     app.import('node_modules/dagre-d3/dist/dagre-d3.js', {
       using: [
         { transformation: 'amd', as: 'dagre-d3' }
       ]
     });
-
+  
     app.import('node_modules/graphlib-dot/index.js', {
       using: [
         { transformation: 'cjs', as: 'graphlib-dot' }
@@ -58,9 +58,9 @@ module.exports = {
     app.import('vendor/drags.js');
   },
 
-  afterInstall: function() {
-    return this.addPackagesToProject([
-      { name: 'ember-cli-sass', target: 'latest' }
-    ]);
-  }
+  // afterInstall: function() {
+  //   return this.addPackagesToProject([
+  //     { name: 'ember-cli-sass', target: 'latest' }
+  //   ]);
+  // }
 };

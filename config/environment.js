@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(/*environment*/) {
+module.exports = function(/*environment, appConfig*/) {
 /*  let ENV = {
     modulePrefix: 'aladdin',
     environment,

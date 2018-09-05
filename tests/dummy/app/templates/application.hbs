@@ -1,9 +1,11 @@
-<div class="flex layout-row">
-    {{outlet}}
-    {{aladdin-main-container}}
-</div>
-{{ember-load-remover}}
-
+<!--div class="flex layout-row"-->
+    {{!outlet}}
+    {{!aladdin-main-container}}
+<!--/div-->
+{{!ember-load-remover}}
+{{graph-view}}
+{{schema-validator-log}}
+{{outlet}}
 {{!-- <div id="main-app" class="flex layout-column">
     {{#paper-content scroll-y=true class="layout-padding flex"}}
         {{#paper-grid-list

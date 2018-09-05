@@ -1,5 +1,5 @@
 {
-    "name": "aladdin",
+    "name": "ember-cli-aladdin",
     "dependencies": {
       "jquery": "^3.3.1",
       "bootstrap-sass": "~3.3.5",
