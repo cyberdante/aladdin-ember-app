@@ -21,14 +21,14 @@ export default Component.extend({
   origTitle: '',
   tranParamTitle:'',
   txnName:'',
-  options: ['string', 'bytes32', 'uint'],
+  options: ['string', 'bytes32', 'uint', 'address'],
   origTxnTitle:'',
   origParamTitle:'',
   tranAssetTitle:'',
   newTxnName:'',
   deleteTxnName:'',
 //   tranParamType: O.create({}),
-txnParamType:'',
+ txnParamType:'',
 
 
   selectedAsset: O.create({}),
@@ -117,7 +117,7 @@ txnParamType:'',
         console.log(this.schema)
      },
      addNewTxn(){
-        //  console.log(this.txnParamType)
+         console.log(this.txnParamType)
         let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.paramName, this.txnParamType, this.schema)
         this.set('schema', schema);
         console.log(this.schema)
