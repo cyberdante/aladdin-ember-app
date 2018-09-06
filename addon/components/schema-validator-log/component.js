@@ -4,7 +4,7 @@ import layout from './template';
 
 export default Component.extend({
     layout,
-    classNames: ['md-padding'],
+    classNames: ['md-padding', 'schema-validator-log'],
     outputs: EmberObject.create({}),
 
     init() {

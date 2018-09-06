@@ -3,8 +3,10 @@ import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import O from '@ember/object';
 import { observer } from '@ember/object';
+import layout from './template';
 
 export default Component.extend({
+  layout,
   blockchainUtils: service(),
 
   schema: '',

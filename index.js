@@ -58,9 +58,9 @@ module.exports = {
     app.import('vendor/drags.js');
   },
 
-  // afterInstall: function() {
-  //   return this.addPackagesToProject([
-  //     { name: 'ember-cli-sass', target: 'latest' }
-  //   ]);
-  // }
+  afterInstall: function() {
+    return this.addPackagesToProject([
+      { name: 'ember-cli-sass', target: 'latest' }
+    ]);
+  }
 };

@@ -1,8 +1,10 @@
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import layout from './template';
 
 export default Component.extend({
+    layout,
     resizeableColumns: service(),
     classNames: ['row', 'twiddle-panes'],
   

@@ -4,9 +4,11 @@ import {
 } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { observer } from '@ember/object';
+import layout from './template';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
+    layout,
 
     blockchainUtils: service(),
     schema:'',

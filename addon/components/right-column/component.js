@@ -1,8 +1,10 @@
 import Component from '@ember/component';
 import config from '../../config/environment';
 import { computed } from '@ember/object';
+import layout from './template';
 
 export default Component.extend({
+  layout,
   canHideRightColumn: computed('leftColumnShow', 'centerColumnShow', function() {
     return (this.get('leftColumnShow') || this.get('centerColumnShow'));
   }),

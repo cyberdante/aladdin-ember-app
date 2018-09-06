@@ -28,7 +28,7 @@ export default Mixin.create({
     let columns = [];
     for (let i = 0; i < MAX_COLUMNS; ++i) {
       let col = (i + 1) + "";
-      columns.pushObject(Column.create({
+      columns.push(Column.create({
         col: col,
         controller: this
       }));

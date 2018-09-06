@@ -3,10 +3,12 @@ import ResizeMixin from '../../mixins/resize';
 import {
     computed
 } from '@ember/object';
+import layout from './template';
 
 const MAX_COLUMNS = 3;
 
 export default Component.extend(ResizeMixin, {
+    layout,
     isLastColumn: computed('col', 'numColumns', function () {
         let numColumns = this.get('numColumns');
         return (this.get('col') | 0) === numColumns && numColumns < MAX_COLUMNS;

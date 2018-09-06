@@ -3,8 +3,10 @@ import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import ace, { Range } from 'ember-ace';
+import layout from './template';
 
 export default Component.extend({
+  layout,
   blockchainUtils: service(),
   classNames: ['md-padding'],
   newValue: '',
