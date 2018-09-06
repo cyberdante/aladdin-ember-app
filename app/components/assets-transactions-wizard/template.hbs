@@ -87,7 +87,7 @@
               {{#paper-input input="text" label="Txn or AssetName" style="color: #DE2A00"  value=newTxnName onChange=(action (mut newTxnName))}}{{/paper-input}}
               {{#paper-input input="text" label="Belongs to Asset:" style="color: #DE2A00"  value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}{{/paper-input}}
               {{#paper-input input="text" label="Param Name" style="color: #DE2A00"  value=paramName onChange=(action (mut paramName))}}{{/paper-input}}
-              <select onchange={{action 'typeChangeAdd' }}>
+              <select onchange={{action 'typeChange' }}>
                 <option value= {{param.type}}>type</option>
                 {{#each options as |option|}}
                   <option value={{option}}>{{option}}</option>
@@ -119,7 +119,7 @@
                     {{/if}}
                   </div>
                   <div class="layout-column leyout-md-column flex-30">
-                    <select onchange={{action 'typeChange' param.txn param }}>
+                    <select onchange={{action 'typeChangeAdd' param.txn param }}>
                       <option value={{param.type}}>{{param.type}}</option>
                       {{#each options as |option|}}
                         <option value={{option}}>{{option}}</option>

@@ -5,6 +5,7 @@ import O from '@ember/object';
 import { observer, computed } from '@ember/object';
 
 export default Component.extend({
+  classNameBindings: ['showTitle'],
   blockchainUtils: service(),
   schema: '',
   assets: A([]),

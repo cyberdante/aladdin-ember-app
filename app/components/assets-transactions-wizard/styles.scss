@@ -4,6 +4,9 @@
 & {
   height: 100%;
   width: 100%;
+  &.show-title {
+    height: calc(100% - 60px);
+  }
 
   md-card {
     background: aladdin-color("background");
