@@ -1,9 +1,8 @@
 import Component from '@ember/component';
 import {
-    computed
+    computed, observer
 } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { observer } from '@ember/object';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
@@ -14,18 +13,19 @@ export default Component.extend({
     - asset:  &Container                 # defines anchor label
           name:   assetId
           type:   Container
-    - asset:  &Lock                
+    - asset:  &Lock
           name:   assetId
           type:   Lock
-    - asset:  &Manifest                
+    - asset:  &Manifest
           name:   assetId
           type:   Manifest
 
-    - transaction: 
+
+    - transaction:
        properties: object
        arrived:
         type: object
-        properties:				# method variable
+        properties:                # method variable
           sNum:
             name: sNum
             type: number
@@ -34,6 +34,138 @@ export default Component.extend({
             type: number
           dependencies:  *Container
         title: arrived
+
+    - transaction:
+       properties: object
+       tampered:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          tampered:
+            name: tampered
+            type: number
+          dependencies:  *Lock
+        title: tampered
+
+    - transaction:
+       properties: object
+       lock:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          locked:
+            name: locked
+            type: number
+          dependencies:  *Container
+        title: Lock
+
+    - transaction:
+       properties: object
+       idle:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          idle:
+            name: idle
+            type: number
+          dependencies:  *Container
+        title: idle
+
+    - transaction:
+       properties: object
+       unlock:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          tampered:
+            name: tampered
+            type: number
+          unlocked:
+            name: unlocked
+            type: number
+          dependencies:  *Lock
+        title: unlock
+
+    - transaction:
+       properties: object
+       locked:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          tampered:
+            name: tampered
+            type: number
+          locked:
+            name: locked
+            type: number
+          dependencies:  *Lock
+        title: locked
+
+    - transaction:
+       properties: object
+       saveManifest:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          carNum:
+            name: carNum
+            type: number
+          dependencies:  *Manifest
+        title: saveManifest
+
+    - transaction:
+       properties: object
+       departed:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          departed:
+            name: departed
+            type: number
+          dependencies:  *Container
+        title: departed
+
+    - assignAsset:
+       properties: object
+       manifest:
+        type: object
+        properties:
+          contents:
+            name: contents
+            type: string
+          locked:
+            name: locked
+            type: number
+          dependencies:  *Container
+        title: Manifest
+
+    - transaction:
+       properties: object
+       received:
+        type: object
+        properties:
+          sNum:
+            name: sNum
+            type: number
+          received:
+            name: received
+            type: number
+          dependencies:  *Container
+        title: received
   `,
 
     title: 'Application',
