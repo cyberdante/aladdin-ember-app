@@ -517,7 +517,7 @@ updateSchemaDeleteTxn(txnName, schema) {
 
 },
 
-updateSchemaAddTxn(txnName, assTitle, paramTitle, paramType, schema){
+updateSchemaAddTxn(txnName, assTitle, parameters, schema){
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
     }
@@ -526,9 +526,14 @@ updateSchemaAddTxn(txnName, assTitle, paramTitle, paramType, schema){
     schema.properties[txnName].dependencies = {};
     schema.properties[txnName].dependencies.type = assTitle;
     schema.properties[txnName].dependencies.name = 'assetId';
-    schema.properties[txnName][paramTitle] = {};
-    schema.properties[txnName][paramTitle].name = paramTitle;
-    schema.properties[txnName][paramTitle].type = paramType;
+    for (let key in parameters) {
+        if (parameters.hasOwnProperty(key)) {
+            console.log(key + " -> " + parameters[key].name, parameters[key].type);
+          schema.properties[txnName][parameters[key].name] = {}
+          schema.properties[txnName][parameters[key].name].name = parameters[key].name;
+          schema.properties[txnName][parameters[key].name].type = parameters[key].type;
+        }
+    }
 
     let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
