@@ -33,7 +33,6 @@ export default Component.extend({
     },
 
     swapComponents(comps) {
-      // debugger;
       if(!comps) {
         return;
       }
