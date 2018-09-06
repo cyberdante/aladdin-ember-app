@@ -58,7 +58,6 @@ export default Component.extend({
     code: computed('schema', function () {
         let utils = this.get('blockchainUtils');
         let code = utils.generateSolFileYaml(this.schema);
-        console.log("changed schema (computed)", code);
         return code;
     }),
 
