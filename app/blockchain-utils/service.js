@@ -486,7 +486,7 @@ updateAssetSchema(newAssetTitle, oldAssetTitle, schema){
 
     return jsonSchema;   
 },
-updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
+updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
 
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
@@ -505,8 +505,7 @@ updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
     return jsonSchema;   
 
 },
-updateSchemaDeleteTxn(txnName, schema){
-    console.log(schema)
+updateSchemaDeleteTxn(txnName, schema) {
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
     } 
@@ -522,12 +521,12 @@ updateSchemaAddTxn(txnName, assTitle, paramTitle, paramType, schema){
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
     }
-    schema.properties[txnName] = {}
+    schema.properties[txnName] = {};
     schema.properties[txnName].title = txnName;
-    schema.properties[txnName].dependencies = {}
+    schema.properties[txnName].dependencies = {};
     schema.properties[txnName].dependencies.type = assTitle;
     schema.properties[txnName].dependencies.name = 'assetId';
-    schema.properties[txnName][paramTitle] = {}
+    schema.properties[txnName][paramTitle] = {};
     schema.properties[txnName][paramTitle].name = paramTitle;
     schema.properties[txnName][paramTitle].type = paramType;
 

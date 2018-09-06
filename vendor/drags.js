@@ -75,13 +75,17 @@
       rightPercentage *= totalFlex;
 
       prev.css('flex', leftPercentage.toString());
+      console.log('left percentage: ', leftPercentage.toString());
       next.css('flex', rightPercentage.toString());
+      console.log('right percentage: ', rightPercentage.toString());
     }
 
     function mouseUpFn(e) {
       $('body').css('cursor', priorCursor);
+      // debugger;
       $(window).off("mousemove", mouseDragFn);
       $(window).off("mouseup", mouseUpFn);
+      console.log(Math.round((e.clientX / window.innerWidth)*100, 2) + '%');
       $('.draggable').removeClass('draggable').css('z-index', z_idx);
     }
 

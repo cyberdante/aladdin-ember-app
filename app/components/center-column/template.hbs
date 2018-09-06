@@ -1,23 +1,26 @@
 <div class="header">
   {{#if showLeftColumnOpenIcon}}
     <span class="nav-left">
-      <span class="hint--bottom hint--rounded" title="Show Assets and Transactions" >
-        <span class="glyphicon glyphicon-chevron-right" {{action 'showLeftColumn'}}></span>
+      <span class="hint--bottom hint--rounded" {{action 'showLeftColumn'}} title="Show {{leftComponentName}}">
+        {{fa-icon leftColumnIcon}}
       </span>
     </span>
   {{/if}}
 
   <span class="nav-right">
-    {{#if canCloseCentralColumn}}
-      {{#unless centerColumnShow}}
-        <span class="hint--bottom hint--rounded" title="Hide Smart Contract and Graph">
-          <span class="glyphicon glyphicon-remove" {{action 'closeCentralColumn'}}></span>
-        </span>
-      {{/unless}}
+    {{#if (and canCloseCentralColumn centerColumnShow)}}
+      <span class="hint--bottom hint--rounded" {{action 'closeCentralColumn'}} title="Hide {{centerComponentName}}">
+        {{fa-icon 'times'}}
+      </span>
+    {{/if}}
+    {{#if rightColumnShow}}
+      <span class="hint--bottom hint--rounded" {{action "swapComponents" "center,right"}} title="Swap {{centerComponentName}} and {{rightComponentName}}">
+        {{fa-icon 'exchange-alt'}}
+      </span>
     {{/if}}
     {{#if showRightColumnOpenIcon}}
-      <span class="hint--bottom hint--rounded" title="Show Contract Editor">
-          <span class="glyphicon glyphicon-chevron-left" {{action 'showRightColumn'}}></span>
+      <span class="hint--bottom hint--rounded" {{action 'showRightColumn'}} title="Show {{rightComponentName}}">
+          {{fa-icon rightColumnIcon}}
       </span>
     {{/if}}
   </span>
@@ -25,4 +28,4 @@
 {{#if isCompiling}}
     <div class="ember-load-indicator">Compiling contract...</div>
 {{/if}}
-{{tabbed-container schema=schema code=code yaml=yaml viewChange=(action viewChange 'tabbed-container')}}
+{{component centerComponent showTitle=true schema=schema code=code yaml=yaml viewChange=(action viewChange centerComponent)}}

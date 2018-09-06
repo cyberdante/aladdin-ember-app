@@ -15,9 +15,9 @@ module.exports = function(defaults) {
       modes: ['yaml', 'golang'],
       exts: ['language_tools', 'beautify']
     },
-    'ember-cli-bootstrap-sassy': {
-      'js': ['dropdown', 'collapse']
-    },
+    'ember-power-select': {
+      theme: 'material'
+    }
   });
 
   // Use `app.import` to add additional libraries to the generated

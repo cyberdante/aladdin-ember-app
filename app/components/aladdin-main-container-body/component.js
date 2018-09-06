@@ -9,7 +9,7 @@ export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
 
     blockchainUtils: service(),
-    schema:'',
+    schema: '',
     yaml: `---
     - asset:  &container                 # defines anchor label
           name:   assetId
@@ -44,7 +44,6 @@ export default Component.extend({
     },
 
     generateContract(schema) {
-        console.log("changd schema")
       let contract = this.blockchainUtils.generateSolFileYaml(schema);
       this.set('code', contract);
     },
@@ -59,7 +58,7 @@ export default Component.extend({
     code: computed('schema', function () {
         let utils = this.get('blockchainUtils');
         let code = utils.generateSolFileYaml(this.schema);
-        console.log("changd schema (computed)", code);
+        console.log("changed schema (computed)", code);
         return code;
     }),
 
