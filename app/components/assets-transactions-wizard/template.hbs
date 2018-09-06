@@ -71,7 +71,7 @@
                     {{#if editingTxnTitle}}
                       {{input value=txn.title enter=(action 'toggleOffTxn' txn.title) }}
                     {{else}}
-                      <p onClick= {{action "toggleTxn" txn.title}}>{{txn.title}}</p>
+                      <p onClick={{action "toggleTxn" txn.title}}>{{txn.title}}</p>
                     {{/if}}
                     <div class="md-secondary-container">
                       {{#controls.button primary=txn.isSelected onClick=(action "selectTxn" txn)}}
@@ -84,32 +84,41 @@
             {{/each}}
             {{paper-divider}}
             {{#if editingTxnAddName}}
-              {{!-- {{#paper-input input="text" label="Txn or AssetName" style="color: #DE2A00"  value=newTxnName onChange=(action (mut newTxnName))}}{{/paper-input}}
-              {{#paper-input input="text" label="Belongs to Asset:" style="color: #DE2A00"  value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}{{/paper-input}}
-              {{#paper-input input="text" label="Param Name" style="color: #DE2A00"  value=paramName onChange=(action (mut paramName))}}{{/paper-input}}
-              <select onchange={{action 'typeChange' }}>
-                <option value= {{param.type}}>type</option>
-                {{#each options as |option|}}
-                  <option value={{option}}>{{option}}</option>
-                {{/each}}
-              </select>
-              {{#paper-button raised=true mini=true onClick=(action 'addNewTxn')}}+{{/paper-button}} --}}
-              {{#paper-input input="text" label="Txn or AssetName" style="color: #DE2A00"  value=newTxnName onChange=(action (mut newTxnName))}}{{/paper-input}}
-              {{#paper-input input="text" label="Belongs to Asset:" style="color: #DE2A00"  value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}{{/paper-input}}
-                {{#each parameters as |parameter|}}
-                  {{#paper-input input="text" label="Param Name" style="color: #DE2A00"  value=parameter.name onChange=(action (mut parameter.name))}} {{/paper-input}}
-                    <select onchange={{action 'typeChange' }}>
-                  <option value= {{param.type}}>type</option>
-                {{#each options as |option|}}
-                  <option value={{option}}>{{option}}</option>
-                {{/each}}
-              </select>
+              <div class="layout-row">
+                  <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                    {{paper-input input="text" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
+                  </div>
+                  <div class="layout-column flex-50">
+                    {{paper-input input="text" label="Asset Name" value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}
+                  </div>
+              </div>
+              {{#each parameters as |parameter|}}
+                <div class="layout-row">
+                    <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                      {{paper-input input="text" label="Parameter Name" value=parameter.name onChange=(action (mut parameter.name))}}
+                    </div>
+                    <div class="layout-column flex-50 layout-align-center-start dropdown-container">
+                      {{#paper-select
+                        label="Parameter Type"
+                        options=options
+                        selected=parameter.type
+                        onChange=(action (mut parameter.type))
+                        as |option|}}
+                          {{option}}
+                      {{/paper-select}}
+                    </div>
+                </div>
               {{/each}}
               <br/>
-              <button {{action 'moreParams'}}> click for more params </button>
-              <button {{action 'doneParams'}}> finished adding params </button>
+              <div class="layout-row">
+              <button class="layout-column flex-50 layout-align-center-center" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
+                <span>{{fa-icon "plus"}} Add more parameters</span>
+              </button>
               <br/>
-              {{#paper-button raised=true mini=true onClick=(action 'addNewTxn')}}+{{/paper-button}}
+              <button class="layout-column flex-50" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
+                <span>{{fa-icon 'check'}} Done</span>
+              </button>
+              </div>
               <hr> 
             {{/if}}
             
@@ -134,7 +143,7 @@
                       <label onClick={{action "toggleParam" param.title}}>{{param.title}}</label>
                     {{/if}}
                   </div>
-                  <div class="layout-column leyout-md-column flex-30">
+                  <div class="layout-column layout-md-column flex-30">
                     <select onchange={{action 'typeChangeAdd' param.txn param }}>
                       <option value={{param.type}}>{{param.type}}</option>
                       {{#each options as |option|}}

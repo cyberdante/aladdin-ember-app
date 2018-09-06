@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import O from '@ember/object';
 import { observer, computed } from '@ember/object';
+import { or, and, not } from '@ember/object/computed';
 
 export default Component.extend({
   classNameBindings: ['showTitle'],
@@ -59,6 +60,19 @@ export default Component.extend({
     self.set('assets', assets);
   },
 
+  validNewParameters: computed('parameters', 'parameters.length', 'parameters.@each.name', function(parameters) {
+    let valid = true;
+    this.get('parameters').forEach(p => {
+      valid = valid && (p.name && p.name.length > 0);
+    });
+    return valid;
+  }),
+  newMethodHasName: computed('newTxnName', 'newTxnName.length', function(newTxnName) {
+    return this.get('newTxnName').length > 0;
+  }),
+  doneButtonEnabled: and('newMethodHasName','validNewParameters'), 
+  doneButtonDisabled: not('doneButtonEnabled'),
+
   actions: {
     // selectAsset(asset) {
     //   this.set('selectedAsset.isSelected', false);
@@ -114,24 +128,16 @@ export default Component.extend({
       this.set('schema', schema);
     },
     typeChange(event) {
-      // console.log(event.target.value)
       this.set('txnParamType', event.target.value);
     },
     typeChangeAdd(txnTitle, param, event) {
       let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, event.target.value, this.schema);
       this.set('schema', schema);
     },
-    typeChange(event){
-      this.set('txnParamType', event.target.value);
-    },
-    typeChangeAdd(txnTitle, param, event ){
-        let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title,event.target.value, this.schema);
-        this.set('schema', schema);
-    },
-    addNewTxn(){
+    addNewTxn() {
       let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema);
       this.set('schema', schema);
-      console.log(this.schema);
+      console.log(JSON.parse(this.schema));
       this.set('editingTxnAddName', false);
       this.set('editingTxnAdd', true);
       this.set('newTxnName', '');
@@ -139,6 +145,7 @@ export default Component.extend({
       this.set('paramName', '');
       this.set('paramType', '');
       this.set('txnParamType', '');
+      this.set('parameters', [{}]);
     },
     toggleOffAddTxn() {
       this.set('editingTxnAdd', false);
@@ -157,20 +164,20 @@ export default Component.extend({
       this.set('addInput', true);
     },
     moreParams() {
-      let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
-      this.parameters[last].type = this.txnParamType;
-      this.get('parameters').pushObject({ name: '' });
+      // let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
+      // this.parameters[last].type = this.txnParamType;
+      this.get('parameters').pushObject({ name: '', type: '' });
       // console.log(this.parameters.length)
       for (var key in this.parameters) {
         if (this.parameters.hasOwnProperty(key)) {
           console.log(key + " -> " + this.parameters[key].name, this.parameters[key].type);
         }
       }
-    },
-    doneParams() {
-      let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
-      this.parameters[last].type = this.txnParamType;
-      this.set('addingTxn', false);
-    }
+    }// ,
+    // doneParams() {
+    //   let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
+    //   this.parameters[last].type = this.txnParamType;
+    //   this.set('addingTxn', false);
+    // }
   }
 });
