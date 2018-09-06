@@ -20,7 +20,7 @@ export default Component.extend({
           properties: 
             approved: 
               name: approved
-              type: 
+              type: bool
             bundleHashId: 
               name: bundleHashId
               type: string
