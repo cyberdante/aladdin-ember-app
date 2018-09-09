@@ -33,6 +33,8 @@
 
     @media (min-width: $screen-md-min) {
       max-width: 100%;
+      // -webkit-flex: 1;
+      // flex: 1;
     }
 
     > .ember-view {
@@ -66,7 +68,7 @@
       border: 0;
     }
 
-    span.glyphicon-plus {
+    span.svg {
       cursor: pointer;
     }
   }
@@ -81,7 +83,7 @@
     font-size: 16px;
     background-color: $grey-1;
 
-    span+.build-msgs {
+    span + .build-msgs {
       margin-left: 10px;
     }
 
@@ -89,46 +91,21 @@
       margin-left: auto;
     }
 
-    .glyphicon {
+    svg {
       font-size: 0.8em;
-    }
-
-    .twiddlicon {
-      font-size: 1em;
-    }
-
-    .glyphicon, .twiddlicon {
-      text-align:center;
+      text-align: center;
       color: $header-icon-color;
       text-shadow: 1px 1px 0px white;
       cursor: pointer;
       padding: 2px;
     }
 
-    .twiddlicon:hover{
+    svg:hover {
       color: $grey-1;
       background-color: $icon-bg;
       border-radius: 20%;
       padding: 2px;
       text-shadow: $icon-shadow-hover;
-    }
-
-    .glyphicon-plus {
-      padding-bottom: 3px;
-      padding-left: 3px;
-    }
-
-    .glyphicon:hover {
-      color: #faf4f1;
-      background-color: #d6c3ba;
-      border-radius: 20%;
-      padding: 2px;
-      text-shadow: $icon-shadow-hover;
-    }
-
-    .glyphicon-plus:hover {
-      padding-bottom: 3px;
-      padding-left: 3px;
     }
 
     .nav-pills {
