@@ -14,9 +14,6 @@
         </div>
     {{/if}}
 </div>
-{{#if isCompiling}}
-    <div class="ember-load-indicator">Compiling contract...</div>
-{{/if}}
 {{component rightComponent code=code schema=schema showTitle=true yaml=yaml viewChange=(action viewChange rightComponent)}}
 {{#if fullScreen}}
     <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
