@@ -1,7 +1,5 @@
-
 {{#paper-card as |card|}}
     {{#card.content}}
-
         {{#ember-ace
             minlines=20
             value=value
@@ -16,11 +14,11 @@
             editorClass="contract-viewer-wrapper"
             showInvisibles=showInvisibles
             showGutter=showGutter
+            showLineNumbers=showLineNumbers
             showIndentGuides=showIndentGuides
             theme=theme
             overlays=overlays 
             as |editor|}}
-            {{/ember-ace}}
-
+        {{/ember-ace}}
     {{/card.content}}
 {{/paper-card}}

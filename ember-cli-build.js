@@ -12,13 +12,15 @@ module.exports = function(defaults) {
       implementation: sass,
       extension: 'scss'
     },
+    fontawesome: {
+      icons: {
+        'free-solid-svg-icons': 'all'
+      }
+    },
     ace: {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
       exts: ['language_tools', 'beautify']
-    },
-    'ember-cli-bootstrap-sassy': {
-      'js': ['dropdown', 'collapse']
     }
   });
 
@@ -92,12 +94,12 @@ module.exports = function(defaults) {
   app.import('vendor/ace-editor/mode-aladdin.js');
   app.import('vendor/ace-editor/worker-aladdin.js', { outputFile: 'worker-aladdin.js' });
 
-  let loaderTree = funnel(path.dirname(require.resolve('loader.js')), {
-    files: ['loader.js'],
-    destDir: '/assets'
-  });
+  // let loaderTree = funnel(path.dirname(require.resolve('loader.js')), {
+  //   files: ['loader.js'],
+  //   destDir: '/assets'
+  // });
 
   app.import('vendor/drags.js');
 
-  return app.toTree([loaderTree]);
+  return app.toTree(/*[loaderTree]*/);
 };

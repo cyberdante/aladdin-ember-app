@@ -41,4 +41,3 @@ export default Component.extend({
       this.$('.handle').remove();
     }
   });
-  

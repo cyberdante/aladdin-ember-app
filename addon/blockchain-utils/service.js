@@ -260,64 +260,6 @@ export default Service.extend({
         sol = sol.appendLine('}');
         return sol;
     },
-
-    // generateSolFileYaml(schemaString) {
-    //     String.prototype.appendLine = function (s) {
-    //         return `${this}\n${s}`
-    //     };
-    //     let schema = JSON.parse(schemaString);
-    //     let sol = 'pragma solidity ^0.4.18;';
-    //     sol = sol.appendLine('');
-    //     sol = sol.appendLine(' contract ' + schema.title + '{');
-    //     Object.keys(schema).forEach(function (key) {
-    //         for (let ikey in schema[key]) {
-    //             if (typeof schema[key][ikey] === 'object') {
-    //                 sol = sol.appendLine('');
-    //                 sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
-    //                 Object.keys(schema[key][ikey]).forEach(function (inkey) {
-    //                     if (inkey === "dependencies") {
-    //                       let depend = schema[key][ikey][inkey];
-    //                       if (depend !== 'none') {
-    //                         sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ',');
-    //                         sol = sol.appendLine('bytes32 ' + schema[key][ikey][inkey].type + ' )');
-    //                       } else {
-    //                         if (sol.substr(-1)===',') {
-    //                           sol = sol.substr(0, sol.length-1);
-    //                         }
-    //                         sol = sol+')';
-    //                       }
-    //                       sol = sol.appendLine('public{}');
-    //                     }
-    //                     // else if (inkey =='returns'){
-    //                     //     if((schema[key][ikey][inkey].type)!=undefined) {
-    //                     //         if (schema[key][ikey][inkey].type === 'number')
-    //                     //         schema[key][ikey][inkey].type = 'uint'
-    //                     //         if (schema[key][ikey][inkey].type === 'string')
-    //                     //         schema[key][ikey][inkey].type = 'bytes32'
-    //                     //         sol = sol.appendLine( 'public constant returns(' + schema[key][ikey][inkey].type + '){}');
-    //                     //     }
-    //                     //     else
-    //                     //     sol = sol.appendLine( 'public{}');
-    //                     // }
-    //                     else {
-    //                         if (inkey !== 'title') {
-    //                             if (schema[key][ikey][inkey].type === 'number') {
-    //                                 schema[key][ikey][inkey].type = 'uint';
-    //                             }
-    //                             if (schema[key][ikey][inkey].type === 'string') {
-    //                                 schema[key][ikey][inkey].type = 'bytes32';
-    //                             }
-    //                             sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},`);
-    //                         }
-    //                     }
-
-    //                 });
-    //             }
-    //         }
-    //     });
-    //     sol = sol.appendLine('}');
-    //     return sol;
-    // },
     generateSolFileYaml(schemaString) {
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
@@ -369,9 +311,9 @@ export default Service.extend({
                                 if (schema[key][ikey][inkey].type === 'number') {
                                     schema[key][ikey][inkey].type = 'uint';
                                 }
-                                if (schema[key][ikey][inkey].type === 'string') {
-                                    schema[key][ikey][inkey].type = 'bytes32';
-                                }
+                            //     if (schema[key][ikey][inkey].type === 'string') {
+                            //         schema[key][ikey][inkey].type = 'bytes32';
+                            //     }
                                 sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},`);
                             }
                         }
@@ -544,7 +486,7 @@ updateAssetSchema(newAssetTitle, oldAssetTitle, schema){
 
     return jsonSchema;   
 },
-updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
+updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
 
     if (typeof schema === 'string') {
         schema = JSON.parse(schema);
@@ -563,9 +505,44 @@ updateTxnSchema(newTxnTitle, oldTxnTitle, schema){
     return jsonSchema;   
 
 },
+updateSchemaDeleteTxn(txnName, schema) {
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    } 
+
+    delete(schema.properties[txnName]);
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema;   
+
+},
+
+updateSchemaAddTxn(txnName, assTitle, parameters, schema){
+    if (typeof schema === 'string') {
+        schema = JSON.parse(schema);
+    }
+    schema.properties[txnName] = {};
+    schema.properties[txnName].title = txnName;
+    schema.properties[txnName].dependencies = {};
+    schema.properties[txnName].dependencies.type = assTitle;
+    schema.properties[txnName].dependencies.name = 'assetId';
+    for (let key in parameters) {
+        if (parameters.hasOwnProperty(key)) {
+            console.log(key + " -> " + parameters[key].name, parameters[key].type);
+          schema.properties[txnName][parameters[key].name] = {}
+          schema.properties[txnName][parameters[key].name].name = parameters[key].name;
+          schema.properties[txnName][parameters[key].name].type = parameters[key].type;
+        }
+    }
+
+    let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+    return jsonSchema; 
+
+},
 schemaToYaml(genSchema){
     let schemaToParse = JSON.parse(genSchema);
-    let schema = {}; 
+    let schema = {};
     schema.transaction = {};
     schema.transaction.properties = (typeof schema);
     var assetList ={};

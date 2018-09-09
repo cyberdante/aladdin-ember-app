@@ -1,0 +1,66 @@
+@import 'palette';
+
+.tabbed-container {
+    height: 100%;
+    width: 100%;
+
+    md-card {
+        height: 100%;
+        margin: 0px;
+        padding: 0;
+        &.aladdin-tabs-container {
+            width: 100%;
+        }
+        md-tabs-canvas {
+          background: aladdin-color('secondary');
+        }
+        md-card-title {
+            background-color: aladdin-color('secondary');
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            .md-padding {
+                height: calc(100% - 48px);
+                padding: 0;
+                md-card {
+                    margin: 0;
+                }
+                opacity: 1;
+
+                &.ace_tooltip {
+                    height: auto;
+                }
+            }
+
+            md-tabs .md-default-theme .md-tab, 
+            md-tabs .md-tab {
+                color: #fff;
+            }
+
+            md-tabs.md-default-theme md-ink-bar,
+            md-tabs md-ink-bar {
+                color: aladdin-color('primary');
+                background: aladdin-color('primary');
+            }
+
+            md-tabs {
+                border-radius: 0;
+
+                md-tab-item {
+                    color: #fff;
+                    background-color: aladdin-color('secondary');
+
+                    &.md-active {
+                        color: aladdin-color('primary') !important;
+                        background-color: aladdin-color('foreground') !important;
+                    }
+                }
+            }
+        }
+    }
+}

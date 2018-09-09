@@ -9,6 +9,8 @@ const MAX_COLUMNS = 3;
 
 export default Component.extend(ResizeMixin, {
     layout,
+    classNames: ['center-column'],
+
     isLastColumn: computed('col', 'numColumns', function () {
         let numColumns = this.get('numColumns');
         return (this.get('col') | 0) === numColumns && numColumns < MAX_COLUMNS;
@@ -60,6 +62,26 @@ export default Component.extend(ResizeMixin, {
 
         viewChange() {
           this.viewChange();
+        },
+
+        swapComponents(comps) {
+          if(!comps) {
+            return;
+          }
+          comps = comps.split(',');
+          let center = comps[0];
+          let right = comps[1];
+          let tempName = this.get(right + 'ComponentName');
+          let tempComponent = this.get(right + 'Component');
+          let tempIcon = this.get(right + 'ColumnIcon');
+    
+          this.set(right + 'ComponentName', this.get(center + 'ComponentName'));
+          this.set(right + 'Component', this.get(center + 'Component'));
+          this.set(right + 'ColumnIcon', this.get(center + 'ColumnIcon'));
+    
+          this.set(center + 'ComponentName', tempName);
+          this.set(center + 'Component', tempComponent);
+          this.set(center + 'ColumnIcon', tempIcon);
         }
     }
 });

@@ -11,6 +11,10 @@ export default Component.extend({
         this._super(...arguments);
 
         this.set('outputs', [{
+            id: 0,
+            type: "warning",
+            value: "No errors detected in your code"
+        }, {
             id: 1,
             type: "error",
             value: "unknown syntax error"

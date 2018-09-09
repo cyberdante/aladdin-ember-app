@@ -1,22 +1,18 @@
 import Component from '@ember/component';
 import ColumnsMixin from '../../mixins/columns';
-import {
-    keyDown,
-    EKMixin
-} from 'ember-keyboard';
-import {
-    inject as service
-} from '@ember/service';
-// import { computed } from '@ember/object';
-import {
-    run
-} from '@ember/runloop';
+import PanesController from '../../mixins/panes-controller';
+import { EKMixin, keydown } from 'ember-keyboard';
+import { inject as service } from '@ember/service';
+import { run } from '@ember/runloop';
+import { computed } from '@ember/object';
 // import { on } from '@ember/object/evented';
-// import { isBlank } from '@ember/utils';
+import layout from './template';
 
-export default Component.extend(ColumnsMixin, EKMixin, {
+export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
+    layout,
     numColumns: 1,
     fullScreen: false,
+    classNames: ['aladdin-main-container'],
 
     init() {
         this._super(...arguments);
@@ -25,16 +21,16 @@ export default Component.extend(ColumnsMixin, EKMixin, {
             activeCol: '1'
         });
         this.set('fullScreen', false);
-        this.set('leftColumnShow', true);
-        this.set('centerColumnShow', true);
-        this.set('rightColumnShow', false);
+        // this.set('leftColumnShow', true);
+        // this.set('centerColumnShow', true);
+        // this.set('rightColumnShow', false);
     },
 
     /**
      * If the code is currently being built
      * @type {boolean}
      */
-    isBuilding: false,
+    isCompiling: false,
 
     /**
      * Column which has the currently focused editor
@@ -44,21 +40,54 @@ export default Component.extend(ColumnsMixin, EKMixin, {
 
     settings: null,
 
+    panels: computed(function() {
+        return [{
+            component: 'assets-transactions-wizard',
+            componentName: 'Assets and Transactions',
+            columnIcon: 'list-ul',
+            width: 50,
+        }, {
+            component: 'tabbed-container',
+            componentName: 'Smart Contract and Graph',
+            columnIcon: 'bezier-curve',
+            width: 50,
+        }, {
+            component: 'contract-editor',
+            componentName: 'Contract Editor',
+            columnIcon: 'pencil-alt',
+            width: 0,
+        }];
+    }),
+
     /**
      * Whether the left column is currently shown
      * @type {boolean}
      */
     leftColumnShow: true,
-    /** 
-     * Whether the right column is currently shown
-     * @type {boolean}
-     */
-    rightColumnShow: false,
+    leftColumnIcon: 'list-ul',
+    leftComponent: 'assets-transactions-wizard',
+    leftComponentName: 'Assets and Transactions',
+    leftWidth: 50,
+
     /** 
      * Whether the central column is currently shown
      * @type {boolean}
      */
     centerColumnShow: true,
+    centerColumnIcon: 'bezier-curve', // 'hubspot' or 'chart-line' maybe???
+    centerComponent: 'tabbed-container',
+    centerComponentName: 'Smart Contract and Graph',
+    centerWidth: 50,
+
+    /** 
+     * Whether the right column is currently shown
+     * @type {boolean}
+     */
+    rightColumnShow: false,
+    rightColumnIcon: 'pencil-alt',
+    rightComponent: 'contract-editor',
+    rightComponentName: 'Contract Editor',
+    rightWidth: 0,
 
     /**
      * reinitialize component when the model has changed

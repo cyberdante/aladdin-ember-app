@@ -5,6 +5,8 @@ import layout from './template';
 
 export default Component.extend({
   layout,
+  classNames: ['right-column'],
+
   canHideRightColumn: computed('leftColumnShow', 'centerColumnShow', function() {
     return (this.get('leftColumnShow') || this.get('centerColumnShow'));
   }),
@@ -28,6 +30,10 @@ export default Component.extend({
 
     openCentralColumn() {
       this.openCentralColumn();
+    },
+
+    viewChange() {
+      this.viewChange();
     }
   }
 

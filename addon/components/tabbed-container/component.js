@@ -4,10 +4,10 @@ import layout from './template';
 
 export default Component.extend({
   layout,
-  classNames: ['md-padding'],
+  classNames: ['md-padding', 'tabbed-container'],
   selectedTab: 0,
   selectedComponent: 'contract-viewer',
-  tabTitles: computed(() => ['Smart Contract', 'Graph', 'Asset & Transactions']),
+  tabTitles: computed(() => ['Smart Contract', 'Graph']),
   init() {
     this._super(...arguments);
   },
@@ -23,9 +23,9 @@ export default Component.extend({
         case 1:
           this.set('selectedComponent', 'graph-view');
           break;
-        case 2:
-          this.set('selectedComponent', 'assets-transactions-wizard');
-          break;
+        // case 2:
+        //   this.set('selectedComponent', 'assets-transactions-wizard');
+        //   break;
         default:
           this.set('selectedComponent', 'graph-view');
       }

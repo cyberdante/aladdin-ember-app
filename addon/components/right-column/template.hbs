@@ -1,21 +1,23 @@
 <div class="header">
-  <div class="nav-left">
-    {{#unless centerColumnShow}}
-        <span class="glyphicon glyphicon-plus" {{action (action this.openCentralColumn)}} title="Show central column"></span>
-    {{/unless}}
+    <div class="nav-left">
+        {{#unless (or centerColumnShow leftColumnShow)}}
+            <span class="hint--bottom hint--rounded" {{action (action this.openCentralColumn)}} title="Show {{centerComponentName}}">
+                {{fa-icon centerColumnIcon}}
+            </span>
+        {{/unless}}
+    </div>
     {{#if canHideRightColumn}}
-        <span class="hint--bottom hint--rounded" title="Hide this column">
-            <span class="glyphicon glyphicon-chevron-right" {{action (action this.hideRightColumn)}}></span>
-        </span>
+        <div class="nav-right">
+            <span class="hint--bottom hint--rounded" {{action (action this.hideRightColumn)}} title="Hide {{rightComponentName}}">
+                {{fa-icon 'times'}}
+            </span>
+        </div>
     {{/if}}
-  </div>
 </div>
-{{#if isBuilding}}
-    <div class="ember-load-indicator">Building...</div>
+{{#if isCompiling}}
+    <div class="ember-load-indicator">Compiling contract...</div>
 {{/if}}
-<div class="content">
-    <p>RIGHT COLUMN PLACEHOLDER</p>
-</div>
+{{component rightComponent code=code schema=schema showTitle=true yaml=yaml viewChange=(action viewChange rightComponent)}}
 {{#if fullScreen}}
     <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
 {{/if}}

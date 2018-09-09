@@ -8,7 +8,7 @@ import layout from './template';
 
 export default Component.extend({
   layout,
-  classNames: ['md-padding'],
+  classNames: ['md-padding', 'contract-viewer'],
 
   blockchainUtils: service(),
 
@@ -24,6 +24,7 @@ export default Component.extend({
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,
+  showLineNumbers: true,
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {
@@ -89,4 +90,4 @@ export default Component.extend({
     //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
     }
   }
-})
+});

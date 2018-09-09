@@ -7,11 +7,13 @@
     {{#card.content}}
         {{#paper-list}}
             {{#each outputs as |output|}}
-                {{#paper-item class="md-1-line"}}
-                    <div class="md-list-item-text">
-                        {{schema-validator-log-line output=output}}
-                    </div>
-                {{/paper-item}}
+                {{#if (not output.id)}}
+                    {{#paper-item class="md-1-line"}}
+                        <div class="md-list-item-text">
+                            {{schema-validator-log-line output=output}}
+                        </div>
+                    {{/paper-item}}
+                {{/if}}
             {{/each}}
         {{/paper-list}}
     {{/card.content}}
@@ -20,7 +22,8 @@
         {{#card.actions}}
             {{#paper-item class="md-1-line"}}
                 <div class="md-list-item-text bold-text">
-                    {{outputs.length}} errors and/or warnings found
+                    {{!-- {{outputs.length}}  --}}
+                    No errors and/or warnings found
                 </div>
             {{/paper-item}}
         {{/card.actions}}

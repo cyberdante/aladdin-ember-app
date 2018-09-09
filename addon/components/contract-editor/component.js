@@ -8,7 +8,7 @@ import layout from './template';
 export default Component.extend({
   layout,
   blockchainUtils: service(),
-  classNames: ['md-padding'],
+  classNames: ['md-padding', 'contract-editor'],
   newValue: '',
   value: '',
  
@@ -21,7 +21,14 @@ export default Component.extend({
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,
-  cursorPosition: {row:0, column:0},
+  showLineNumbers: true,
+  
+  cursorPosition: computed(function() {
+    return {
+      row: 0,
+      column: 0
+    };
+  }),
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {
@@ -51,14 +58,13 @@ export default Component.extend({
   init() {
     this._super(...arguments);
   },
-
+  
   didRender(){
     const self = this;
     let element = document.getElementsByClassName('contract-editor-wrapper')[0];
     let editor = ace.edit(element);
     if (!this.editorSession) {
       this.set('editorSession', editor.getSession());
-
       editor.on('change', function(evt) {
         if (evt.end.row !== evt.lines.length-1) {
           self.set('cursorPosition', evt.end);
@@ -90,7 +96,7 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
-        this.set('yaml', yamlString);
+      this.set('yaml', yamlString);
     }
   }
 });

@@ -1,52 +1,32 @@
-@import 'ember-paper';
-@import 'palette';
+@import "ember-paper";
+@import "palette";
 
 @import "variables";
-@import "bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "main";
 @import "twiddle-panes";
 @import "code";
 @import "output-pane";
-@import 'mixins';
+@import "mixins";
+
+@import "aladdin-main-container";
+@import "assets-transactions-wizard";
+@import "center-column";
+@import "contract-editor";
+@import "contract-viewer";
+@import "graph-view";
+@import "left-column";
+@import "right-column";
+@import "schema-validator-log";
+@import "schema-validator-log-line";
+@import "tabbed-container";
 
 #main-app {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    width: 100vw;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
 }
 
 .bold-text {
-    font-weight: 500;
-}
-
-.schema-validator-log {
-    width: 100%;
-    
-    md-card {
-      margin: 0;
-      md-card-title {
-        background-color: aladdin-color('secondary'); //#ff5722;
-        color: #fff;
-        height: 48px;
-        max-height: 48px;
-        padding: 0;
-
-        md-card-title-text {
-            @include aladdin-card-title-text;
-
-            .md-headline {
-              font-size: 14px;
-              font-weight: 500;
-              line-height: 24px;
-            }
-        }
-      }
-    }
-
-    md-list-item,
-    md-list-item .md-list-item-inner {
-        min-height: 24px;
-        height: 26px;
-    }
+  font-weight: 500;
 }
