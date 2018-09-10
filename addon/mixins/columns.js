@@ -50,6 +50,6 @@ export default Mixin.create({
    * Set the initial files in the columns
    */
   initializeColumns() {
-    const numColumns = this.get('realNumColumns');
+    // const numColumns = this.get('realNumColumns');
   }
 });

@@ -1,10 +1,4 @@
 import Mixin from '@ember/object/mixin';
-import {
-    inject as service
-} from '@ember/service';
-import {
-    run
-} from '@ember/runloop';
 
 export default Mixin.create({
     queryParams: ['numColumns', 'fullScreen', 'leftColumnShow', 'rightColumnShow'],

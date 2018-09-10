@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import ColumnsMixin from '../../mixins/columns';
 import PanesController from '../../mixins/panes-controller';
-import { EKMixin, keydown } from 'ember-keyboard';
-import { inject as service } from '@ember/service';
+import { EKMixin /*,keydown*/ } from 'ember-keyboard';
 import { run } from '@ember/runloop';
 import { computed } from '@ember/object';
 // import { on } from '@ember/object/evented';
@@ -110,7 +109,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
 
     actions: {
         contentsChanged() {
-            console.log('calling contentChanged action');
+            // console.log('calling contentChanged action');
         },
 
         focusColumn(column) {
@@ -125,7 +124,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             if(this.get('rightColumnShow') || this.get('centerColumnShow')) {
                 this.set('leftColumnShow', false);
             } else {
-                console.log('cannot close only remaining panel');
+                // console.log('cannot close only remaining panel');
             }
         },
 
@@ -137,7 +136,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             if(this.get('leftColumnShow') || this.get('centerColumnShow')) {
                 this.set('rightColumnShow', false);
             } else {
-                console.log('cannot close only remaining panel');
+                // console.log('cannot close only remaining panel');
             }
         },
 
@@ -145,7 +144,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             if(this.get('leftColumnShow') || this.get('rightColumnShow')) {
                 this.set('centerColumnShow', false);
             } else {
-                console.log('cannot close only remaining panel');
+                // console.log('cannot close only remaining panel');
             }
         },
 

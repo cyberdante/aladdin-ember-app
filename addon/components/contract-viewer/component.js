@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { debounce } from '@ember/runloop';
+// import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 import { inject as service } from '@ember/service';
@@ -59,7 +59,7 @@ export default Component.extend({
 
   setUpdatedValueLazily(newValue) {
     this.set('value', newValue);
-    let errors = this.get('editorSession').getAnnotations();
+    // let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
     // if(!errors.length) {
     //    this.blockchainUtils.solToYaml(newValue, this.viewChange);
@@ -75,7 +75,7 @@ export default Component.extend({
     if (!this.editorSession) {
       let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
       let editor = ace.edit(element);
-      editor.on('change', function(evt) {
+      editor.on('change', function(/*evt*/) {
         // console.log('viewer', evt);
       });
       this.set('editorSession', editor.getSession());
@@ -86,7 +86,7 @@ export default Component.extend({
   },
 
   actions: {
-    valueUpdated(newValue) {
+    valueUpdated(/*newValue*/) {
     //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
     }
   }

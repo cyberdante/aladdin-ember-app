@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import O from '@ember/object';
 import { observer, computed } from '@ember/object';
-import { or, and, not } from '@ember/object/computed';
+import { /*or,*/ and, not } from '@ember/object/computed';
 import layout from './template';
 
 export default Component.extend({
@@ -63,14 +63,14 @@ export default Component.extend({
     self.set('assets', assets);
   },
 
-  validNewParameters: computed('parameters', 'parameters.length', 'parameters.@each.name', function(parameters) {
+  validNewParameters: computed('parameters', 'parameters.{length,@each.name}', function(/*parameters*/) {
     let valid = true;
     this.get('parameters').forEach(p => {
       valid = valid && (p.name && p.name.length > 0);
     });
     return valid;
   }),
-  newMethodHasName: computed('newTxnName', 'newTxnName.length', function(newTxnName) {
+  newMethodHasName: computed('newTxnName', 'newTxnName.length', function(/*newTxnName*/) {
     return this.get('newTxnName').length > 0;
   }),
   doneButtonEnabled: and('newMethodHasName','validNewParameters'), 
@@ -140,7 +140,7 @@ export default Component.extend({
     addNewTxn() {
       let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema);
       this.set('schema', schema);
-      console.log(JSON.parse(this.schema));
+      // console.log(JSON.parse(this.schema));
       this.set('editingTxnAddName', false);
       this.set('editingTxnAdd', true);
       this.set('newTxnName', '');
@@ -173,7 +173,7 @@ export default Component.extend({
       // console.log(this.parameters.length)
       for (var key in this.parameters) {
         if (this.parameters.hasOwnProperty(key)) {
-          console.log(key + " -> " + this.parameters[key].name, this.parameters[key].type);
+          // console.log(key + " -> " + this.parameters[key].name, this.parameters[key].type);
         }
       }
     }// ,

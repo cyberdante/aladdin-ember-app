@@ -528,7 +528,7 @@ updateSchemaAddTxn(txnName, assTitle, parameters, schema){
     schema.properties[txnName].dependencies.name = 'assetId';
     for (let key in parameters) {
         if (parameters.hasOwnProperty(key)) {
-            console.log(key + " -> " + parameters[key].name, parameters[key].type);
+            // console.log(key + " -> " + parameters[key].name, parameters[key].type);
           schema.properties[txnName][parameters[key].name] = {}
           schema.properties[txnName][parameters[key].name].name = parameters[key].name;
           schema.properties[txnName][parameters[key].name].type = parameters[key].type;
@@ -700,7 +700,7 @@ function YAMLStringify(data) {
           output += '\n' + indentLevel + '- ' + handler(y);
             
         });
-        indentLevel = indentLevel.replace(/  /, '');
+        indentLevel = indentLevel.replace(/ {2}/, '');
         
         return output;
       }
@@ -734,7 +734,7 @@ function YAMLStringify(data) {
 
           output += '\n' + indentLevel + k + ': ' + handler(val);
         });
-        indentLevel = indentLevel.replace(/  /, '');
+        indentLevel = indentLevel.replace(/ {2}/, '');
 
         return output;
       }
