@@ -5,57 +5,14 @@ import {
 import { inject as service } from '@ember/service';
 import { observer } from '@ember/object';
 import layout from './template';
+import { containerYAML } from './examples';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
     layout,
     
     blockchainUtils: service(),
-    schema: '',
-    yaml: `---
-    - asset:  &Audit 
-          name:   assetId
-          type:   Audit
-    
-    - transaction: 
-        verifyAudit: 
-          type: object
-          properties: 
-            approved: 
-              name: approved
-              type: bool
-            bundleHashId: 
-              name: bundleHashId
-              type: string
-            dependencies: *Audit
-          title: verifyAudit
-        saveNewAudit: 
-          type: object
-          properties: 
-            establishment: 
-              name: establishment
-              type: string
-            theaddress: 
-              name: theaddress
-              type: string
-            timestamp: 
-              name: timestamp
-              type: string
-            description: 
-              name: description
-              type: string
-            comments: 
-              name: comments
-              type: string
-            bundleHashId: 
-              name: bundleHashId
-              type: string
-            Audit: 
-              name: Audit
-              type: string
-            dependencies: *Audit  
-          title: saveNewAudit
-  `,
+    yaml: containerYAML,
 
     title: 'Application',
 
