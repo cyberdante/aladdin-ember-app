@@ -1,8 +1,8 @@
 'use strict';
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-const funnel = require('broccoli-funnel');
-const path = require('path');
+// const funnel = require('broccoli-funnel');
+// const path = require('path');
 const sass = require('node-sass');
 
 module.exports = function(defaults) {
@@ -11,11 +11,6 @@ module.exports = function(defaults) {
     sassOptions: {
       implementation: sass,
       extension: 'scss'
-    },
-    fontawesome: {
-      icons: {
-        'free-solid-svg-icons': 'all'
-      }
     },
     ace: {
       themes: ['monokai', 'ambiance', 'chaos'],

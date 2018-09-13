@@ -94,6 +94,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
+    "defaultBlueprint": "ember-cli-aladdin",
     "after": [
       "ember-component-css",
       "ember-cli-component-pod",
