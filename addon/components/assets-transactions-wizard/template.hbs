@@ -11,7 +11,7 @@
   {{#card.content}}
       {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
         <div class="layout-row layout-wrap">
-            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100" as |leftpanel|}}
+            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |leftpanel|}}
               {{#leftpanel.content}}
                 {{#if editingTxnAdd}}
                   <div class="atat-options">
@@ -108,16 +108,17 @@
                           {{/paper-select}}
                         </div>
                     </div>
+                    
                   {{/each}}
                   <br/>
                   <div class="layout-row">
-                  <button class="layout-column flex-50 layout-align-center-center" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
-                    <span>{{fa-icon "plus"}} Add more parameters</span>
-                  </button>
-                  <br/>
-                  <button class="layout-column flex-50" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
-                    <span>{{fa-icon 'check'}} Done</span>
-                  </button>
+                    <button class="layout-column flex-50 layout-align-center-center" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
+                      <span>{{fa-icon "plus"}} Add more parameters</span>
+                    </button>
+                    <br/>
+                    <button class="layout-column flex-50" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
+                      <span>{{fa-icon 'check'}} Done</span>
+                    </button>
                   </div>
                   <hr> 
                 {{/if}}
@@ -128,38 +129,38 @@
                 {{/if}}
               {{/leftpanel.content}}
             {{/paper-card}}
-            {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100" as |rightpanel|}}
-              {{#rightpanel.content}}
-                {{#if txnParameters}}
-                  <div class="layout-row">
-                    {{#paper-subheader}}Parameters{{/paper-subheader}}
-                  </div>
-                  {{#each txnParameters as |param|}}
-                    <div class="layout-row" style="margin-bottom: 15px;">
-                      <div class="layout-column flex-30 layout-align-center-end" style="margin-right: 15px;">
-                        {{#if editingParamTitle}}
-                          {{input value=param.title enter=(action 'toggleOffParam' param.txn param) }}
-                        {{else}}
-                          <label onClick={{action "toggleParam" param.title}}>{{param.title}}</label>
-                        {{/if}}
-                      </div>
-                      <div class="layout-column layout-md-column flex-30">
-                        <select onchange={{action 'typeChangeAdd' param.txn param }}>
-                          <option value={{param.type}}>{{param.type}}</option>
-                          {{#each options as |option|}}
-                            <option value={{option}}>{{option}}</option>
-                          {{/each}}
-                        </select>
-                      </div>
+            {{#if txnParameters}}
+              {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |rightpanel|}}
+                {{#rightpanel.content}}
+                    <div class="layout-row">
+                      {{#paper-subheader}}Parameters{{/paper-subheader}}
                     </div>
-                  {{/each}}
-                  {{paper-divider}}
-                  <div class="layout-row">
-                    {{#paper-subheader}}Returns: {{txnReturnsType}}{{/paper-subheader}}
-                  </div>
-                {{/if}}
-              {{/rightpanel.content}}
-            {{/paper-card}}
+                    {{#each txnParameters as |param|}}
+                      <div class="layout-row" style="margin-bottom: 15px;">
+                        <div class="layout-column flex-30 layout-align-center-end" style="margin-right: 15px;">
+                          {{#if editingParamTitle}}
+                            {{input value=param.title enter=(action 'toggleOffParam' param.txn param) }}
+                          {{else}}
+                            <label onClick={{action "toggleParam" param.title}}>{{param.title}}</label>
+                          {{/if}}
+                        </div>
+                        <div class="layout-column layout-md-column flex-30">
+                          <select onchange={{action 'typeChangeAdd' param.txn param }}>
+                            <option value={{param.type}}>{{param.type}}</option>
+                            {{#each options as |option|}}
+                              <option value={{option}}>{{option}}</option>
+                            {{/each}}
+                          </select>
+                        </div>
+                      </div>
+                    {{/each}}
+                    {{paper-divider}}
+                    <div class="layout-row">
+                      {{#paper-subheader}}Returns: {{txnReturnsType}}{{/paper-subheader}}
+                    </div>
+                {{/rightpanel.content}}
+              {{/paper-card}}
+            {{/if}}
         </div>
       {{/paper-content}}
   {{/card.content}}
