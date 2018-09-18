@@ -47,7 +47,7 @@ module.exports = {
         { name: 'js-yaml', target: '^3.12.0' },
         // { name: 'json-beautify', target: '^1.0.1' }, //
         // { name: 'json2yaml', target: '1.1.0' }, //
-        { name: 'node-sass', target: '^4.9.3' },
+        // { name: 'node-sass', target: '^4.9.3' },
         // { name: 'npm', target: '^6.4.0' }, //
         // { name: 'path-browser', target: '^2.2.1' }, //
         { name: 'remedial', target: '1.0.8' },
