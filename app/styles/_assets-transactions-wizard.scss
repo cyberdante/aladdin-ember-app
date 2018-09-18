@@ -119,6 +119,15 @@
       width: 100%;
       height: calc(100% - 48px);
 
+      md-content,
+      .md-subheader > .md-subheader-inner{
+        background: aladdin-color("background");
+
+        md-card-content > h2 {
+          background: aladdin-color("background");
+        }
+      }
+
       .md-button.md-default-theme[disabled],
       button.md-default-theme[disabled],
       .md-button[disabled],
