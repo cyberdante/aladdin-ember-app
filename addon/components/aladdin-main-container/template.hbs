@@ -1,47 +1,48 @@
 {{#if manualMode}}
-  {{contract-viewer manualMode=manualMode showTitle=false contractType='ethereum' logValues=logValues}}
+  {{!-- {{contract-viewer manualMode=manualMode showTitle=false contractType='ethereum' logValues=logValues}} --}}
+    {{contract-viewer contractType='ethereum' readOnly=false logValues=logValues manualMode=manualMode}}
 {{else}}
 
-{{twiddle-panes-container 
-    model=model
-    numColumns=numColumns
-    fullScreen=fullScreen
-    isCompiling=isCompiling
+  {{twiddle-panes-container 
+      model=model
+      numColumns=numColumns
+      fullScreen=fullScreen
+      isCompiling=isCompiling
 
-    leftColumnShow=leftColumnShow
-    leftColumnIcon=leftColumnIcon
-    leftComponent=leftComponent
-    leftComponentName=leftComponentName
-    leftWidth=leftWidth
+      leftColumnShow=leftColumnShow
+      leftColumnIcon=leftColumnIcon
+      leftComponent=leftComponent
+      leftComponentName=leftComponentName
+      leftWidth=leftWidth
 
-    centerColumnShow=centerColumnShow
-    centerColumnIcon=centerColumnIcon
-    centerComponent=centerComponent
-    centerComponentName=centerComponentName
-    centerWidth=centerWidth
+      centerColumnShow=centerColumnShow
+      centerColumnIcon=centerColumnIcon
+      centerComponent=centerComponent
+      centerComponentName=centerComponentName
+      centerWidth=centerWidth
 
-    rightColumnShow=rightColumnShow
-    rightColumnIcon=rightColumnIcon
-    rightComponent=rightComponent
-    rightComponentName=rightComponentName
-    rightWidth=rightWidth
+      rightColumnShow=rightColumnShow
+      rightColumnIcon=rightColumnIcon
+      rightComponent=rightComponent
+      rightComponentName=rightComponentName
+      rightWidth=rightWidth
 
-    showLeftColumn=(action "showLeftColumn")
-    hideLeftColumn=(action "hideLeftColumn")
+      showLeftColumn=(action "showLeftColumn")
+      hideLeftColumn=(action "hideLeftColumn")
 
-    showRightColumn=(action "showRightColumn")
-    hideRightColumn=(action "hideRightColumn")
+      showRightColumn=(action "showRightColumn")
+      hideRightColumn=(action "hideRightColumn") 
 
-    openCentralColumn=(action "openCentralColumn")
-    closeCentralColumn=(action "closeCentralColumn")
+      openCentralColumn=(action "openCentralColumn")
+      closeCentralColumn=(action "closeCentralColumn")
 
-    focusColumn=(action "focusColumn")
-    exitFullScreen=(action "exitFullScreen")
+      focusColumn=(action "focusColumn")
+      exitFullScreen=(action "exitFullScreen")
 
-    logValues=logValues
+      logValues=logValues
 
-    manualMode=manualMode
-}}
+      manualMode=manualMode
+  }}
 
 {{/if}}
 

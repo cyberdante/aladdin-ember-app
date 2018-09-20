@@ -50,13 +50,13 @@ const auditYAML = `---
 
 const containerYAML = `---
 - asset:  &container                 # defines anchor label
-      name:   asset_id
+      name:   assetId
       type:   container
 - asset:  &lock                
-      name:   asset_id
+      name:   assetId
       type:   lock
 - asset:  &manifest                
-      name:   asset_id
+      name:   assetId
       type:   manifest
 
 
