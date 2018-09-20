@@ -15,7 +15,7 @@
         {{#if (not-eq selectedComponent 'contract-viewer')}}
             {{component selectedComponent showTitle=false schema=schema viewChange=(action viewChange)}}
         {{else}}
-            {{component selectedComponent showTitle=false contractType='ethereum' value=code viewChange=(action viewChange) logValues=logValues}}
+            {{component selectedComponent showTitle=false contractType='ethereum' value=code viewChange=(action viewChange) logValues=logValues manualMode=manualMode}}
         {{/if}}
     {{/card.content}}
 {{/paper-card}}

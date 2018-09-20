@@ -111,6 +111,7 @@ export default Component.extend({
     },
 
     toggleEdit(){
+        this.set('manualMode', !this.manualMode);
         this.set('readOnly', !this.readOnly);
     }
   }

@@ -13,6 +13,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     numColumns: 1,
     fullScreen: false,
     classNames: ['aladdin-main-container'],
+    manualMode: false,
     logValues: A([]),
 
     init() {

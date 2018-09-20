@@ -1,3 +1,7 @@
+{{#if manualMode}}
+  {{contract-viewer manualMode=manualMode showTitle=false contractType='ethereum' logValues=logValues}}
+{{else}}
+
 {{twiddle-panes-container 
     model=model
     numColumns=numColumns
@@ -35,7 +39,12 @@
     exitFullScreen=(action "exitFullScreen")
 
     logValues=logValues
+
+    manualMode=manualMode
 }}
+
+{{/if}}
+
 <div class="bottom">
     {{schema-validator-log outputs=logValues}}
 </div>
