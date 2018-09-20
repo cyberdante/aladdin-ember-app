@@ -15,6 +15,7 @@ export default Component.extend({
   value: '',
   editorSession: null, 
 
+  editingContract: false,
   highlightActiveLine: true,
   showPrintMargin: true,
   readOnly: false,
@@ -88,6 +89,9 @@ export default Component.extend({
   actions: {
     valueUpdated(/*newValue*/) {
     //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
+    },
+    toggleEdit(){
+        // this.set('editingContract')
     }
   }
 });
