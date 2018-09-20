@@ -8,12 +8,12 @@
       {{/title.text}}
     {{/card.title}}
   {{/if}}
-  {{#card.content}}
+  {{#card.content}} 
       {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
-      {{#if editingContract}}
-        <span style="color:white;"> Disabled... manual edit mode</span>
-      {{else}}
-        <div class="layout-row layout-wrap">
+       {{#if editingContract}}
+       <span style= "color: white;"> Disabled</span>
+       {{else}}
+       <div class="layout-row layout-wrap">
             {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |leftpanel|}}
               {{#leftpanel.content}}
                 {{#if editingTxnAdd}}
@@ -165,7 +165,7 @@
               {{/paper-card}}
             {{/if}}
         </div>
-      {{/if}}
+        {{/if}}
       {{/paper-content}}
   {{/card.content}}
 {{/paper-card}}

@@ -15,9 +15,10 @@ export default Component.extend({
   value: '',
   editorSession: null, 
 
+  editingContract: false,
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: true,
+  readOnly: false,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
@@ -99,6 +100,10 @@ export default Component.extend({
         if (err) console.log(err);
         self.set('isCompiling', false);
       });
+    },
+    
+    toggleEdit(){
+        // this.set('editingContract')
     }
   }
 });
