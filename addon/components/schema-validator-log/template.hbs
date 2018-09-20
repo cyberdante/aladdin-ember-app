@@ -7,17 +7,15 @@
     {{#card.content}}
         {{#paper-list}}
             {{#each outputs as |output|}}
-                {{#if (not output.id)}}
-                    {{#paper-item class="md-1-line"}}
-                        <div class="md-list-item-text">
-                            {{schema-validator-log-line output=output}}
-                        </div>
-                    {{/paper-item}}
-                {{/if}}
+                {{#paper-item class="md-1-line"}}
+                    <div class="md-list-item-text">
+                        {{schema-validator-log-line output=output}}
+                    </div>
+                {{/paper-item}}
             {{/each}}
         {{/paper-list}}
     {{/card.content}}
-    {{#if (and outputs outputs.length)}}
+    {{#if (not (and outputs outputs.length))}}
         {{paper-divider}}
         {{#card.actions}}
             {{#paper-item class="md-1-line"}}

@@ -14,7 +14,7 @@
         </div>
     {{/if}}
 </div>
-{{component rightComponent code=code schema=schema showTitle=true yaml=yaml viewChange=(action viewChange rightComponent)}}
+{{component rightComponent code=code schema=schema showTitle=true yaml=yaml viewChange=(action viewChange rightComponent) logValues=logValues}}
 {{#if fullScreen}}
     <a class="exit-full-screen-link" {{action (action this.exitFullScreen)}}>Exit Full Screen</a>
 {{/if}}
