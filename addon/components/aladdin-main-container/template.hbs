@@ -33,7 +33,9 @@
 
     focusColumn=(action "focusColumn")
     exitFullScreen=(action "exitFullScreen")
+
+    logValues=logValues
 }}
 <div class="bottom">
-    {{schema-validator-log}}
+    {{schema-validator-log outputs=logValues}}
 </div>

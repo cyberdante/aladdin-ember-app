@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { observer, computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
+import { A } from '@ember/array';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 import { inject as service } from '@ember/service';
@@ -97,11 +98,18 @@ export default Component.extend({
       const self = this;
       this.set('isCompiling', true);
       this.blockchainUtils.compileSol(this.value, function(err) {
-        if (err) console.log(err);
+        if (err) {
+          let id = 0;
+          let logValues = err.map(strErr => {
+            let type = /Error:/gi.test(strErr) ? "error": "warning";
+            return {id: id++, type: type, value: strErr};
+          });
+          self.set('logValues', A(logValues));
+        }
         self.set('isCompiling', false);
       });
     },
-    
+
     toggleEdit(){
         if(this.readOnly === true)
         this.set('readOnly', false)

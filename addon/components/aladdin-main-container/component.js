@@ -3,6 +3,7 @@ import ColumnsMixin from '../../mixins/columns';
 import PanesController from '../../mixins/panes-controller';
 import { EKMixin /*,keydown*/ } from 'ember-keyboard';
 import { run } from '@ember/runloop';
+import { A } from '@ember/array';
 import { computed } from '@ember/object';
 // import { on } from '@ember/object/evented';
 import layout from './template';
@@ -12,6 +13,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     numColumns: 1,
     fullScreen: false,
     classNames: ['aladdin-main-container'],
+    logValues: A([]),
 
     init() {
         this._super(...arguments);
@@ -23,6 +25,10 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         // this.set('leftColumnShow', true);
         // this.set('centerColumnShow', true);
         // this.set('rightColumnShow', false);
+
+        this.set('logValues', A([
+          {id: 0, type: "warning", value: "no errors detected"}
+        ]));
     },
 
     /**

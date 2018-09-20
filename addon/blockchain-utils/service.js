@@ -591,7 +591,8 @@ schemaToYaml(genSchema){
   compileSol(code, cb) {
     solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
       try {
-        compiler.compile(code);
+        let c = compiler.compile(code);
+        cb(c.errors);
       } catch(e) {
         cb(e);
       }
