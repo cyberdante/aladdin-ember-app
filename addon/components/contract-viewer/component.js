@@ -62,11 +62,11 @@ export default Component.extend({
 
   setUpdatedValueLazily(newValue) {
     this.set('value', newValue);
-    // let errors = this.get('editorSession').getAnnotations();
+    let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
-    // if(!errors.length) {
-    //    this.blockchainUtils.solToYaml(newValue, this.viewChange);
-    // }
+    if(!errors.length) {
+       this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    }
   },
 
   init() {
@@ -103,7 +103,10 @@ export default Component.extend({
     },
     
     toggleEdit(){
-        this.set('readOnly', false);
+        if(this.readOnly === true)
+        this.set('readOnly', false)
+        else
+        this.set('readOnly', true)
     }
   }
 });

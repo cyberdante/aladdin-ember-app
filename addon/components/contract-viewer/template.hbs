@@ -21,17 +21,23 @@
             as |editor|}}
         {{/ember-ace}}
         {{paper-progress-circular warn=true diameter=96 disabled=(not isCompiling)}}
-        <button style="
+        {{!-- <button style="
             color: white;
             background: black;
             position: absolute;
             top: 100px;
             right: 0;
-            margin: auto;" {{action 'toggleEdit'}}>Toggle Manual Mode</button>
-            {{!-- <p>
-                 {{#paper-button raised=true mini=true}}Mini{{/paper-button}}
-            </p> --}}
-        <button style="
+            margin: auto;" {{action 'toggleEdit'}}>Toggle Manual Mode</button> --}}
+            <button style="
+            color: white;
+            background: black;
+            position: absolute;
+            top: 100px;
+            right: 0;
+            margin: auto;" {{action 'toggleEdit'}}>
+             <span> Toggle Manual Mode </span>
+             </button>
+             <button style="
             color: white;
             background: black;
             position: absolute;
