@@ -45,9 +45,11 @@ Make use of the many generators for code, try `ember help generate` for more det
 * `ember build` (development)
 * `ember build --environment production` (production)
 
-### Deploying
+### Packaging for Distribution 
 
-Specify what it takes to deploy your app.
+* Executing `npm pack` in the root of this package will produce a tar file that will contain the application.
+* Users can install this addon by executing `ember install /path/to/ember-cli-aladdin-0.1.0.tgz`
+* Finally execute `ember generate ember-cli-aladdin` to complete the installation.
 
 ## Further Reading / Useful Links
 

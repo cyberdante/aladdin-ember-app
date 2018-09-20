@@ -36,7 +36,7 @@ export default Component.extend({
   // tranParamType: O.create({}),
   txnParamType: '',
   parameters: computed(function () {
-    return [{}];
+    return A([{}]);
   }),
 
   // selectedAsset: O.create({}),

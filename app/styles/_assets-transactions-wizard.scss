@@ -119,6 +119,15 @@
       width: 100%;
       height: calc(100% - 48px);
 
+      md-content,
+      .md-subheader > .md-subheader-inner{
+        background: aladdin-color("background");
+
+        md-card-content > h2 {
+          background: aladdin-color("background");
+        }
+      }
+
       .md-button.md-default-theme[disabled],
       button.md-default-theme[disabled],
       .md-button[disabled],
@@ -131,6 +140,12 @@
       .md-button.md-default-theme:not([disabled]):hover,
       .md-button:not([disabled]):hover {
         background-color: rgba(158, 158, 158, 0.5);
+      }
+
+      .md-button.md-default-theme.md-raised,
+      .md-button.md-raised {
+        background-color: transparent;
+        color: aladdin-color("secondary");
       }
 
       .md-button.md-default-theme.md-primary,

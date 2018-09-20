@@ -56,11 +56,5 @@ module.exports = {
     app.import('vendor/ace-editor/worker-aladdin.js', { outputFile: 'worker-aladdin.js' });
 
     app.import('vendor/drags.js');
-  },
-
-  afterInstall: function() {
-    return this.addPackagesToProject([
-      { name: 'ember-cli-sass', target: 'latest' }
-    ]);
   }
 };
