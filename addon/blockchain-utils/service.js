@@ -588,6 +588,17 @@ schemaToYaml(genSchema){
     return outputYaml;
   },
 
+  compileSol(code, cb) {
+    solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
+      try {
+        compiler.compile(code);
+      } catch(e) {
+        cb(e);
+      }
+      cb();
+    });
+  },
+
   solToYaml(code, cb){
     // solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
     solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-// import { debounce } from '@ember/runloop';
+import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 import { inject as service } from '@ember/service';
@@ -25,6 +25,8 @@ export default Component.extend({
   showGutter: true,
   showIndentGuides: true,
   showLineNumbers: true,
+
+  isCompiling: false,
 
   theme: 'ace/theme/monokai',
   themes: computed(function() {
@@ -86,8 +88,17 @@ export default Component.extend({
   },
 
   actions: {
-    valueUpdated(/*newValue*/) {
-    //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
+    valueUpdated(newValue) {
+      debounce(this, this.setUpdatedValueLazily, newValue, 500);
+    },
+
+    compile() {
+      const self = this;
+      this.set('isCompiling', true);
+      this.blockchainUtils.compileSol(this.value, function(err) {
+        if (err) console.log(err);
+        self.set('isCompiling', false);
+      });
     }
   }
 });

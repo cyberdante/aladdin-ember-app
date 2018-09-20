@@ -14,6 +14,7 @@ export default Component.extend({
   schema: '',
   assets: A([]),
 
+  editingContract: true,
   editingAssetTitle: false,
   editingTxnTitle: false,
   editingParamTitle: false,

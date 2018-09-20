@@ -20,6 +20,7 @@
             overlays=overlays 
             as |editor|}}
         {{/ember-ace}}
+        {{paper-progress-circular warn=true diameter=96 disabled=(not isCompiling)}}
         <button style="
             color: white;
             background: black;
@@ -33,6 +34,6 @@
             position: absolute;
             right: 0;
             bottom: 0;
-            margin: auto;">Compile</button>
+            margin: auto;" {{action 'compile'}}>Compile</button>
     {{/card.content}}
 {{/paper-card}}
