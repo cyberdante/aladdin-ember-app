@@ -271,7 +271,7 @@ export default Service.extend({
         sol = sol.appendLine('');
         sol = sol.appendLine(' contract ' + schema.title + '{');
        //inject constructor
-       sol = sol.appendLine('function ' +schema.title + ' public{}');
+       sol = sol.appendLine('function ' +schema.title + '() public{}');
         Object.keys(schema).forEach(function (key) {
             
             for (let ikey in schema[key]) {
