@@ -101,9 +101,9 @@ export default Component.extend({
         self.set('isCompiling', false);
       });
     },
-    
+
     toggleEdit(){
-        // this.set('editingContract')
+        this.set('editingContract')
     }
   }
 });

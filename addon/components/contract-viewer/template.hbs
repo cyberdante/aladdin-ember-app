@@ -28,6 +28,8 @@
             top: 100px;
             right: 0;
             margin: auto;">Toggle Manual Mode</button>
+
+        {{#if (not readOnly)}}
         <button style="
             color: white;
             background: black;
@@ -35,5 +37,6 @@
             right: 0;
             bottom: 0;
             margin: auto;" {{action 'compile'}}>Compile</button>
+        {{/if}}
     {{/card.content}}
 {{/paper-card}}
