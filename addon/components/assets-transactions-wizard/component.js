@@ -14,7 +14,7 @@ export default Component.extend({
   schema: '',
   assets: A([]),
 
-  editingContract:true,
+  editingContract:false,
   editingAssetTitle: false,
   editingTxnTitle: false,
   editingParamTitle: false,
@@ -48,6 +48,7 @@ export default Component.extend({
   schemaChanged: observer('schema', function () {
     this.generateView(this.schema);
   }),
+  
 
   init() {
     this._super(...arguments);

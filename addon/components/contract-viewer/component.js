@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { observer, computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
@@ -18,7 +18,7 @@ export default Component.extend({
   editingContract: false,
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: false,
+  readOnly: true,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
@@ -103,7 +103,7 @@ export default Component.extend({
     },
 
     toggleEdit(){
-        this.set('editingContract')
+        this.set('readOnly', false);
     }
   }
 });
