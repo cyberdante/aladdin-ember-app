@@ -270,7 +270,7 @@ export default Service.extend({
         let sol2 = '';
         sol = sol.appendLine('');
         sol = sol.appendLine(' contract ' + schema.title + '{');
-       
+        sol = sol.appendLine('function ' +schema.title + '() public{}');
         Object.keys(schema).forEach(function (key) {
             
             for (let ikey in schema[key]) {
