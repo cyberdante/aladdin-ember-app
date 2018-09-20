@@ -14,7 +14,7 @@ export default Component.extend({
 
   highlightActiveLine: true,
   showPrintMargin: true,
-  readOnly: true,
+  readOnly: false,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
@@ -57,10 +57,11 @@ export default Component.extend({
   setUpdatedValueLazily(newValue) {
     this.set('value', newValue);
     let errors = this.get('editorSession').getAnnotations();
+    // debugger;
     // Call parent component with the new yaml value only if there are currently no errors
-    // if(!errors.length) {
-    //    this.blockchainUtils.solToYaml(newValue, this.viewChange);
-    // }
+    if(!errors.length) {
+       this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    }
   },
 
   init() {
@@ -84,7 +85,8 @@ export default Component.extend({
 
   actions: {
     valueUpdated(newValue) {
-    //   debounce(this, this.setUpdatedValueLazily, newValue, 500);
+      debounce(this, this.setUpdatedValueLazily, newValue, 500);
+    // debugger;
     }
   }
 })

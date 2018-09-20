@@ -47,9 +47,6 @@ export default Component.extend({
             bundleHashId: 
               name: bundleHashId
               type: string
-            Audit: 
-              name: Audit
-              type: string
             dependencies: *Audit  
           title: saveNewAudit
   `,
