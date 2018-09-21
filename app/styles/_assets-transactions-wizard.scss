@@ -1,11 +1,67 @@
 @import 'palette';
 @import 'mixins';
 
+$simba-fab-bgcolor: #cddc39;
+$simba-fab-highlight: #aeea00;
+
 .assets-transactions-wizard {
   height: 100%;
   width: 100%;
   &.show-title {
     height: calc(100% - 60px);
+  }
+
+  .md-button.md-default-theme.md-accent,
+  .md-button.md-accent {
+    color: $simba-fab-bgcolor;
+  }
+
+  .md-button.md-default-theme.md-accent.md-raised,
+  .md-button.md-default-theme.md-accent.md-fab,
+  .md-button.md-accent.md-raised,
+  .md-button.md-accent.md-fab,
+  .md-button.md-default-theme.md-fab,
+  button.md-default-theme.md-fab,
+  .md-button.md-fab,
+  button.md-fab {
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: $simba-fab-bgcolor;
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]) md-icon,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]) md-icon,
+  .md-button.md-accent.md-raised:not([disabled]) md-icon,
+  .md-button.md-accent.md-fab:not([disabled]) md-icon,
+  .md-button.md-default-theme.md-fab:not([disabled]) .md-icon,
+  button.md-default-theme.md-fab:not([disabled]) .md-icon,
+  .md-button.md-fab:not([disabled]) .md-icon,
+  button.md-fab:not([disabled]) .md-icon {
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]):hover,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]):hover,
+  .md-button.md-accent.md-raised:not([disabled]):hover,
+  .md-button.md-accent.md-fab:not([disabled]):hover,
+  .md-button.md-default-theme.md-fab:not([disabled]):hover,
+  button.md-default-theme.md-fab:not([disabled]):hover,
+  .md-button.md-fab:not([disabled]):hover,
+  button.md-fab:not([disabled]):hover {
+    background-color: $simba-fab-highlight;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]).md-focused,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]).md-focused,
+  .md-button.md-accent.md-raised:not([disabled]).md-focused,
+  .md-button.md-accent.md-fab:not([disabled]).md-focused,
+  .md-button.md-default-theme.md-fab:not([disabled]).md-focused,
+  button.md-default-theme.md-fab:not([disabled]).md-focused,
+  .md-button.md-fab:not([disabled]).md-focused,
+  button.md-fab:not([disabled]).md-focused {
+    background-color: $simba-fab-highlight;
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+  .md-button.md-default-theme.md-accent:not([disabled]) md-icon,
+  .md-button.md-accent:not([disabled]) md-icon {
+    color: $simba-fab-bgcolor;
   }
 
   md-card {
