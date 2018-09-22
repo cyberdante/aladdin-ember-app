@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = function(environment) {
-  let ENV = {
+module.exports = function(environment, appConfig) {
+let ENV = {
     modulePrefix: 'aladdin',
     environment,
     rootURL: '/',
@@ -25,7 +25,6 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      rootElement: '#main-app'
     }
   };
 

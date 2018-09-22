@@ -1,0 +1,65 @@
+@import 'palette';
+
+.contract-viewer {
+    height: 100%;
+    width: 100%;
+
+    md-progress-circular {
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    } 
+
+    md-card {
+        height: 100%;
+        md-card-title {
+            background-color: aladdin-color('secondary'); //#ff5722;
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            padding: 0;
+            margin: 0;
+            //height: calc(100% - 72px);
+            height: 100%;
+            div {
+                height: 100%;
+                opacity: 1;
+                &.ace_tooltip {
+                    height: auto;
+                }
+            }
+            .contract-viewer-wrapper {
+                opacity: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 0;
+
+                textarea {
+                    opacity: 1 !important;
+                    height: 100%;
+                    width: 100%;
+                    left: 0;
+                }
+
+                .ember-ace-error { background-color: rgba(255, 0, 0, 0.5); position: absolute; }
+                .ember-ace-warning { background-color: rgba(200, 200, 0, 0.5); position: absolute; }
+            }
+            .md-button.md-default-theme.md-raised,
+            .md-button.md-raised {
+              background-color: transparent;
+              color: aladdin-color("secondary");
+            }
+      
+            .md-button.md-default-theme.md-primary,
+            .md-button.md-primary {
+              color: aladdin-color("secondary");
+            }
+        }
+    }
+}

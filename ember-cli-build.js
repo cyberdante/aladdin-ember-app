@@ -1,24 +1,30 @@
 'use strict';
 
-const EmberApp = require('ember-cli/lib/broccoli/ember-app');
-const funnel = require('broccoli-funnel');
-const path = require('path');
+const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
+// const funnel = require('broccoli-funnel');
+// const path = require('path');
+const sass = require('node-sass');
 
 module.exports = function(defaults) {
-  let app = new EmberApp(defaults, {
+  let app = new EmberAddon(defaults, {
     // Add options here
     sassOptions: {
+      implementation: sass,
       extension: 'scss'
     },
     ace: {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
       exts: ['language_tools', 'beautify']
-    },
-    'ember-power-select': {
-      theme: 'material'
     }
   });
+
+  /*
+    This build file specifies the options for the dummy test app of this
+    addon, located in `/tests/dummy`
+    This build file does *not* influence how the addon or the app using it
+    behave. You most likely want to be modifying `./index.js` or app's build file
+  */
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
@@ -83,12 +89,12 @@ module.exports = function(defaults) {
   app.import('vendor/ace-editor/mode-aladdin.js');
   app.import('vendor/ace-editor/worker-aladdin.js', { outputFile: 'worker-aladdin.js' });
 
-  let loaderTree = funnel(path.dirname(require.resolve('loader.js')), {
-    files: ['loader.js'],
-    destDir: '/assets'
-  });
+  // let loaderTree = funnel(path.dirname(require.resolve('loader.js')), {
+  //   files: ['loader.js'],
+  //   destDir: '/assets'
+  // });
 
   app.import('vendor/drags.js');
 
-  return app.toTree([loaderTree]);
+  return app.toTree(/*[loaderTree]*/);
 };

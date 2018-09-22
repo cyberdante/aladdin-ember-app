@@ -1,0 +1,51 @@
+{{#if manualMode}}
+  {{!-- {{contract-viewer manualMode=manualMode showTitle=false contractType='ethereum' logValues=logValues}} --}}
+    {{contract-viewer contractType='ethereum' readOnly=false logValues=logValues manualMode=manualMode}}
+{{else}}
+
+  {{twiddle-panes-container 
+      model=model
+      numColumns=numColumns
+      fullScreen=fullScreen
+      isCompiling=isCompiling
+
+      leftColumnShow=leftColumnShow
+      leftColumnIcon=leftColumnIcon
+      leftComponent=leftComponent
+      leftComponentName=leftComponentName
+      leftWidth=leftWidth
+
+      centerColumnShow=centerColumnShow
+      centerColumnIcon=centerColumnIcon
+      centerComponent=centerComponent
+      centerComponentName=centerComponentName
+      centerWidth=centerWidth
+
+      rightColumnShow=rightColumnShow
+      rightColumnIcon=rightColumnIcon
+      rightComponent=rightComponent
+      rightComponentName=rightComponentName
+      rightWidth=rightWidth
+
+      showLeftColumn=(action "showLeftColumn")
+      hideLeftColumn=(action "hideLeftColumn")
+
+      showRightColumn=(action "showRightColumn")
+      hideRightColumn=(action "hideRightColumn") 
+
+      openCentralColumn=(action "openCentralColumn")
+      closeCentralColumn=(action "closeCentralColumn")
+
+      focusColumn=(action "focusColumn")
+      exitFullScreen=(action "exitFullScreen")
+
+      logValues=logValues
+
+      manualMode=manualMode
+  }}
+
+{{/if}}
+
+<div class="bottom">
+    {{schema-validator-log outputs=logValues}}
+</div>

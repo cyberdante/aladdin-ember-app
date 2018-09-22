@@ -82,7 +82,6 @@
       $('body').css('cursor', priorCursor);
       $(window).off("mousemove", mouseDragFn);
       $(window).off("mouseup", mouseUpFn);
-      console.log(Math.round((e.clientX / window.innerWidth)*100, 2) + '%');
       $('.draggable').removeClass('draggable').css('z-index', z_idx);
     }
 

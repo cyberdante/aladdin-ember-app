@@ -1,4 +1,1 @@
-import Component from '@ember/component';
-
-export default Component.extend({
-});
+export { default } from 'ember-cli-aladdin/components/twiddle-panes-container/component';

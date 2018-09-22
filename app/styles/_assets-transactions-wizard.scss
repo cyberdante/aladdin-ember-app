@@ -1,0 +1,250 @@
+@import 'palette';
+@import 'mixins';
+
+$simba-fab-bgcolor: #cddc39;
+$simba-fab-highlight: #aeea00;
+
+.assets-transactions-wizard {
+  height: 100%;
+  width: 100%;
+  &.show-title {
+    height: calc(100% - 60px);
+  }
+
+  .md-button.md-default-theme.md-accent,
+  .md-button.md-accent {
+    color: $simba-fab-bgcolor;
+  }
+
+  .md-button.md-default-theme.md-accent.md-raised,
+  .md-button.md-default-theme.md-accent.md-fab,
+  .md-button.md-accent.md-raised,
+  .md-button.md-accent.md-fab,
+  .md-button.md-default-theme.md-fab,
+  button.md-default-theme.md-fab,
+  .md-button.md-fab,
+  button.md-fab {
+    color: rgba(0, 0, 0, 0.87) !important;
+    background-color: $simba-fab-bgcolor;
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]) md-icon,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]) md-icon,
+  .md-button.md-accent.md-raised:not([disabled]) md-icon,
+  .md-button.md-accent.md-fab:not([disabled]) md-icon,
+  .md-button.md-default-theme.md-fab:not([disabled]) .md-icon,
+  button.md-default-theme.md-fab:not([disabled]) .md-icon,
+  .md-button.md-fab:not([disabled]) .md-icon,
+  button.md-fab:not([disabled]) .md-icon {
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]):hover,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]):hover,
+  .md-button.md-accent.md-raised:not([disabled]):hover,
+  .md-button.md-accent.md-fab:not([disabled]):hover,
+  .md-button.md-default-theme.md-fab:not([disabled]):hover,
+  button.md-default-theme.md-fab:not([disabled]):hover,
+  .md-button.md-fab:not([disabled]):hover,
+  button.md-fab:not([disabled]):hover {
+    background-color: $simba-fab-highlight;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  .md-button.md-default-theme.md-accent.md-raised:not([disabled]).md-focused,
+  .md-button.md-default-theme.md-accent.md-fab:not([disabled]).md-focused,
+  .md-button.md-accent.md-raised:not([disabled]).md-focused,
+  .md-button.md-accent.md-fab:not([disabled]).md-focused,
+  .md-button.md-default-theme.md-fab:not([disabled]).md-focused,
+  button.md-default-theme.md-fab:not([disabled]).md-focused,
+  .md-button.md-fab:not([disabled]).md-focused,
+  button.md-fab:not([disabled]).md-focused {
+    background-color: $simba-fab-highlight;
+    color: rgba(0, 0, 0, 0.87) !important;
+  }
+  .md-button.md-default-theme.md-accent:not([disabled]) md-icon,
+  .md-button.md-accent:not([disabled]) md-icon {
+    color: $simba-fab-bgcolor;
+  }
+
+  md-card {
+    background: aladdin-color("background");
+    height: 100%;
+    margin: 0;
+
+    md-card-title {
+      background-color: aladdin-color("secondary"); //#ff5722;
+      color: #fff;
+      height: 48px;
+      max-height: 48px;
+      padding: 0;
+
+      md-card-title-text {
+        @include aladdin-card-title-text;
+
+        .md-headline {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 24px;
+        }
+      }
+    }
+    label {
+      cursor: pointer;
+      color: #fff;
+    }
+    md-input-container:not(.md-input-has-value) {
+      input:not(:focus),
+      input:focus {
+        border-bottom-color: rgba(255, 255, 255, 0.62);
+      }
+    }
+    .dropdown-container {
+      md-input-container { 
+        width: 100%;
+
+        md-select > md-select-value > .ember-power-select-selected-item {
+          color: rgba(255, 255, 255, 0.62);
+        }
+        md-select:focus {
+          md-select-value {
+            border-bottom-color: rgba(255, 255, 255, 0.62);
+          }
+          .ember-power-select-placeholder {
+            color: rgba(255, 255, 255, 0.62);
+          }
+        }
+        &.md-input-has-value {
+          label {color: rgba(255, 255, 255, 0.62);}
+        }
+        md-select-value,
+        md-select-value > .md-select-icon {
+          background-color: transparent;
+          color: rgba(255, 255, 255, 0.62);
+          border-bottom-color: rgba(255, 255, 255, 0.62);
+        }
+      }
+    }
+    md-input-container {
+      &.md-default-theme:not(.md-input-invalid) {
+        &.md-input-focused,
+        &.md-input-has-value  {
+          label,
+          md-icon {
+            color: rgba(255, 255, 255, 0.62);
+          }
+          input {
+            border-bottom-color: rgba(255, 255, 255, 0.62);
+          }
+        }
+      }
+      
+      margin: 0;
+      label {
+        color: rgba(255, 255, 255, 0.62);
+      }
+      .md-input {
+        color: #fff;
+      }
+
+      md-select {
+        margin: 0;
+        -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+        order: 2;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.62);
+        border-bottom-color: rgba(255, 255, 255, 0.62);
+        width: 100%;
+
+        .md-select-placeholder.md-select-value {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-ordinal-group: 2;
+          -ms-flex-order: 1;
+          order: 1;
+          pointer-events: none;
+          -webkit-font-smoothing: antialiased;
+          padding-left: 2px;
+          z-index: 1;
+        }
+      }
+    }
+    md-card-content {
+      overflow: auto;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: calc(100% - 48px);
+
+      md-content,
+      .md-subheader > .md-subheader-inner{
+        background: aladdin-color("background");
+
+        md-card-content > h2 {
+          background: aladdin-color("background");
+        }
+      }
+
+      .md-button.md-default-theme[disabled],
+      button.md-default-theme[disabled],
+      .md-button[disabled],
+      button[disabled] {
+        background: white;
+        cursor: not-allowed;
+        opacity: .75;
+      }
+
+      .md-button.md-default-theme:not([disabled]):hover,
+      .md-button:not([disabled]):hover {
+        background-color: rgba(158, 158, 158, 0.5);
+      }
+
+      .md-button.md-default-theme.md-raised,
+      .md-button.md-raised {
+        background-color: transparent;
+        color: aladdin-color("secondary");
+      }
+
+      .md-button.md-default-theme.md-primary,
+      .md-button.md-primary {
+        color: aladdin-color("secondary");
+      }
+
+      md-list-item .md-list-item-inner > p,
+      md-list-item .md-list-item-inner,
+      #transaction-meta {
+        color: aladdin-color("secondary");
+        background: aladdin-color("background");
+      }
+
+      .left.bordered {
+        border-left: 1px solid #555651;
+      }
+
+      .md-subheader-content {
+        font-weight: bold;
+        color: #989892;
+        background: aladdin-color("background");
+      }
+
+      .grid-list {
+        md-card {
+          margin: 0px;
+          transition: all 400ms ease-out 50ms;
+
+          .atat-options {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+        }
+      }
+
+      md-list {
+        left: 0;
+        right: 0;
+        top: 0;
+        position: absolute;
+      }
+    }
+  }
+}

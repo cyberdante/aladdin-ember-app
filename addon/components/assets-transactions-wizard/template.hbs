@@ -1,0 +1,171 @@
+{{#paper-card as |card|}}
+  {{#if showTitle}}
+    {{#card.title as |title|}}
+      {{#title.text as |text|}}
+        {{#text.headline}}
+          Assets & Transactions
+        {{/text.headline}}
+      {{/title.text}}
+    {{/card.title}}
+  {{/if}}
+  {{#card.content}} 
+      {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
+       {{#if editingContract}}
+       <span style= "color: white;"> Disabled</span>
+       {{else}}
+       <div class="layout-row layout-wrap">
+            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |leftpanel|}}
+              {{#leftpanel.content}}
+                {{#if editingTxnAdd}}
+                  <div class="atat-options">
+                    {{#paper-speed-dial
+                      onMouseEnter=(action (mut open) true) onMouseLeave=(action (mut open) false)
+                      open=open direction="left" onToggle=(action (mut open)) as |dial|}}
+                      {{#dial.trigger}}
+                        {{#paper-button accent=true fab=true}}
+                          {{paper-icon "more-vert"}}
+                        {{/paper-button}}
+                      {{/dial.trigger}}
+                      {{#dial.actions as |actions|}}
+                        {{#actions.action}}
+                          {{#paper-button mini=true onClick=(action "toggleOffDeleteTxn")}}
+                            {{#paper-icon "remove"}}
+                              {{#paper-tooltip position="top"}}
+                                Remove asset or transaction
+                              {{/paper-tooltip}}
+                            {{/paper-icon}}
+                          {{/paper-button}}
+                        {{/actions.action}}
+                        {{#actions.action}}
+                          {{#paper-button mini=true onClick=(action "toggleOffAddTxn")}}
+                            {{#paper-icon "add"}}
+                              {{#paper-tooltip position="top"}}
+                                Add asset or transaction
+                              {{/paper-tooltip}}
+                            {{/paper-icon}}
+                          {{/paper-button}}
+                        {{/actions.action}}
+                      {{/dial.actions}}
+                    {{/paper-speed-dial}}
+                  </div>
+                {{/if}}
+                {{#paper-subheader}}Assets{{/paper-subheader}}
+                {{#each assets as |asset|}}
+                  {{#paper-item as |controls|}}
+                    {{#if editingAssetTitle}}
+                      {{input value=asset.title enter=(action 'toggleOff' asset.title ) }}
+                    {{else}}
+                      <p onClick= {{action "toggleAsset" asset.title}}>{{asset.title}}</p>
+                    {{/if}}
+                    <div class="md-secondary-container">
+                      {{#controls.button raised=true onClick=(action "toggleAssetState" asset)}}
+                        {{#if asset.expanded}}
+                          Hide Transactions {{fa-icon 'chevron-up'}}
+                        {{else}}
+                          View Transactions {{fa-icon 'chevron-down'}}
+                        {{/if}}
+                      {{/controls.button}}
+                    </div>
+                  {{/paper-item}}
+                  {{#if (and asset.expanded asset.transactions)}}
+                    {{#paper-subheader}}Transactions{{/paper-subheader}}
+                    {{#each asset.transactions as |txn| }}
+                      {{#paper-item as |controls|}}
+                        {{#if editingTxnTitle}}
+                          {{input value=txn.title enter=(action 'toggleOffTxn' txn.title) }}
+                        {{else}}
+                          <p onClick={{action "toggleTxn" txn.title}}>{{txn.title}}</p>
+                        {{/if}}
+                        <div class="md-secondary-container">
+                          {{#controls.button raised=true onClick=(action "selectTxn" txn)}}
+                            View Properties
+                          {{/controls.button}}
+                        </div>
+                      {{/paper-item}}
+                    {{/each}}
+                  {{/if}}
+                {{/each}}
+                {{paper-divider}}
+                {{#if editingTxnAddName}}
+                  <div class="layout-row">
+                      <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                        {{paper-input input="text" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
+                      </div>
+                      <div class="layout-column flex-50">
+                        {{paper-input input="text" label="Asset Name" value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}
+                      </div>
+                  </div>
+                  {{#each parameters as |parameter|}}
+                    <div class="layout-row">
+                        <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                          {{paper-input input="text" label="Parameter Name" value=parameter.name onChange=(action (mut parameter.name))}}
+                        </div>
+                        <div class="layout-column flex-50 layout-align-center-start dropdown-container">
+                          {{#paper-select
+                            label="Parameter Type"
+                            options=options
+                            selected=parameter.type
+                            onChange=(action (mut parameter.type))
+                            as |option|}}
+                              {{option}}
+                          {{/paper-select}}
+                        </div>
+                    </div>
+                    
+                  {{/each}}
+                  <br/>
+                  <div class="layout-row">
+                    <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
+                      <span>{{fa-icon "plus"}} Add more parameters</span>
+                    </button>
+                    <br/>
+                    <button class="layout-column flex-50 md-button md-raised" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
+                      <span>{{fa-icon 'check'}} Done</span>
+                    </button>
+                  </div>
+                  <hr> 
+                {{/if}}
+                
+                {{#if editingTxnDeleteName}}
+                  {{#paper-input input="text" label="Txn to delete" style="color: #DE2A00"  value=deleteTxnName onChange=(action (mut deleteTxnName))}}{{/paper-input}}
+                  {{#paper-button raised=true mini=true onClick=(action 'deleteTxn')}}-{{/paper-button}}
+                {{/if}}
+              {{/leftpanel.content}}
+            {{/paper-card}}
+            {{#if txnParameters}}
+              {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |rightpanel|}}
+                {{#rightpanel.content}}
+                    <div class="layout-row">
+                      {{#paper-subheader}}Parameters{{/paper-subheader}}
+                    </div>
+                    {{#each txnParameters as |param|}}
+                      <div class="layout-row" style="margin-bottom: 15px;">
+                        <div class="layout-column flex-30 layout-align-center-end" style="margin-right: 15px;">
+                          {{#if editingParamTitle}}
+                            {{input value=param.title enter=(action 'toggleOffParam' param.txn param) }}
+                          {{else}}
+                            <label onClick={{action "toggleParam" param.title}}>{{param.title}}</label>
+                          {{/if}}
+                        </div>
+                        <div class="layout-column layout-md-column flex-30">
+                          <select onchange={{action 'typeChangeAdd' param.txn param }}>
+                            <option value={{param.type}}>{{param.type}}</option>
+                            {{#each options as |option|}}
+                              <option value={{option}}>{{option}}</option>
+                            {{/each}}
+                          </select>
+                        </div>
+                      </div>
+                    {{/each}}
+                    {{paper-divider}}
+                    <div class="layout-row">
+                      {{#paper-subheader}}Returns: {{txnReturnsType}}{{/paper-subheader}}
+                    </div>
+                {{/rightpanel.content}}
+              {{/paper-card}}
+            {{/if}}
+        </div>
+        {{/if}}
+      {{/paper-content}}
+  {{/card.content}}
+{{/paper-card}}
