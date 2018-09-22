@@ -1,0 +1,130 @@
+---
+- asset:  &Container 
+      name:   assetId
+      type:   Container
+- asset:  &Lock 
+      name:   assetId
+      type:   Lock
+- asset:  &Manifest 
+      name:   assetId
+      type:   Manifest
+
+  transaction: 
+    properties: object
+    arrived: 
+      type: object
+      properties: 
+        dependencies: *Container
+        sNum: 
+          name: sNum
+          type: number
+        arrived: 
+          name: arrived
+          type: number
+      title: arrived
+    tampered: 
+      type: object
+      properties: 
+        dependencies: *Lock
+        sNum: 
+          name: sNum
+          type: number
+        tampered: 
+          name: tampered
+          type: number
+      title: tampered
+    Lock: 
+      type: object
+      properties: 
+        dependencies: *Container
+        sNum: 
+          name: sNum
+          type: number
+        locked: 
+          name: locked
+          type: number
+      title: Lock
+    idle: 
+      type: object
+      properties: 
+        dependencies: *Container
+        sNum: 
+          name: sNum
+          type: number
+        idle: 
+          name: idle
+          type: number
+      title: idle
+    unlock: 
+      type: object
+      properties: 
+        dependencies: *Lock
+        sNum: 
+          name: sNum
+          type: number
+        tampered: 
+          name: tampered
+          type: number
+        unlocked: 
+          name: unlocked
+          type: number
+      title: unlock
+    locked: 
+      type: object
+      properties: 
+        dependencies: *Lock
+        sNum: 
+          name: sNum
+          type: number
+        tampered: 
+          name: tampered
+          type: number
+        locked: 
+          name: locked
+          type: number
+      title: locked
+    saveManifest: 
+      type: object
+      properties: 
+        dependencies: *Manifest
+        sNum: 
+          name: sNum
+          type: number
+        carNum: 
+          name: carNum
+          type: number
+      title: saveManifest
+    departed: 
+      type: object
+      properties: 
+        dependencies: *Container
+        sNum: 
+          name: sNum
+          type: number
+        departed: 
+          name: departed
+          type: number
+      title: departed
+    Manifest: 
+      type: object
+      properties: 
+        dependencies: *Container
+        contents: 
+          name: contents
+          type: string
+        locked: 
+          name: locked
+          type: number
+      title: Manifest
+    received: 
+      type: object
+      properties: 
+        dependencies: *Container
+        sNum: 
+          name: sNum
+          type: number
+        received: 
+          name: received
+          type: number
+      title: received
+
