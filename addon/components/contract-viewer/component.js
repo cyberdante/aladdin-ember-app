@@ -66,7 +66,8 @@ export default Component.extend({
     // let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
     // if(!errors.length) {
-      //  this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    if(!this.readOnly)
+       this.blockchainUtils.solToYaml(newValue, this.viewChange);
     // }
   },
 
@@ -91,7 +92,7 @@ export default Component.extend({
 
   actions: {
     valueUpdated(newValue) {
-      debounce(this, this.setUpdatedValueLazily, newValue, 500);
+      debounce(this, this.setUpdatedValueLazily, newValue, 1500);
     },
 
     compile() {
