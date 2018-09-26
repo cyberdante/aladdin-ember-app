@@ -5,14 +5,12 @@ import {
 import { inject as service } from '@ember/service';
 import { observer } from '@ember/object';
 import layout from './template';
-import { containerYAML } from './examples';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
     layout,
     
     blockchainUtils: service(),
-    yaml: containerYAML,
 
     title: 'Application',
 
