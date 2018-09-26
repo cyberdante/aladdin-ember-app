@@ -172,7 +172,8 @@ export default Component.extend({
     },
     closePromptDialog(){
         this.set('showDialog',false);
-        console.log(this.showDialog)
+        this.set('editingTxnAdd', true);
+        this.set('editingTxnAddName', false);
     }
    
   }
