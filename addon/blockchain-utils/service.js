@@ -609,7 +609,7 @@ schemaToYaml(genSchema){
       let myRe3 = new RegExp(/}/)
       let myRe4 = new RegExp(/public{/)
       let myRe5 = new RegExp(/{/)
-      let myRe6 = new RegExp(/public {/)
+      let myRe6 = new RegExp(/public\s{/)
       let myReFunc = new RegExp(/function/)
       let infunction = false;
       let functionBody = {};
@@ -655,9 +655,9 @@ schemaToYaml(genSchema){
 
         }
         let funct = JSON.stringify(functionBody);
-        // console.log(funct);
 
-     solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
+        // console.log(funct);
+      solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
       const compiledCode = compiler.compile(code)
       let className = /contract\s+(\w+)\s?{/.exec(code)[1];
       const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
