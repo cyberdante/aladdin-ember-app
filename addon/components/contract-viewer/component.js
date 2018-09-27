@@ -14,7 +14,7 @@ export default Component.extend({
   blockchainUtils: service(),
 
   value: '',
-  editorSession: null, 
+  editorSession: null,
 
   editingContract: false,
   highlightActiveLine: true,
@@ -31,7 +31,7 @@ export default Component.extend({
   isCompiling: false,
 
   theme: 'ace/theme/monokai',
-  themes: computed(function() {
+  themes: computed(function () {
     return [
       'ace/theme/monokai',
       'ace/theme/textmate',
@@ -40,20 +40,20 @@ export default Component.extend({
     ];
   }),
 
-  toggleIcon: computed('manualMode', function() {
+  toggleIcon: computed('manualMode', function () {
     return this.get('manualMode') ? 'lock' : 'lock_open';
   }),
 
   contractType: 'ethereum',
-  computedMode: computed('contractType', function(){
-    switch(this.get('contractType')) {
+  computedMode: computed('contractType', function () {
+    switch (this.get('contractType')) {
       case 'ethereum': return 'ace/mode/solidity';
       case 'fabric': return 'ace/mode/golang';
       default: return 'ace/mode/text'
     }
   }),
 
-  overlay: computed(function() {
+  overlay: computed(function () {
     return {
       type: 'warning',
       text: 'Warning placeholder code',
@@ -61,12 +61,12 @@ export default Component.extend({
     }
   }),
 
-  overlays: computed('overlay.{type,text}', 'overlay.range.{start,end}.{row,column}', function() {
+  overlays: computed('overlay.{type,text}', 'overlay.range.{start,end}.{row,column}', function () {
     return [/*this.get('overlay')*/];
   }),
 
   setUpdatedValueLazily(newValue) {
-    if(this.isDestroyed || this.isDestroying) {
+    if (this.isDestroyed || this.isDestroying) {
       return;
     }
     this.set('value', newValue);
@@ -74,24 +74,30 @@ export default Component.extend({
     // let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
     // if(!errors.length) {
-    if(!this.readOnly)
-       this.blockchainUtils.solToYaml(newValue, this.viewChange);
+    // if (!this.readOnly) {
+    //   const self = this;
+    //   self.set('isCompiling', true);
+    //   this.blockchainUtils.solToYaml(newValue, (yamlCode) => {
+    //     self.set('yaml', yamlCode);
+    //     self.set('isCompiling', false);
+    //   });
+    // }
     // }
   },
 
   init() {
     this._super(...arguments);
   },
-  
+
   didRender() {
-    if(this.isDestroyed || this.isDestroying) {
+    if (this.isDestroyed || this.isDestroying) {
       return;
     }
     let beautify = ace.require('ace/ext/beautify');
     if (!this.editorSession) {
       let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
       let editor = ace.edit(element);
-      editor.on('change', function(/*evt*/) {
+      editor.on('change', function (/*evt*/) {
         // console.log('viewer', evt);
       });
       this.set('editorSession', editor.getSession());
