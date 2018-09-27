@@ -3,6 +3,12 @@
         {{#title.text as |text|}}
             {{#text.headline}}Log{{/text.headline}}
         {{/title.text}}
+        {{#if (not readOnly)}}
+            {{#paper-button primary=false raised=true class="shaking" onClick=(action "compile") diabled=isCompiling}}
+                {{paper-icon "settings"}} 
+                <small>Compile</small>
+            {{/paper-button}}
+        {{/if}}
     {{/card.title}}
     {{#card.content}}
         {{#paper-list}}
@@ -20,7 +26,6 @@
         {{#card.actions}}
             {{#paper-item class="md-1-line"}}
                 <div class="md-list-item-text bold-text">
-                    {{!-- {{outputs.length}}  --}}
                     No errors and/or warnings found
                 </div>
             {{/paper-item}}

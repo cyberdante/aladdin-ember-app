@@ -1,7 +1,7 @@
 import Component from '@ember/component';
-import { observer, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
-import { A } from '@ember/array';
+// import { A } from '@ember/array';
 import ace from 'ember-ace';
 import { Range } from 'ember-ace';
 import { inject as service } from '@ember/service';
@@ -10,7 +10,7 @@ import layout from './template';
 export default Component.extend({
   layout,
   classNames: ['md-padding', 'contract-viewer'],
-
+  classNameBindings: ['manualMode'],
   blockchainUtils: service(),
 
   value: '',
@@ -40,6 +40,10 @@ export default Component.extend({
     ];
   }),
 
+  toggleIcon: computed('manualMode', function() {
+    return this.get('manualMode') ? 'lock' : 'lock_open';
+  }),
+
   contractType: 'ethereum',
   computedMode: computed('contractType', function(){
     switch(this.get('contractType')) {
@@ -62,6 +66,9 @@ export default Component.extend({
   }),
 
   setUpdatedValueLazily(newValue) {
+    if(this.isDestroyed || this.isDestroying) {
+      return;
+    }
     this.set('value', newValue);
     // let errors = this.get('editorSession').getAnnotations();
     // Call parent component with the new yaml value only if there are currently no errors
@@ -75,6 +82,9 @@ export default Component.extend({
   },
   
   didRender() {
+    if(this.isDestroyed || this.isDestroying) {
+      return;
+    }
     let beautify = ace.require('ace/ext/beautify');
     if (!this.editorSession) {
       let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
@@ -94,25 +104,9 @@ export default Component.extend({
       debounce(this, this.setUpdatedValueLazily, newValue, 500);
     },
 
-    compile() {
-      const self = this;
-      this.set('isCompiling', true);
-      this.blockchainUtils.compileSol(this.value, function(err) {
-        if (err) {
-          let id = 0;
-          let logValues = err.map(strErr => {
-            let type = /Error:/gi.test(strErr) ? "error": "warning";
-            return {id: id++, type: type, value: strErr};
-          });
-          self.set('logValues', A(logValues));
-        }
-        self.set('isCompiling', false);
-      });
-    },
-
-    toggleEdit(){
-        this.set('manualMode', !this.manualMode);
-        this.set('readOnly', !this.readOnly);
+    toggleEditMode() {
+      const updatedValue = this.get('value');
+      this.get('toggleEditMode')(updatedValue);
     }
   }
 });

@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import EmberObject, { observer } from '@ember/object';
 import { A } from '@ember/array';
 import layout from './template';
 
@@ -10,5 +9,11 @@ export default Component.extend({
 
     init() {
         this._super(...arguments);
+    },
+
+    actions: {
+        compile() {
+          this.get('compile')();
+        }
     }
 });
