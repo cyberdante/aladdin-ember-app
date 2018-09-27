@@ -4,12 +4,17 @@
   &.output-error {
     p {
       color: $color-error-tinted;
-      margin: 4px 0;
+      font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
+      font-size: 12px;
+      margin: 0;
     }
   }
   &.output-warning {
     p {
       color: aladdin-color("warning");
+      font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
+      font-size: 12px;
+      margin: 0;
     }
   }
 }

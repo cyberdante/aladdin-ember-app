@@ -19,6 +19,11 @@
     rightComponent=rightComponent
     rightComponentName=rightComponentName
     rightWidth=rightWidth
+
+    yaml=yaml
+    code=code
+    isCompiling=isCompiling
+    toggleEditMode=(action toggleEditMode)
 }}
   {{#unless fullScreen}}
     {{#if leftColumnShow}}
@@ -51,8 +56,8 @@
             rightWidth=rightWidth
 
             logValues=logValues
-
             manualMode=manualMode
+            toggleEditMode=(action toggleEditMode)
         }}
       </div>
     {{/if}}
@@ -91,8 +96,8 @@
             rightWidth=rightWidth
 
             logValues=logValues
-
             manualMode=manualMode
+            toggleEditMode=(action toggleEditMode)
         }}
       </div>
     {{/if}}
@@ -127,8 +132,8 @@
           rightWidth=rightWidth
 
           logValues=logValues
-
           manualMode=manualMode
+          toggleEditMode=(action toggleEditMode)
       }}
     </div>
   {{/if}}

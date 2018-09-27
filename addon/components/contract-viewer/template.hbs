@@ -1,42 +1,45 @@
 {{#paper-card as |card|}}
     {{#card.content}}
-        {{#ember-ace
-            minlines=20
-            value=value
-            mode=computedMode
-            highlightActiveLine=highlightActiveLine
-            showPrintMargin=showPrintMargin
-            readOnly=readOnly
-            update=(action 'valueUpdated')
-            tabSize=tabSize
-            useSoftTabs=useSoftTabs
-            useWrapMode=useWrapMode
-            editorClass="contract-viewer-wrapper"
-            showInvisibles=showInvisibles
-            showGutter=showGutter
-            showLineNumbers=showLineNumbers
-            showIndentGuides=showIndentGuides
-            theme=theme
-            overlays=overlays 
-            as |editor|}}
-        {{/ember-ace}}
-        {{paper-progress-circular warn=true diameter=96 disabled=(not isCompiling)}}
-        <button style="
-            color: white;
-            background: black;
-            position: absolute;
-            top: 100px;
-            right: 0;
-            margin: auto;" {{action 'toggleEdit'}}>Toggle Manual Mode</button>
-
-        {{#if (not readOnly)}}
-        <button style="
-            color: white;
-            background: black;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            margin: auto;" {{action 'compile'}}>Compile</button>
+        {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
+            <div class="layout-row layout-wrap">
+                {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |btnContainer|}}
+                    {{#btnContainer.content}}
+                        <div class="manual-toggler">
+                            {{#paper-button fab=true primary=true raised=true disabled=isCompiling onClick=(action "toggleEditMode")}}
+                                {{#paper-icon toggleIcon}}
+                                    {{#paper-tooltip position="left"}}
+                                        Toggle Manual Mode
+                                    {{/paper-tooltip}}
+                                {{/paper-icon}}
+                            {{/paper-button}}
+                        </div>
+                        {{#ember-ace
+                            minlines=20
+                            value=value
+                            mode=computedMode
+                            highlightActiveLine=highlightActiveLine
+                            showPrintMargin=showPrintMargin
+                            readOnly=readOnly
+                            update=(action 'valueUpdated')
+                            tabSize=tabSize
+                            useSoftTabs=useSoftTabs
+                            useWrapMode=useWrapMode
+                            editorClass="contract-viewer-wrapper"
+                            showInvisibles=showInvisibles
+                            showGutter=showGutter
+                            showLineNumbers=showLineNumbers
+                            showIndentGuides=showIndentGuides
+                            theme=theme
+                            overlays=overlays 
+                            as |editor|}}
+                        {{/ember-ace}}
+                    {{/btnContainer.content}}
+                {{/paper-card}}
+            </div>
+        {{/paper-content}}
+        
+        {{#if isCompiling}}
+            {{paper-progress-circular warn=true diameter=96 mode="indeterminate"}}
         {{/if}}
     {{/card.content}}
 {{/paper-card}}

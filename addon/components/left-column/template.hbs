@@ -22,4 +22,14 @@
   </div>
 </div>
 
-{{component leftComponent showTitle=true schema=schema code=code yaml=yaml viewChange=(action viewChange leftComponent) logValues=logValues manualMode=manualMode}}
+{{component 
+    leftComponent
+    showTitle=true
+    schema=schema
+    code=code
+    yaml=yaml
+    viewChange=(action viewChange leftComponent)
+    logValues=logValues
+    manualMode=manualMode
+    toggleEditMode=(action this.toggleEditMode)
+}}

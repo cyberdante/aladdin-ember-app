@@ -52,6 +52,37 @@ const containerYAML = `---
 - asset:  &container                 # defines anchor label
       name:   assetId
       type:   container
+- transaction: 
+   properties: object
+   arrived:
+    type: object
+    properties:       # method variable
+      sNum:
+        name: sNum
+        type: number
+      arrived:
+        name: arrived
+        type: number
+      dependencies:  *container
+    title: arrived 
+- assignAsset: 
+   properties: object
+   lock:
+    type: object
+    properties:
+      sNum:
+        name: sNum
+        type: number
+      locked:
+        name: locked
+        type: number
+      dependencies:  *container
+    title: lock
+   
+
+- asset:  &container                 # defines anchor label
+      name:   assetId
+      type:   container
 - asset:  &lock                
       name:   assetId
       type:   lock
@@ -204,7 +235,6 @@ const containerYAML = `---
         name: received
         type: number
       dependencies:  *container
-    title: received
-`;
+    title: received`;
 
 export { auditYAML, containerYAML };
