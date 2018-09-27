@@ -4,7 +4,7 @@
             {{#text.headline}}Log{{/text.headline}}
         {{/title.text}}
         {{#if (not readOnly)}}
-            {{#paper-button primary=false raised=true class="shaking" onClick=(action "compile") diabled=isCompiling}}
+            {{#paper-button primary=false raised=true onClick=(action "compile") disabled=isCompiling}}
                 {{paper-icon "settings"}} 
                 <small>Compile</small>
             {{/paper-button}}
