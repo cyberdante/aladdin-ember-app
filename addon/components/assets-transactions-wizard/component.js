@@ -22,6 +22,7 @@ export default Component.extend({
   editingTxnDelete: true,
   editingTxnAddName: false,
   editingTxnDeleteName: false,
+  showDialog: false,
   addParams: true,
   origTitle: '',
   tranParamTitle: '',
@@ -33,14 +34,10 @@ export default Component.extend({
   origParamTitle: '',
   tranAssetTitle: '',
   newTxnName: '',
-  deleteTxnName: '',
-  // tranParamType: O.create({}),
   txnParamType: '',
   parameters: computed(function () {
     return A([{}]);
   }),
-
-  // selectedAsset: O.create({}),
   selectedTxn: O.create({}),
 
   typeSelected: '',
@@ -79,11 +76,6 @@ export default Component.extend({
   doneButtonDisabled: not('doneButtonEnabled'),
 
   actions: {
-    // selectAsset(asset) {
-    //   this.set('selectedAsset.isSelected', false);
-    //   asset.set('isSelected', true);
-    //   this.set('selectedAsset', asset);
-    // },
     toggleAssetState(asset) {
       asset.set('expanded', !asset.get('expanded'));
     },
@@ -99,8 +91,6 @@ export default Component.extend({
         }
         return acc;
       }, []);
-
-      // this.set('txnReturnsType', txn.meta.returns.type || 'void');
       this.set('txnReturnsType', 'void');
       this.set('txnParameters', A(params));
     },
@@ -142,7 +132,6 @@ export default Component.extend({
     addNewTxn() {
       let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema);
       this.set('schema', schema);
-      // console.log(JSON.parse(this.schema));
       this.set('editingTxnAddName', false);
       this.set('editingTxnAdd', true);
       this.set('newTxnName', '');
@@ -155,6 +144,7 @@ export default Component.extend({
     toggleOffAddTxn() {
       this.set('editingTxnAdd', false);
       this.set('editingTxnAddName', true);
+      this.set('showDialog', true);
     },
     toggleOffDeleteTxn() {
       this.set('editingTxnDelete', false);
@@ -169,20 +159,21 @@ export default Component.extend({
       this.set('addInput', true);
     },
     moreParams() {
-      // let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
-      // this.parameters[last].type = this.txnParamType;
       this.get('parameters').pushObject({ name: '', type: '' });
-      // console.log(this.parameters.length)
       for (var key in this.parameters) {
         if (this.parameters.hasOwnProperty(key)) {
-          // console.log(key + " -> " + this.parameters[key].name, this.parameters[key].type);
-        }
+       }
       }
-    }// ,
-    // doneParams() {
-    //   let last = Object.keys(this.parameters)[Object.keys(this.parameters).length - 1]
-    //   this.parameters[last].type = this.txnParamType;
-    //   this.set('addingTxn', false);
-    // }
+    },
+    openPromptDialog(){
+        this.set('showDialog',true);
+        console.log(this.showDialog)
+    },
+    closePromptDialog(){
+        this.set('showDialog',false);
+        this.set('editingTxnAdd', true);
+        this.set('editingTxnAddName', false);
+    }
+   
   }
 });

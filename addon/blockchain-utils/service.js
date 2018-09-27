@@ -161,10 +161,11 @@ export default Service.extend({
 
     generateGraphYaml(schemaString) {
         let schema = JSON.parse(schemaString);
-        let nodeAsset = {};
-        nodeAsset.color = 'slategray3';
-        nodeAsset.shape = 'diamond';
-        nodeAsset.style = 'filled';
+        let nodeAsset = {
+            color: 'slategray3',
+            shape: 'diamond',
+            style: 'filled'
+        };
 
         let nodeTransaction = {};
         nodeTransaction.style = 'filled';
@@ -426,7 +427,7 @@ export default Service.extend({
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
                 if (txnTitle == schema.properties[property].title) {
-                    for (var pkey in schema.properties[property]) {
+                    for (let pkey in schema.properties[property]) {
                         if (pkey == oldParamTitle) {
                             schema.properties[property][newParamTitle] = {}
                             schema.properties[property][newParamTitle].name = newParamTitle;
@@ -452,7 +453,7 @@ export default Service.extend({
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
                 if (txnTitle == schema.properties[property].title) {
-                    for (var pkey in schema.properties[property]) {
+                    for (let pkey in schema.properties[property]) {
                         if (pkey == paramTitle) {
                             schema.properties[property][pkey].type = newParamType;
                         }
@@ -545,11 +546,11 @@ export default Service.extend({
         let schema = {};
         schema.transaction = {};
         schema.transaction.properties = (typeof schema);
-        var assetList = {};
+        let assetList = {};
 
         Object.keys(schemaToParse).forEach(function (key) {
             if (key === 'properties') {
-                for (var ikey in schemaToParse[key]) {
+                for (let ikey in schemaToParse[key]) {
 
                     let fn = {};
                     fn.title;
@@ -562,7 +563,7 @@ export default Service.extend({
                         assetList[schemaToParse[key][ikey].dependencies.type] = 0;
                         fn.properties.dependencies = "*" + schemaToParse[key][ikey].dependencies.type;
                     }
-                    for (var pkey in schemaToParse[key][ikey]) {
+                    for (let pkey in schemaToParse[key][ikey]) {
                         if (pkey != 'dependencies' && pkey != 'title')
                             fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
                     }
@@ -577,19 +578,12 @@ export default Service.extend({
         });
         let yamlString = '---';
 
-        for (var assets in assetList) {
+        for (let assets in assetList) {
             yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
         }
         yamlString += "\n";
-        var ymlText = YAMLStringify(schema).replace(/["]+/g, '');
-        var stripedYml = ymlText.replace("---", '')
-
-        for (var assets in assetList) {
-            yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
-        }
-        yamlString += "\n";
-        var ymlText = YAMLStringify(schema).replace(/["]+/g, '');
-        var stripedYml = ymlText.replace("---", '')
+        let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
+        let stripedYml = ymlText.replace("---", '')
 
         let outputYaml = yamlString + stripedYml;
         return outputYaml;
@@ -608,7 +602,6 @@ export default Service.extend({
     },
 
     solToYaml(code, cb) {
-
         let res = code.split("\n");
 
         let myRe = new RegExp(/public{}/)
@@ -616,14 +609,14 @@ export default Service.extend({
         let myRe3 = new RegExp(/}/)
         let myRe4 = new RegExp(/public{/)
         let myRe5 = new RegExp(/{/)
-        let myRe6 = new RegExp(/public {/)
+        let myRe6 = new RegExp(/public\s{/)
         let myReFunc = new RegExp(/function/)
         let infunction = false;
         let functionBody = {};
         functionBody.functionName = {};
         let bracketCount = 0;
         let lines = '';
-        let fn = {}
+        let fn = {};
         for (let i = 0; i < res.length; ++i) {
             if (myReFunc.exec(res[i]) && (myRe.exec(res[i]) || myRe2.exec(res[i]))) {
                 continue;
@@ -639,30 +632,28 @@ export default Service.extend({
                 fn.lines = lines;
                 functionBody.functionName[fn.title] = fn;
                 lines = '';
-                fn = {}
+                fn = {};
             }
             if (infunction) {
                 lines = lines + res[i];
                 continue;
             }
 
-
             if (myReFunc.exec(res[i])) {
                 let spl = res[i].split(" ");
                 for (let x = 0; x < spl.length; ++x) {
-                    if (spl[x] == "function") {
+                    if (spl[x] === "function") {
                         fn.title = spl[x + 1];
                     }
                 }
-
             }
             if ((myRe4.exec(res[i]) || myRe6.exec(res[i])) && !myRe3.exec(res[i])) {
                 infunction = true;
             }
 
         }
-        let funct = JSON.stringify(functionBody);
-        console.log(funct);
+        // let funct = JSON.stringify(functionBody);
+        // console.log(funct);
 
         solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
             const compiledCode = compiler.compile(code)
@@ -671,7 +662,7 @@ export default Service.extend({
             let schema = {};
             schema.transaction = {};
 
-            var assetList = {};
+            let assetList = {};
             codeInterface.forEach(func => {
                 if (func.type != 'constructor') {
                     let fn = {};
@@ -679,19 +670,19 @@ export default Service.extend({
                     fn.type = typeof (fn);
                     fn.properties = {};
                     let isAsset = false;
-                    for (var key in func) {
+                    for (let key in func) {
                         if (key === "name") {
-                            for (var prop in functionBody) {
-                                for (var pkey in functionBody[prop])
+                            for (let prop in functionBody) {
+                                for (let pkey in functionBody[prop])
                                     if (pkey === func[key]) {
                                         fn.functionBody = functionBody[prop][pkey].lines;
                                     }
                             }
                             fn.title = func[key];
                         }
-                        if (key == "inputs") {
-                            for (var ikey in func[key]) {
-                                if (isAsset == true) {
+                        if (key === "inputs") {
+                            for (let ikey in func[key]) {
+                                if (isAsset) {
                                     isAsset = false;
                                     assetList[func[key][ikey].name] += 1;
                                     fn.properties.dependencies = "*" + func[key][ikey].name;
@@ -712,7 +703,6 @@ export default Service.extend({
                                 }
                             }
                         }
-
                     }
                     schema.transaction[fn.title] = fn;
                 }
@@ -724,9 +714,11 @@ export default Service.extend({
             }
             yamlString += "\n";
             let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
-            let strYml = ymlText.replace("---", '')
-            let outputYaml = yamlString + strYml;
-            console.log(outputYaml);
+            let stripedYml = ymlText.replace("---", '')
+
+            let outputYaml = yamlString + stripedYml;
+            // console.log(outputYaml);
+
             cb(outputYaml);
         });
     }

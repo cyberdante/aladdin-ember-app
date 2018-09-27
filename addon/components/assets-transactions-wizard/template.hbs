@@ -87,45 +87,58 @@
                 {{/each}}
                 {{paper-divider}}
                 {{#if editingTxnAddName}}
-                  <div class="layout-row">
-                      <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
-                        {{paper-input input="text" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
-                      </div>
-                      <div class="layout-column flex-50">
-                        {{paper-input input="text" label="Asset Name" value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}
-                      </div>
-                  </div>
-                  {{#each parameters as |parameter|}}
-                    <div class="layout-row">
+                  
+                {{/if}}
+                {{#if showDialog}}
+                {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog" ) origin=dialogOrigin}}
+
+                {{#paper-dialog-content}}
+                <div class="layout-row">
                         <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
-                          {{paper-input input="text" label="Parameter Name" value=parameter.name onChange=(action (mut parameter.name))}}
+                            {{paper-input input="text" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
                         </div>
-                        <div class="layout-column flex-50 layout-align-center-start dropdown-container">
-                          {{#paper-select
-                            label="Parameter Type"
-                            options=options
-                            selected=parameter.type
-                            onChange=(action (mut parameter.type))
-                            as |option|}}
-                              {{option}}
-                          {{/paper-select}}
+                        <div class="layout-column flex-50">
+                            {{paper-input input="text" label="Asset Name" value=tranAssetTitle onChange=(action (mut tranAssetTitle))}}
                         </div>
                     </div>
-                    
-                  {{/each}}
-                  <br/>
-                  <div class="layout-row">
-                    <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
-                      <span>{{fa-icon "plus"}} Add more parameters</span>
-                    </button>
+                    {{#each parameters as |parameter|}}
+                        <div class="layout-row">
+                            <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                            {{paper-input input="text" label="Parameter Name" value=parameter.name onChange=(action (mut parameter.name))}}
+                            </div>
+                            <div class="layout-column flex-50 layout-align-center-start dropdown-container">
+                            {{#paper-select
+                                label="Parameter Type"
+                                options=options
+                                selected=parameter.type
+                                onChange=(action (mut parameter.type))
+                                as |option|}}
+                                {{option}}
+                            {{/paper-select}}
+                            </div>
+                        </div>
+                        
+                    {{/each}}
                     <br/>
-                    <button class="layout-column flex-50 md-button md-raised" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
-                      <span>{{fa-icon 'check'}} Done</span>
-                    </button>
-                  </div>
-                  <hr> 
+                    <div class="layout-row">
+                        <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>
+                        <span>{{fa-icon "plus"}} Add more parameters</span>
+                        </button>
+                        <br/>
+                        <button class="layout-column flex-50 md-button md-raised" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
+                        <span>{{fa-icon 'check'}} Done</span>
+                        </button>
+                    </div>
+                    <hr> 
+                    {{/paper-dialog-content}}
+                    {{#paper-dialog-actions class="layout-row"}}
+                    <span class="flex"></span>
+                    {{#paper-button primary=true onClick=(action "closePromptDialog")}}Exit{{/paper-button}}
+                {{/paper-dialog-actions}}
+
+                {{/paper-dialog}}
                 {{/if}}
-                
+    
                 {{#if editingTxnDeleteName}}
                   {{#paper-input input="text" label="Txn to delete" style="color: #DE2A00"  value=deleteTxnName onChange=(action (mut deleteTxnName))}}{{/paper-input}}
                   {{#paper-button raised=true mini=true onClick=(action 'deleteTxn')}}-{{/paper-button}}
