@@ -10,11 +10,11 @@
   {{/if}}
   {{#card.content}} 
       {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
-       {{#if editingContract}}
-       <span style= "color: white;"> Disabled</span>
-       {{else}}
-       <div class="layout-row layout-wrap">
-            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |leftpanel|}}
+        {{#if editingContract}}
+          <span style= "color: white;"> Disabled</span>
+        {{else}}
+          <div class="layout-row layout-wrap">
+            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |leftpanel|}}
               {{#leftpanel.content}}
                 {{#if editingTxnAdd}}
                   <div class="atat-options">
@@ -130,20 +130,15 @@
                         </button>
                     </div>
                     <hr> 
-    {{/paper-dialog-content}}
-    {{#paper-dialog-actions class="layout-row"}}
-      <span class="flex"></span>
-      {{#paper-button primary=true onClick=(action "closePromptDialog")}}Exit{{/paper-button}}
-   {{/paper-dialog-actions}}
+                    {{/paper-dialog-content}}
+                    {{#paper-dialog-actions class="layout-row"}}
+                    <span class="flex"></span>
+                    {{#paper-button primary=true onClick=(action "closePromptDialog")}}Exit{{/paper-button}}
+                {{/paper-dialog-actions}}
 
-  {{/paper-dialog}}
-{{/if}}
-
-
-
-
-
-                
+                {{/paper-dialog}}
+                {{/if}}
+    
                 {{#if editingTxnDeleteName}}
                   {{#paper-input input="text" label="Txn to delete" style="color: #DE2A00"  value=deleteTxnName onChange=(action (mut deleteTxnName))}}{{/paper-input}}
                   {{#paper-button raised=true mini=true onClick=(action 'deleteTxn')}}-{{/paper-button}}
@@ -151,7 +146,7 @@
               {{/leftpanel.content}}
             {{/paper-card}}
             {{#if txnParameters}}
-              {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-50 flex-xl-50" as |rightpanel|}}
+              {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |rightpanel|}}
                 {{#rightpanel.content}}
                     <div class="layout-row">
                       {{#paper-subheader}}Parameters{{/paper-subheader}}

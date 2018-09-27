@@ -1,30 +1,54 @@
+@import "palette";
+
+$simba-fab-bgcolor: #cddc39;
+$simba-fab-highlight: #aeea00;
+
 .schema-validator-log {
-    width: 100%;
-  
-    md-card {
-      margin: 0;
-      md-card-title {
-        background-color: aladdin-color("secondary");
-        color: #fff;
-        height: 48px;
-        max-height: 48px;
-        padding: 0;
-  
-        md-card-title-text {
-          @include aladdin-card-title-text;
-  
-          .md-headline {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 24px;
-          }
+  height: 100%;
+  width: 100%;
+
+  md-card {
+    margin: 0;
+    md-card-title {
+      background-color: aladdin-color("secondary");
+      color: #fff;
+      height: 48px;
+      max-height: 48px;
+      padding: 0;
+
+      md-card-title-text {
+        @include aladdin-card-title-text;
+
+        .md-headline {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 24px;
         }
       }
-    }
-  
-    md-list-item,
-    md-list-item .md-list-item-inner {
-      min-height: 24px;
-      height: 26px;
+
+      .md-button.md-default-theme.md-raised {
+        background-color: $simba-fab-bgcolor;
+      }
+
+      .md-button.md-default-theme[disabled],
+      .md-button.md-default-theme.md-raised[disabled],
+      .md-button.md-default-theme.md-fab[disabled],
+      .md-button.md-default-theme.md-accent[disabled],
+      .md-button.md-default-theme.md-warn[disabled],
+      .md-button[disabled],
+      .md-button.md-raised[disabled],
+      .md-button.md-fab[disabled],
+      .md-button.md-accent[disabled],
+      .md-button.md-warn[disabled] {
+        cursor: not-allowed;
+        background-color: aladdin-color-alpha("warning", "light") !important;
+      }
     }
   }
+
+  md-list-item,
+  md-list-item .md-list-item-inner {
+    min-height: 24px;
+    height: auto;
+  }
+}

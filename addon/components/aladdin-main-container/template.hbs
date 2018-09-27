@@ -1,52 +1,67 @@
-{{#if manualMode}}
-  {{!-- {{contract-viewer manualMode=manualMode showTitle=false contractType='ethereum' logValues=logValues}} --}}
-    {{contract-viewer contractType='ethereum' readOnly=false logValues=logValues manualMode=manualMode}}
-{{else}}
+<div class="top">
+    {{#if manualMode}}
+        {{contract-viewer 
+            contractType='ethereum' 
+            readOnly=false
+            logValues=logValues
+            manualMode=manualMode
+            toggleEditMode=(action "toggleEditMode")
+            value=workingValue
+            isCompiling=isCompiling
+        }}
+    {{else}}
+        {{twiddle-panes-container
+            model=model
+            numColumns=numColumns
+            fullScreen=fullScreen
+            isCompiling=isCompiling
+            
+            leftColumnShow=leftColumnShow
+            leftColumnIcon=leftColumnIcon
+            leftComponent=leftComponent
+            leftComponentName=leftComponentName
+            leftWidth=leftWidth
 
-  {{twiddle-panes-container
-      yaml=yaml
-      model=model
-      numColumns=numColumns
-      fullScreen=fullScreen
-      isCompiling=isCompiling
+            centerColumnShow=centerColumnShow
+            centerColumnIcon=centerColumnIcon
+            centerComponent=centerComponent
+            centerComponentName=centerComponentName
+            centerWidth=centerWidth
 
-      leftColumnShow=leftColumnShow
-      leftColumnIcon=leftColumnIcon
-      leftComponent=leftComponent
-      leftComponentName=leftComponentName
-      leftWidth=leftWidth
+            rightColumnShow=rightColumnShow
+            rightColumnIcon=rightColumnIcon
+            rightComponent=rightComponent
+            rightComponentName=rightComponentName
+            rightWidth=rightWidth
 
-      centerColumnShow=centerColumnShow
-      centerColumnIcon=centerColumnIcon
-      centerComponent=centerComponent
-      centerComponentName=centerComponentName
-      centerWidth=centerWidth
+            showLeftColumn=(action "showLeftColumn")
+            hideLeftColumn=(action "hideLeftColumn")
 
-      rightColumnShow=rightColumnShow
-      rightColumnIcon=rightColumnIcon
-      rightComponent=rightComponent
-      rightComponentName=rightComponentName
-      rightWidth=rightWidth
+            showRightColumn=(action "showRightColumn")
+            hideRightColumn=(action "hideRightColumn") 
 
-      showLeftColumn=(action "showLeftColumn")
-      hideLeftColumn=(action "hideLeftColumn")
+            openCentralColumn=(action "openCentralColumn")
+            closeCentralColumn=(action "closeCentralColumn")
 
-      showRightColumn=(action "showRightColumn")
-      hideRightColumn=(action "hideRightColumn") 
+            focusColumn=(action "focusColumn")
+            exitFullScreen=(action "exitFullScreen")
 
-      openCentralColumn=(action "openCentralColumn")
-      closeCentralColumn=(action "closeCentralColumn")
-
-      focusColumn=(action "focusColumn")
-      exitFullScreen=(action "exitFullScreen")
-
-      logValues=logValues
-
-      manualMode=manualMode
-  }}
-
-{{/if}}
+            logValues=logValues
+            manualMode=manualMode
+            code=workingValue
+            yaml=yaml
+            toggleEditMode=(action "toggleEditMode")
+        }}
+    {{/if}}
+</div>
 
 <div class="bottom">
-    {{schema-validator-log outputs=logValues}}
+    {{schema-validator-log
+        outputs=logValues
+        logValues=logValues
+        isCompiling=isCompiling
+        manualMode=manualMode
+        readOnly=readOnly
+        compile=(action "compile")
+    }}
 </div>

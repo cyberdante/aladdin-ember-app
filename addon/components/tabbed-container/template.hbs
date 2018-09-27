@@ -13,9 +13,22 @@
             {{/each}}
         {{/paper-tabs}}
         {{#if (not-eq selectedComponent 'contract-viewer')}}
-            {{component selectedComponent showTitle=false schema=schema viewChange=(action viewChange)}}
+            {{component 
+                selectedComponent
+                showTitle=false
+                schema=schema
+                viewChange=(action viewChange) }}
         {{else}}
-            {{component selectedComponent showTitle=false contractType='ethereum' value=code viewChange=(action viewChange) logValues=logValues manualMode=manualMode}}
+            {{component 
+                selectedComponent
+                showTitle=false
+                contractType='ethereum'
+                value=code
+                viewChange=(action viewChange)
+                logValues=logValues
+                manualMode=manualMode
+                toggleEditMode=(action this.toggleEditMode)
+            }}
         {{/if}}
     {{/card.content}}
 {{/paper-card}}

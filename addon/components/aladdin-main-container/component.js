@@ -1,11 +1,11 @@
 import Component from '@ember/component';
 import ColumnsMixin from '../../mixins/columns';
 import PanesController from '../../mixins/panes-controller';
-import { EKMixin /*,keydown*/ } from 'ember-keyboard';
+import { EKMixin } from 'ember-keyboard';
 import { run } from '@ember/runloop';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
-// import { on } from '@ember/object/evented';
+import { inject as service } from '@ember/service';
 import layout from './template';
 import { inject as service } from '@ember/service';
 
@@ -15,6 +15,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     fullScreen: false,
     classNames: ['aladdin-main-container'],
     manualMode: false,
+    readOnly: true,
     logValues: A([]),
     blockchainUtils: service(),
     yaml: computed('code', function(){
@@ -31,12 +32,9 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             activeCol: '1'
         });
         this.set('fullScreen', false);
-        // this.set('leftColumnShow', true);
-        // this.set('centerColumnShow', true);
-        // this.set('rightColumnShow', false);
 
         this.set('logValues', A([
-          {id: 0, type: "warning", value: "no errors detected"}
+            { id: 0, type: "warning", value: "No errors detected" }
         ]));
     },
 
@@ -54,17 +52,17 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
 
     settings: null,
 
-    panels: computed(function() {
+    panels: computed(function () {
         return [{
             component: 'assets-transactions-wizard',
             componentName: 'Assets and Transactions',
             columnIcon: 'list-ul',
-            width: 50,
+            width: 30,
         }, {
             component: 'tabbed-container',
             componentName: 'Smart Contract and Graph',
             columnIcon: 'bezier-curve',
-            width: 50,
+            width: 70,
         }, {
             component: 'contract-editor',
             componentName: 'Contract Editor',
@@ -136,10 +134,8 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         },
 
         hideLeftColumn() {
-            if(this.get('rightColumnShow') || this.get('centerColumnShow')) {
+            if (this.get('rightColumnShow') || this.get('centerColumnShow')) {
                 this.set('leftColumnShow', false);
-            } else {
-                // console.log('cannot close only remaining panel');
             }
         },
 
@@ -148,18 +144,14 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         },
 
         hideRightColumn() {
-            if(this.get('leftColumnShow') || this.get('centerColumnShow')) {
+            if (this.get('leftColumnShow') || this.get('centerColumnShow')) {
                 this.set('rightColumnShow', false);
-            } else {
-                // console.log('cannot close only remaining panel');
             }
         },
 
         closeCentralColumn() {
-            if(this.get('leftColumnShow') || this.get('rightColumnShow')) {
+            if (this.get('leftColumnShow') || this.get('rightColumnShow')) {
                 this.set('centerColumnShow', false);
-            } else {
-                // console.log('cannot close only remaining panel');
             }
         },
 
@@ -173,6 +165,39 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             }).then(() => {
                 this.initializeColumns();
             });
+        },
+
+        compile() {
+            const self = this;
+            this.set('isCompiling', true);
+            this.blockchainUtils.compileSol(this.workingValue, function (err) {
+                if (err) {
+                    let id = 0;
+                    let logValues = err.map(strErr => {
+                        let type = /Error:/gi.test(strErr) ? "error" : "warning";
+                        return { id: id++, type: type, value: strErr };
+                    });
+                    self.set('logValues', A(logValues));
+                }
+                self.set('isCompiling', false);
+            });
+        },
+
+        toggleEditMode(value) {
+            const self = this;
+            this.set('workingValue', value || '');
+            if (this.manualMode) {
+                self.set('isCompiling', true);
+                this.blockchainUtils.solToYaml(value, (yamlCode) => {
+                    self.set('yaml', yamlCode);
+                    self.set('isCompiling', false);
+                    self.set('manualMode', !this.manualMode);
+                    self.set('readOnly', !this.readOnly);
+                });
+            } else {
+                self.set('manualMode', !this.manualMode);
+                self.set('readOnly', !this.readOnly);
+            }
         }
     }
 });

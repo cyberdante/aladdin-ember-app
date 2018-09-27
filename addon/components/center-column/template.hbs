@@ -25,4 +25,14 @@
     {{/if}}
   </span>
 </div>
-{{component centerComponent showTitle=true schema=schema code=code yaml=yaml viewChange=(action viewChange centerComponent) logValues=logValues manualMode=manualMode}}
+{{component 
+    centerComponent
+    showTitle=true
+    schema=schema
+    code=code
+    yaml=yaml
+    viewChange=(action viewChange centerComponent)
+    logValues=logValues
+    manualMode=manualMode
+    toggleEditMode=(action this.toggleEditMode)
+}}
