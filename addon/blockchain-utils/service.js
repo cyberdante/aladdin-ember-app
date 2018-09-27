@@ -584,6 +584,13 @@ export default Service.extend({
         var ymlText = YAMLStringify(schema).replace(/["]+/g, '');
         var stripedYml = ymlText.replace("---", '')
 
+        for (var assets in assetList) {
+            yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
+        }
+        yamlString += "\n";
+        var ymlText = YAMLStringify(schema).replace(/["]+/g, '');
+        var stripedYml = ymlText.replace("---", '')
+
         let outputYaml = yamlString + stripedYml;
         return outputYaml;
     },
@@ -601,11 +608,66 @@ export default Service.extend({
     },
 
     solToYaml(code, cb) {
-        // solc.BrowserSolc.loadVersion("soljson-v0.4.21+commit.dfe3193c.js", function (compiler) {
+
+        let res = code.split("\n");
+
+        let myRe = new RegExp(/public{}/)
+        let myRe2 = new RegExp(/public\s{}/)
+        let myRe3 = new RegExp(/}/)
+        let myRe4 = new RegExp(/public{/)
+        let myRe5 = new RegExp(/{/)
+        let myRe6 = new RegExp(/public {/)
+        let myReFunc = new RegExp(/function/)
+        let infunction = false;
+        let functionBody = {};
+        functionBody.functionName = {};
+        let bracketCount = 0;
+        let lines = '';
+        let fn = {}
+        for (let i = 0; i < res.length; ++i) {
+            if (myReFunc.exec(res[i]) && (myRe.exec(res[i]) || myRe2.exec(res[i]))) {
+                continue;
+            }
+            if (myRe5.exec(res[i])) {
+                ++bracketCount;
+            }
+            if (myRe3.exec(res[i])) {
+                --bracketCount;
+            }
+            if (!myRe4.exec(res[i]) && myRe3.exec(res[i]) && bracketCount == 1) {
+                infunction = false;
+                fn.lines = lines;
+                functionBody.functionName[fn.title] = fn;
+                lines = '';
+                fn = {}
+            }
+            if (infunction) {
+                lines = lines + res[i];
+                continue;
+            }
+
+
+            if (myReFunc.exec(res[i])) {
+                let spl = res[i].split(" ");
+                for (let x = 0; x < spl.length; ++x) {
+                    if (spl[x] == "function") {
+                        fn.title = spl[x + 1];
+                    }
+                }
+
+            }
+            if ((myRe4.exec(res[i]) || myRe6.exec(res[i])) && !myRe3.exec(res[i])) {
+                infunction = true;
+            }
+
+        }
+        let funct = JSON.stringify(functionBody);
+        console.log(funct);
+
         solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
-            const compiledCode = compiler.compile(code);
+            const compiledCode = compiler.compile(code)
             let className = /contract\s+(\w+)\s?{/.exec(code)[1];
-            const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface);
+            const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
             let schema = {};
             schema.transaction = {};
 
@@ -619,6 +681,12 @@ export default Service.extend({
                     let isAsset = false;
                     for (var key in func) {
                         if (key === "name") {
+                            for (var prop in functionBody) {
+                                for (var pkey in functionBody[prop])
+                                    if (pkey === func[key]) {
+                                        fn.functionBody = functionBody[prop][pkey].lines;
+                                    }
+                            }
                             fn.title = func[key];
                         }
                         if (key == "inputs") {
@@ -658,6 +726,7 @@ export default Service.extend({
             let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
             let strYml = ymlText.replace("---", '')
             let outputYaml = yamlString + strYml;
+            console.log(outputYaml);
             cb(outputYaml);
         });
     }
