@@ -7,7 +7,6 @@ import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import layout from './template';
-import { inject as service } from '@ember/service';
 
 export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     layout,
@@ -23,6 +22,9 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             let utils = this.get('blockchainUtils');
             utils.solToYaml(this.get('code'), (result) => this.set('yaml', result));
         }
+    }),
+    workingValue: computed('code', function() {
+        return this.get('code');
     }),
 
     init() {
