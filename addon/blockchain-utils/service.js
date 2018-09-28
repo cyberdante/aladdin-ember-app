@@ -527,15 +527,13 @@ export default Service.extend({
         schema.properties[txnName].dependencies = {};
         schema.properties[txnName].dependencies.type = assTitle;
         schema.properties[txnName].dependencies.name = 'assetId';
-        for (let key in parameters) {
-            if (parameters.hasOwnProperty(key)) {
-                // console.log(key + " -> " + parameters[key].name, parameters[key].type);
+        parameters.forEach(func => {
+                if(func === 'name' || func === 'type'){
                 schema.properties[txnName][parameters[key].name] = {}
                 schema.properties[txnName][parameters[key].name].name = parameters[key].name;
                 schema.properties[txnName][parameters[key].name].type = parameters[key].type;
-            }
-        }
-
+                }
+            });
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
