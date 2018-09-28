@@ -5,6 +5,7 @@ import { EKMixin } from 'ember-keyboard';
 import { run } from '@ember/runloop';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import layout from './template';
 
@@ -23,9 +24,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             utils.solToYaml(this.get('code'), (result) => this.set('yaml', result));
         }
     }),
-    workingValue: computed('code', function() {
-        return this.get('code');
-    }),
+    workingValue: alias('code'),
 
     init() {
         this._super(...arguments);
