@@ -67,7 +67,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         }, {
             component: 'contract-editor',
             componentName: 'Contract Editor',
-            columnIcon: 'pencil-alt',
+            columnIcon: 'code',//'pencil-alt',
             width: 0,
         }];
     }),
@@ -97,7 +97,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
      * @type {boolean}
      */
     rightColumnShow: false,
-    rightColumnIcon: 'pencil-alt',
+    rightColumnIcon: 'code',//'pencil-alt',
     rightComponent: 'contract-editor',
     rightComponentName: 'Contract Editor',
     rightWidth: 0,
