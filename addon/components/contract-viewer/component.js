@@ -40,10 +40,6 @@ export default Component.extend({
     ];
   }),
 
-  toggleIcon: computed('manualMode', function () {
-    return this.get('manualMode') ? 'lock' : 'lock_open';
-  }),
-
   contractType: 'ethereum',
   computedMode: computed('contractType', function () {
     switch (this.get('contractType')) {
