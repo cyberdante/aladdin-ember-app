@@ -16,7 +16,7 @@ export default Component.extend({
 
     schemaChanged: observer('schema', function() {
         this.generateYaml(this.schema);
-        // this.generateContract(this.schema);
+        this.generateContract(this.schema);
     }),
     
     generateYaml(schema) {

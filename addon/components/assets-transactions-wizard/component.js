@@ -151,7 +151,7 @@ export default Component.extend({
       this.set('editingTxnDeleteName', true);
     },
     deleteTxn() {
-      let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema)
+      let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema);
       this.set('schema', schema);
       this.set('deleteTxnName', '');
     },
@@ -167,7 +167,6 @@ export default Component.extend({
     },
     openPromptDialog(){
         this.set('showDialog',true);
-        console.log(this.showDialog)
     },
     closePromptDialog(){
         this.set('showDialog',false);
