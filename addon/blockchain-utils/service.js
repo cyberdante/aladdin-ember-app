@@ -529,7 +529,7 @@ export default Service.extend({
         schema.properties[txnName].dependencies.type = assTitle;
         schema.properties[txnName].dependencies.name = 'assetId';
         parameters.forEach(func => {
-            console.log(func)
+            // console.log(func)
             // if(func === 'name' || func === 'type'){
                 schema.properties[txnName][func.name] = {}
                 schema.properties[txnName][func.name].name =func.name;
@@ -539,7 +539,7 @@ export default Service.extend({
         
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
-        console.log(jsonSchema)
+        // console.log(jsonSchema)
         return jsonSchema;
 
     },
@@ -604,6 +604,12 @@ export default Service.extend({
     },
 
     solToYaml(code, cb) {
+        // Don't compile an empty string
+        if(code.trim() === '') {
+            cb();
+            return;
+        }
+
         let res = code.split("\n");
 
         let myRe = new RegExp(/public{}/)
@@ -629,7 +635,7 @@ export default Service.extend({
             if (myRe3.exec(res[i])) {
                 --bracketCount;
             }
-            if (!myRe4.exec(res[i]) && myRe3.exec(res[i]) && bracketCount == 1) {
+            if (!myRe4.exec(res[i]) && myRe3.exec(res[i]) && bracketCount === 1) {
                 infunction = false;
                 fn.lines = lines;
                 functionBody.functionName[fn.title] = fn;
@@ -658,7 +664,7 @@ export default Service.extend({
         // console.log(funct);
 
         solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
-            const compiledCode = compiler.compile(code)
+            const compiledCode = compiler.compile(code);
             let className = /contract\s+(\w+)\s?{/.exec(code)[1];
             const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
             let schema = {};
@@ -666,9 +672,8 @@ export default Service.extend({
 
             let assetList = {};
             codeInterface.forEach(func => {
-                if (func.type != 'constructor') {
+                if (func.type !== 'constructor') {
                     let fn = {};
-                    fn.title;
                     fn.type = typeof (fn);
                     fn.properties = {};
                     let isAsset = false;
@@ -716,7 +721,7 @@ export default Service.extend({
             }
             yamlString += "\n";
             let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
-            let stripedYml = ymlText.replace("---", '')
+            let stripedYml = ymlText.replace("---", '');
 
             let outputYaml = yamlString + stripedYml;
             // console.log(outputYaml);
