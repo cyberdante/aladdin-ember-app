@@ -105,7 +105,8 @@ export default Component.extend({
 
   actions: {
     valueUpdated(newValue) {
-      debounce(this, this.setUpdatedValueLazily, newValue, 1500);
+      debounce(this, this.setUpdatedValueLazily, newValue, 15);
+      // this.setUpdatedValueLazily(newValue);
     },
 
     toggleEditMode() {

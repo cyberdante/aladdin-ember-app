@@ -162,7 +162,8 @@ export default Component.extend({
       this.get('parameters').pushObject({ name: '', type: '' });
       for (var key in this.parameters) {
         if (this.parameters.hasOwnProperty(key)) {
-       }
+          // TODO linter complains if this block is blank
+        }
       }
     },
     openPromptDialog(){

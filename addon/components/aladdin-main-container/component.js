@@ -21,7 +21,23 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     yaml: computed('code', function(){
         if(typeof this.get('code') !== 'undefined') {
             let utils = this.get('blockchainUtils');
-            utils.solToYaml(this.get('code'), (result) => this.set('yaml', result));
+            const self = this;
+            utils.solToYaml(this.get('code'), (result) => {
+                // If result is an array display errors
+                if(Array.isArray(result)){
+                    let id = 0;
+                    let logValues = result.map(strErr => {
+                        let type = /Error:/gi.test(strErr) ? "error" : "warning";
+                        return { id: id++, type: type, value: strErr };
+                    });
+                    self.set('logValues', A(logValues));
+                    // Show error dialog
+                    self.set('showErrorDialog', true);
+                } else {
+                    self.set('yaml', result);
+                    self.set('logValues', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
+                }
+            });
         }
     }),
     workingValue: alias('code'),
@@ -187,18 +203,35 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         toggleEditMode(value) {
             const self = this;
             this.set('workingValue', value || '');
-            if (this.manualMode) {
+            if (this.get('manualMode')) {
                 self.set('isCompiling', true);
-                this.blockchainUtils.solToYaml(value, (yamlCode) => {
-                    self.set('yaml', yamlCode);
+                this.blockchainUtils.solToYaml(value, (result) => {
+                    // If result is an array display errors
+                    if(Array.isArray(result)){
+                        let id = 0;
+                        let logValues = result.map(strErr => {
+                            let type = /Error:/gi.test(strErr) ? "error" : "warning";
+                            return { id: id++, type: type, value: strErr };
+                        });
+                        self.set('logValues', A(logValues));
+                        // Show error dialog
+                        self.set('showErrorDialog', true);
+                        self.set('yaml', '');
+                    } else {
+                        self.set('yaml', result);
+                        self.set('logValues', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
+                    }
                     self.set('isCompiling', false);
-                    self.set('manualMode', !this.manualMode);
-                    self.set('readOnly', !this.readOnly);
+                    self.set('manualMode', !this.get('manualMode'));
+                    self.set('readOnly', !this.get('readOnly'));
                 });
             } else {
-                self.set('manualMode', !this.manualMode);
-                self.set('readOnly', !this.readOnly);
+                self.set('manualMode', !this.get('manualMode'));
+                self.set('readOnly', !this.get('readOnly'));
             }
+        },
+        closeErrorDialog() {
+            this.set('showErrorDialog', false);
         }
     }
 });

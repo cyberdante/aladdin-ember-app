@@ -52,6 +52,31 @@
             yaml=yaml
             toggleEditMode=(action "toggleEditMode")
         }}
+        {{#if showErrorDialog}}
+            {{#paper-dialog onClose=(action "closeErrorDialog") escapeToClose=true}}
+                {{#paper-toolbar}}
+                    {{#paper-toolbar-tools}}
+                        <h2>Invalid Smart Contract</h2>
+                        <span class="flex"></span>
+                        {{#paper-button iconButton=true onClick=(action "closeErrorDialog")}}{{paper-icon icon="close"}}{{/paper-button}}
+                    {{/paper-toolbar-tools}}
+                {{/paper-toolbar}}
+
+                {{#paper-dialog-content}}
+                    <p>
+                        Please ensure that the smart contract code contains no syntax errors and follows the constraints as specified <a href="" target="_blank">here</a>.
+                    </p>
+                    <p>
+                        Additionally, see the log below for more details.
+                    </p>
+                {{/paper-dialog-content}}
+
+                {{#paper-dialog-actions class="layout-row"}}
+                    <span class="flex"></span>
+                    {{#paper-button onClick=(action "closeErrorDialog")}}OK{{/paper-button}}
+                {{/paper-dialog-actions}}
+            {{/paper-dialog}}
+        {{/if}}
     {{/if}}
 </div>
 

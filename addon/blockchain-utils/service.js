@@ -220,7 +220,7 @@ export default Service.extend({
             return `${this}\n${s}`
         };
         let schema = JSON.parse(schemaString);
-        let sol = 'pragma solidity ^0.4.18;';
+        let sol = 'pragma solidity ^0.4.24;';
         sol = sol.appendLine('');
         sol = sol.appendLine('contract ' + schema.title + '{');
         Object.keys(schema).forEach(function (key) {
@@ -267,7 +267,7 @@ export default Service.extend({
         };
         let schema = JSON.parse(schemaString);
         schema.title = "Application";
-        let sol = 'pragma solidity ^0.4.18;';
+        let sol = 'pragma solidity ^0.4.24;';
         let sol2 = '';
         sol = sol.appendLine('');
         sol = sol.appendLine(' contract ' + schema.title + '{');
@@ -665,8 +665,16 @@ export default Service.extend({
 
         solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
             const compiledCode = compiler.compile(code);
+            // Check if an error occured during compilation. This is the case if
+            // compiledCode.contracts is an empty object.
+            if(Object.keys(compiledCode.contracts).length === 0 && compiledCode.contracts.constructor === Object) {
+                // Update the error log with errors
+                cb(compiledCode.errors);
+                return;
+            }
+            // Return errors if there are any before proceeding
             let className = /contract\s+(\w+)\s?{/.exec(code)[1];
-            const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface)
+            const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface);
             let schema = {};
             schema.transaction = {};
 
