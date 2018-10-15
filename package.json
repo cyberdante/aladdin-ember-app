@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app blueprints config lib server test-support tests",
+    "lint:js": "eslint addon addon-test-support app blueprints lib server test-support tests",
     "start": "./node_modules/.bin/ember serve",
     "test": "ember test",
     "test:all": "ember try:each"
