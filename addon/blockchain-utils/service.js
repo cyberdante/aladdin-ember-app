@@ -230,16 +230,16 @@ export default Service.extend({
                     sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
                     Object.keys(schema[key][ikey].properties).forEach(function (inkey) {
                         if (inkey === "dependencies") {
-                            sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.name + ',');
-                            sol = sol.appendLine('bytes32 ' + schema[key][ikey].properties[inkey].assetId.type + ')');
+                            sol = sol.appendLine('string ' + schema[key][ikey].properties[inkey].assetId.name + ',');
+                            sol = sol.appendLine('string ' + schema[key][ikey].properties[inkey].assetId.type + ')');
                         } else if (inkey === 'returns') {
                             if ((schema[key][ikey].properties[inkey].type) !== undefined) {
                                 if (schema[key][ikey].properties[inkey].type === 'number') {
                                     schema[key][ikey].properties[inkey].type = 'uint'
                                 }
-                                if (schema[key][ikey].properties[inkey].type === 'string') {
-                                    schema[key][ikey].properties[inkey].type = 'bytes32'
-                                }
+                                // if (schema[key][ikey].properties[inkey].type === 'string') {
+                                //     schema[key][ikey].properties[inkey].type = 'bytes32'
+                                // }
                                 sol = sol.appendLine('public constant returns(' + schema[key][ikey].properties[inkey].type + '){}');
                             } else {
                                 sol = sol.appendLine('public{}');
@@ -248,9 +248,9 @@ export default Service.extend({
                             if (schema[key][ikey].properties[inkey].type === 'number') {
                                 schema[key][ikey].properties[inkey].type = 'uint'
                             }
-                            if (schema[key][ikey].properties[inkey].type === 'string') {
-                                schema[key][ikey].properties[inkey].type = 'bytes32'
-                            }
+                            // if (schema[key][ikey].properties[inkey].type === 'string') {
+                            //     schema[key][ikey].properties[inkey].type = 'bytes32'
+                            // }
                             sol = sol.appendLine(`${schema[key][ikey].properties[inkey].type} ${schema[key][ikey].properties[inkey].name},`);
                         }
 
@@ -283,8 +283,8 @@ export default Service.extend({
                             let depend = schema[key][ikey][inkey];
 
                             if (depend !== 'none') {
-                                sol2 = sol2.appendLine('bytes32 ' + schema[key][ikey][inkey].name + ',');
-                                sol2 = sol2.appendLine('bytes32 ' + schema[key][ikey][inkey].type + ' )');
+                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].name + ',    /* parameter needed for linking assets and transactions */' );
+                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].type + ')   /* parameter needed for linking assets and transactions */ ' );
 
                             } else {
                                 if (sol.substr(-1) === ',') {
@@ -315,7 +315,7 @@ export default Service.extend({
                                 //     if (schema[key][ikey][inkey].type === 'string') {
                                 //         schema[key][ikey][inkey].type = 'bytes32';
                                 //     }
-                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},`);
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
                             }
                         }
 
