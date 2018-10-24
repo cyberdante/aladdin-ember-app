@@ -85,17 +85,21 @@ export default Component.extend({
     this._super(...arguments);
   },
 
-  didRender() {
-    if (this.isDestroyed || this.isDestroying) {
-      return;
+  didUpdate(){
+    if(!this.get('manualMode')){
+      this.beautifyEditorContents();
     }
+  },
+
+  didInsertElement() {
+    this.beautifyEditorContents();
+  },
+
+  beautifyEditorContents(){
     let beautify = ace.require('ace/ext/beautify');
     if (!this.editorSession) {
       let element = document.getElementsByClassName('contract-viewer-wrapper')[0];
       let editor = ace.edit(element);
-      editor.on('change', function (/*evt*/) {
-        // console.log('viewer', evt);
-      });
       this.set('editorSession', editor.getSession());
       beautify.beautify(editor.session);
     } else {
