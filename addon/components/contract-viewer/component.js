@@ -102,6 +102,7 @@ export default Component.extend({
       let editor = ace.edit(element);
       this.set('editorSession', editor.getSession());
       beautify.beautify(editor.session);
+      editor.navigateFileStart();
     } else {
       beautify.beautify(this.get('editorSession'));
     }
