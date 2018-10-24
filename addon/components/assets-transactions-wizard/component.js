@@ -13,6 +13,9 @@ export default Component.extend({
   blockchainUtils: service(),
   schema: '',
   assets: A([]),
+  assetTitles: computed('assets', function(){
+    return this.get('assets').mapBy('title');
+  }),
 
   editingContract:false,
   editingAssetTitle: false,
@@ -44,6 +47,7 @@ export default Component.extend({
 
   schemaChanged: observer('schema', function () {
     this.generateView(this.schema);
+    this.set('tranAssetTitle', this.get('assetTitles')[0]);
   }),
   
 
