@@ -1,0 +1,34 @@
+{{#paper-card class="aladdin-tabs-container" as |card|}}
+    {{#card.content}}
+        {{#paper-tabs
+            class="aladdin-tab"
+            selected=selectedTab
+            borderBottom="true"
+            shouldPaginate=false
+            onChange=(action 'onChange') as |tabs|}}
+            {{#each tabTitles as |title|}}
+                {{#tabs.tab}}
+                    {{title}}
+                {{/tabs.tab}}
+            {{/each}}
+        {{/paper-tabs}}
+        {{#if (not-eq selectedComponent 'contract-viewer')}}
+            {{component 
+                selectedComponent
+                showTitle=false
+                schema=schema
+                viewChange=(action viewChange) }}
+        {{else}}
+            {{component 
+                selectedComponent
+                showTitle=false
+                contractType='ethereum'
+                value=code
+                viewChange=(action viewChange)
+                logValues=logValues
+                manualMode=manualMode
+                toggleEditMode=(action this.toggleEditMode)
+            }}
+        {{/if}}
+    {{/card.content}}
+{{/paper-card}}

@@ -1,0 +1,34 @@
+{{#paper-card as |card|}}
+    {{#card.title as |title|}}
+        {{#title.text as |text|}}
+            {{#text.headline}}Log{{/text.headline}}
+        {{/title.text}}
+        {{#if (not readOnly)}}
+            {{#paper-button primary=false raised=true onClick=(action "compile") disabled=isCompiling}}
+                {{paper-icon "settings"}} 
+                <small>Compile</small>
+            {{/paper-button}}
+        {{/if}}
+    {{/card.title}}
+    {{#card.content}}
+        {{#paper-list}}
+            {{#each outputs as |output|}}
+                {{#paper-item class="md-1-line"}}
+                    <div class="md-list-item-text">
+                        {{schema-validator-log-line output=output}}
+                    </div>
+                {{/paper-item}}
+            {{/each}}
+        {{/paper-list}}
+    {{/card.content}}
+    {{#if (not (and outputs outputs.length))}}
+        {{paper-divider}}
+        {{#card.actions}}
+            {{#paper-item class="md-1-line"}}
+                <div class="md-list-item-text bold-text">
+                    No errors and/or warnings found
+                </div>
+            {{/paper-item}}
+        {{/card.actions}}
+    {{/if}}
+{{/paper-card}}

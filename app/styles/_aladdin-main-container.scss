@@ -1,0 +1,43 @@
+@import 'palette';
+
+.aladdin-main-container {
+    height: 100%;
+    width: 100%;
+    
+    .top {
+        height: 80%;
+        
+        .md-padding {
+            padding: 0;
+    
+            md-card {
+                margin: 0;
+            }
+        }    
+    }
+
+    .bottom {
+        position: relative;
+        // top: 80vh;
+        width: 100%;
+        height: 20%;
+
+        .md-padding {
+            padding: 0;
+    
+            md-card {
+                height: 100%;
+
+                md-card-title {
+                    min-height: 48px;
+                }
+    
+                md-card-content {
+                    height: 100%;
+                    overflow-y: auto;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,141 @@
+{{#twiddle-panes 
+    numColumns=numColumns 
+    fullScreen=fullScreen
+            
+    leftColumnShow=leftColumnShow
+    leftColumnIcon=leftColumnIcon
+    leftComponent=leftComponent
+    leftComponentName=leftComponentName
+    leftWidth=leftWidth
+
+    centerColumnShow=centerColumnShow
+    centerColumnIcon=centerColumnIcon
+    centerComponent=centerComponent
+    centerComponentName=centerComponentName
+    centerWidth=centerWidth
+
+    rightColumnShow=rightColumnShow
+    rightColumnIcon=rightColumnIcon
+    rightComponent=rightComponent
+    rightComponentName=rightComponentName
+    rightWidth=rightWidth
+
+    yaml=yaml
+    code=code
+    isCompiling=isCompiling
+    toggleEditMode=(action toggleEditMode)
+}}
+  {{#unless fullScreen}}
+    {{#if leftColumnShow}}
+      <div class="twiddle-pane left-column">
+        {{left-column 
+            model=model
+            yaml=yaml
+            schema=schema
+            code=code
+            viewChange=(action this.viewChange)
+            hideLeftColumn=(action this.hideLeftColumn)
+            openCentralColumn=(action this.openCentralColumn)
+            
+            leftColumnShow=leftColumnShow
+            leftColumnIcon=leftColumnIcon
+            leftComponent=leftComponent
+            leftComponentName=leftComponentName
+            leftWidth=leftWidth
+
+            centerColumnShow=centerColumnShow
+            centerColumnIcon=centerColumnIcon
+            centerComponent=centerComponent
+            centerComponentName=centerComponentName
+            centerWidth=centerWidth
+
+            rightColumnShow=rightColumnShow
+            rightColumnIcon=rightColumnIcon
+            rightComponent=rightComponent
+            rightComponentName=rightComponentName
+            rightWidth=rightWidth
+
+            logValues=logValues
+            manualMode=manualMode
+            toggleEditMode=(action toggleEditMode)
+        }}
+      </div>
+    {{/if}}
+    {{#if centerColumnShow}}
+      <div class="twiddle-pane code {{if column.active 'active'}}">
+        {{center-column
+            col=1
+            numColumns=numColumns
+            isCompiling=isCompiling
+            yaml=yaml
+            schema=schema
+            code=code
+            viewChange=(action this.viewChange)
+            showLeftColumnOpenIcon=(not leftColumnShow)
+            showRightColumnOpenIcon=(not rightColumnShow)
+            closeCentralColumn=(action this.closeCentralColumn)
+            showLeftColumn=(action this.showLeftColumn)
+            showRightColumn=(action this.showRightColumn)
+            
+            leftColumnShow=leftColumnShow
+            leftColumnIcon=leftColumnIcon
+            leftComponent=leftComponent
+            leftComponentName=leftComponentName
+            leftWidth=leftWidth
+
+            centerColumnShow=centerColumnShow
+            centerColumnIcon=centerColumnIcon
+            centerComponent=centerComponent
+            centerComponentName=centerComponentName
+            centerWidth=centerWidth
+
+            rightColumnShow=rightColumnShow
+            rightColumnIcon=rightColumnIcon
+            rightComponent=rightComponent
+            rightComponentName=rightComponentName
+            rightWidth=rightWidth
+
+            logValues=logValues
+            manualMode=manualMode
+            toggleEditMode=(action toggleEditMode)
+        }}
+      </div>
+    {{/if}}
+  {{/unless}}
+  {{#if rightColumnShow}}
+    <div class="twiddle-pane right-column {{if fullScreen 'full-screen'}}">
+      {{right-column 
+          isCompiling=isCompiling
+          yaml=yaml
+          schema=schema
+          code=code
+          viewChange=(action this.viewChange)
+          openCentralColumn=(action this.openCentralColumn)
+          hideRightColumn=(action this.hideRightColumn)
+
+          leftColumnShow=leftColumnShow
+          leftColumnIcon=leftColumnIcon
+          leftComponent=leftComponent
+          leftComponentName=leftComponentName
+          leftWidth=leftWidth
+
+          centerColumnShow=centerColumnShow
+          centerColumnIcon=centerColumnIcon
+          centerComponent=centerComponent
+          centerComponentName=centerComponentName
+          centerWidth=centerWidth
+
+          rightColumnShow=rightColumnShow
+          rightColumnIcon=rightColumnIcon
+          rightComponent=rightComponent
+          rightComponentName=rightComponentName
+          rightWidth=rightWidth
+
+          logValues=logValues
+          manualMode=manualMode
+          toggleEditMode=(action toggleEditMode)
+      }}
+    </div>
+  {{/if}}
+
+{{/twiddle-panes}}

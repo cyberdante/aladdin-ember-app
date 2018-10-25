@@ -1,11 +1,16 @@
 'use strict';
 
-module.exports = function(environment) {
-  let ENV = {
+module.exports = function(environment, appConfig) {
+let ENV = {
     modulePrefix: 'aladdin',
     environment,
     rootURL: '/',
     locationType: 'auto',
+    fontawesome: {
+      icons: {
+        'free-solid-svg-icons': 'all'
+      }
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

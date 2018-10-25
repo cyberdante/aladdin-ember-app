@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html style="max-height: 100vh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Aladdin Ember App</title>
+    <meta name="description" content="A web-based tool for generating smart contracts and visualizing them from definitions written in YAML.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{content-for "head"}}
+
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/dummy.css">
+
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+    {{content-for "body"}}
+
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/dummy.js"></script>
+
+    {{content-for "body-footer"}}
+
+  </body>
+</html>

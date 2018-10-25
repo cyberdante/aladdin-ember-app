@@ -1,0 +1,38 @@
+<div class="header">
+  {{#if showLeftColumnOpenIcon}}
+    <span class="nav-left">
+      <span class="hint--bottom hint--rounded" {{action 'showLeftColumn'}} title="Show {{leftComponentName}}">
+        {{fa-icon leftColumnIcon}}
+      </span>
+    </span>
+  {{/if}}
+
+  <span class="nav-right">
+    {{#if (and canCloseCentralColumn centerColumnShow)}}
+      <span class="hint--bottom hint--rounded" {{action 'closeCentralColumn'}} title="Hide {{centerComponentName}}">
+        {{fa-icon 'times'}}
+      </span>
+    {{/if}}
+    {{#if rightColumnShow}}
+      <span class="hint--bottom hint--rounded" {{action "swapComponents" "center,right"}} title="Swap {{centerComponentName}} and {{rightComponentName}}">
+        {{fa-icon 'exchange-alt'}}
+      </span>
+    {{/if}}
+    {{#if showRightColumnOpenIcon}}
+      <span class="hint--bottom hint--rounded" {{action 'showRightColumn'}} title="Show {{rightComponentName}}">
+          {{fa-icon rightColumnIcon}}
+      </span>
+    {{/if}}
+  </span>
+</div>
+{{component 
+    centerComponent
+    showTitle=true
+    schema=schema
+    code=code
+    yaml=yaml
+    viewChange=(action viewChange centerComponent)
+    logValues=logValues
+    manualMode=manualMode
+    toggleEditMode=(action this.toggleEditMode)
+}}

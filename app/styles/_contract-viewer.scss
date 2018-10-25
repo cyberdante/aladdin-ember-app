@@ -1,0 +1,231 @@
+@import 'palette';
+@import 'mixins';
+
+$simba-fab-bgcolor: #cddc39;
+$simba-fab-highlight: #aeea00;
+
+.contract-viewer {
+    height: 100%;
+    width: 100%;
+
+    md-progress-circular {
+      position: absolute;
+      display: block;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    &.manual-mode > md-card {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+
+        .manual-toggler {
+            position: absolute;
+            right: 15px;
+            top: 0;
+
+            .md-primary {
+                z-index: 10;
+                color: #212121;
+                background-color: #fafafa;
+            }
+        }
+
+        md-card-title {
+            background-color: aladdin-color('secondary'); //#ff5722;
+            color: #fff;
+            height: 32px;
+            max-height: 32px;
+        }
+        md-card-content {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            div {
+                height: 100%;
+                opacity: 1;
+                &.ace_tooltip {
+                    height: auto;
+                }
+            }
+            .contract-viewer-wrapper {
+                opacity: 1;
+                height: 100%;
+                width: 100%;
+                margin-top: 0;
+
+                textarea {
+                    opacity: 1 !important;
+                    height: 100%;
+                    width: 100%;
+                    left: 0;
+                }
+
+                .ember-ace-error { background-color: rgba(255, 0, 0, 0.5); position: absolute; }
+                .ember-ace-warning { background-color: rgba(200, 200, 0, 0.5); position: absolute; }
+            }
+            .md-button.md-default-theme.md-raised,
+            .md-button.md-raised {
+              background-color: transparent;
+              color: aladdin-color("secondary");
+            }
+      
+            .md-button.md-default-theme.md-primary,
+            .md-button.md-primary {
+              color: aladdin-color("secondary");
+            }
+        }
+    }
+
+    md-content.grid-list {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        .layout-row,
+        md-card {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            transition: all 400ms ease-out 50ms;
+
+            .manual-toggler {
+                position: absolute;
+                right: 15px;
+                top: 0;
+
+                .md-primary {
+                    z-index: 10;
+                    color: #212121;
+                }
+            }
+
+            md-card-title {
+                background-color: aladdin-color('secondary'); //#ff5722;
+                color: #fff;
+                height: 32px;
+                max-height: 32px;
+            }
+            md-card-content {
+                padding: 0;
+                margin: 0;
+                //height: calc(100% - 72px);
+                height: 100%;
+                div {
+                    height: 100%;
+                    opacity: 1;
+                    &.ace_tooltip {
+                        height: auto;
+                    }
+                }
+                .contract-viewer-wrapper {
+                    opacity: 1;
+                    height: 100%;
+                    width: 100%;
+                    margin-top: 0;
+    
+                    textarea {
+                        opacity: 1 !important;
+                        height: 100%;
+                        width: 100%;
+                        left: 0;
+                    }
+    
+                    .ember-ace-error { background-color: rgba(255, 0, 0, 0.5); position: absolute; }
+                    .ember-ace-warning { background-color: rgba(200, 200, 0, 0.5); position: absolute; }
+                }
+                .md-button.md-default-theme.md-raised,
+                .md-button.md-raised {
+                    color: rgba(0, 0, 0, 0.87);
+                    background-color: $simba-fab-bgcolor;
+
+                    md-icon {
+                        color: rgba(0, 0, 0, 0.87);
+                    }
+                }
+
+                .md-button.md-default-theme.md-raised:disabled,
+                .md-button.md-raised:disabled {
+                    cursor: not-allowed;
+                    background-color: aladdin-color-alpha('warning', 'light');
+                }
+          
+                .md-button.md-default-theme.md-primary,
+                .md-button.md-primary {
+                    color: rgba(0, 0, 0, 0.87);// aladdin-color("secondary");
+                }
+            }
+        }
+    }
+
+    .md-button.md-default-theme.md-accent,
+    .md-button.md-accent {
+        color: $simba-fab-bgcolor;
+    }
+
+    .md-button.md-default-theme.md-accent.md-raised,
+    .md-button.md-default-theme.md-accent.md-fab,
+    .md-button.md-accent.md-raised,
+    .md-button.md-accent.md-fab,
+    .md-button.md-default-theme.md-fab,
+    button.md-default-theme.md-fab,
+    .md-button.md-fab,
+    button.md-fab {
+        color: rgba(0, 0, 0, 0.87) !important;
+        background-color: $simba-fab-bgcolor;
+
+        md-icon {
+            color: rgba(0, 0, 0, 0.87) !important;
+        }
+    }
+    .md-button.md-default-theme.md-accent.md-raised:not([disabled]) md-icon,
+    .md-button.md-default-theme.md-accent.md-fab:not([disabled]) md-icon,
+    .md-button.md-accent.md-raised:not([disabled]) md-icon,
+    .md-button.md-accent.md-fab:not([disabled]) md-icon,
+    .md-button.md-default-theme.md-fab:not([disabled]) .md-icon,
+    button.md-default-theme.md-fab:not([disabled]) .md-icon,
+    .md-button.md-fab:not([disabled]) .md-icon,
+    button.md-fab:not([disabled]) .md-icon {
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+    .md-button.md-default-theme.md-accent.md-raised:not([disabled]):hover,
+    .md-button.md-default-theme.md-accent.md-fab:not([disabled]):hover,
+    .md-button.md-accent.md-raised:not([disabled]):hover,
+    .md-button.md-accent.md-fab:not([disabled]):hover,
+    .md-button.md-default-theme.md-fab:not([disabled]):hover,
+    button.md-default-theme.md-fab:not([disabled]):hover,
+    .md-button.md-fab:not([disabled]):hover,
+    button.md-fab:not([disabled]):hover {
+        background-color: $simba-fab-highlight;
+        color: rgba(0, 0, 0, 0.87);
+    }
+    .md-button.md-default-theme.md-accent.md-raised:not([disabled]).md-focused,
+    .md-button.md-default-theme.md-accent.md-fab:not([disabled]).md-focused,
+    .md-button.md-accent.md-raised:not([disabled]).md-focused,
+    .md-button.md-accent.md-fab:not([disabled]).md-focused,
+    .md-button.md-default-theme.md-fab:not([disabled]).md-focused,
+    button.md-default-theme.md-fab:not([disabled]).md-focused,
+    .md-button.md-fab:not([disabled]).md-focused,
+    button.md-fab:not([disabled]).md-focused {
+        background-color: $simba-fab-highlight;
+        color: rgba(0, 0, 0, 0.87) !important;
+    }
+    .md-button.md-default-theme.md-accent:not([disabled]) md-icon,
+    .md-button.md-accent:not([disabled]) md-icon {
+        color: $simba-fab-bgcolor;
+    }
+    .md-button.md-default-theme.md-accent.md-raised:disabled,
+    .md-button.md-default-theme.md-accent.md-fab:disabled,
+    .md-button.md-accent.md-raised:disabled,
+    .md-button.md-accent.md-fab:disabled,
+    .md-button.md-default-theme.md-fab:disabled,
+    button.md-default-theme.md-fab:disabled,
+    .md-button.md-fab:disabled,
+    button.md-fab:disabled {
+        cursor: not-allowed;
+        background-color: aladdin-color-alpha('warning', 'light');
+    }
+}

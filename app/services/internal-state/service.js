@@ -1,0 +1,1 @@
+export { default } from 'ember-cli-aladdin/services/internal-state/service';  
