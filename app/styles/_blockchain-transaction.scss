@@ -1,0 +1,23 @@
+@import "palette";
+@import "mixins";
+
+.blockchain-transaction {
+
+  md-list-item {
+    .button-with-icon-container {
+      .md-button.md-default-theme {
+        min-width: 20px;
+        
+        &.md-primary:not([disabled]) > md-icon {
+            color: #64b5f6;
+        }
+      }
+
+      &.red {
+          md-icon {
+              color: #F92672 !important;
+          }
+      }
+    }
+  }
+}

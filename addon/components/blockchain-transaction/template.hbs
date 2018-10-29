@@ -1,0 +1,25 @@
+{{#paper-item as |controls|}}
+    {{#if editingTxnTitle}}
+        {{input value=transaction.title enter=(action 'toggleOffTxn' transaction.title) }}
+    {{else}}
+        <p onClick={{action "toggleTxn" transaction.title}}>{{transaction.title}}</p>
+    {{/if}}
+    <div class="button-with-icon-container">
+        {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTxn" transaction.title)}}
+            {{paper-icon "edit" title="Edit Transaction"}}
+        {{/controls.button}}
+    </div>
+    <div class="button-with-icon-container red">
+        {{#controls.button raised=true class="shaking" iconButton=true onClick=(action "deleteTxn" transaction.title)}}
+            {{paper-icon "delete_forever" title="Delete Transaction"}}
+        {{/controls.button}}
+        {{!-- {{#controls.button onClick=(action "deleteTxn" transaction.title)}}
+            {{fa-icon "trash" title="Delete Transaction"}}
+        {{/controls.button}} --}}
+    </div>
+    <div class="md-secondary-container">
+        {{#controls.button raised=true onClick=(action "selectTxn" transaction)}}
+            {{!-- {{fa-icon "eye"}} --}} View Properties
+        {{/controls.button}}
+    </div>
+{{/paper-item}}
