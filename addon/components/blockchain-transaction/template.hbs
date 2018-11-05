@@ -1,16 +1,20 @@
 {{#paper-item as |controls|}}
-    {{#if editingTxnTitle}}
-        {{input value=transaction.title enter=(action 'toggleOffTxn' transaction.title) }}
+    {{#if editingTitle}}
+        {{input value=transaction.title enter=(action 'setNewTransactionTitle' transaction.title) }}
     {{else}}
-        <p onClick={{action "toggleTxn" transaction.title}}>{{transaction.title}}: <span style="color: #f92672">{{transaction.returnType}}</span> </p>
+        <p onClick={{action 'toggleTxnEdition'}}>{{transaction.title}}: <span style="color: #f92672">{{transaction.returnType}}</span> </p>
     {{/if}}
     <div class="button-with-icon-container">
-        {{#controls.button raised=true primary=true iconButton=true onClick=(action "selectTxn" transaction)}}
-            {{paper-icon "unfold_more" title="View Properties"}}
+        {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTransactionDisplay")}}
+            {{#if showingParams}}
+                {{paper-icon "unfold_less" title="Hide Properties"}}
+            {{else}}
+                {{paper-icon "unfold_more" title="View Properties"}}
+            {{/if}}
         {{/controls.button}}
     </div>
     <div class="button-with-icon-container">
-        {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTxn" transaction.title)}}
+        {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTxnEdition")}}
             {{paper-icon "edit" title="Edit Transaction"}}
         {{/controls.button}}
     </div>
@@ -20,11 +24,13 @@
         {{/controls.button}}
     </div>
 {{/paper-item}}
-{{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |rightpanel|}}
-    {{#rightpanel.content}}
-        {{#paper-subheader class="parameters-header"}}Parameters{{/paper-subheader}}
-        {{#each parameters as |param|}}
-            <div style="padding-left: 40px; color: #A6E22E">{{param.title}}: <span style="color: #f92672">{{param.type}}</span></div>
-        {{/each}}
-    {{/rightpanel.content}}
-{{/paper-card}}
+{{#if showingParams}}
+    {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |rightpanel|}}
+        {{#rightpanel.content}}
+            {{#paper-subheader class="parameters-header"}}Parameters{{/paper-subheader}}
+            {{#each parameters as |param|}}
+                <div style="padding-left: 40px; color: #A6E22E">{{param.title}}: <span style="color: #f92672">{{param.type}}</span></div>
+            {{/each}}
+        {{/rightpanel.content}}
+    {{/paper-card}}
+{{/if}}

@@ -18,10 +18,10 @@
               {{#leftpanel.content}}
                 {{#if editingTxnAdd}}
                   <div class="atat-options">
-                    {{#paper-button fab=true primary=true accent=true raised=true disabled=isCompiling onClick=(action "toggleOffAddTxn")}}
+                    {{#paper-button fab=true primary=true accent=true raised=true disabled=isCompiling onClick=(action "openNewAssetDialog")}}
                         {{#paper-icon "add"}}
                             {{#paper-tooltip position="top"}}
-                            Add a new asset
+                                Add a new asset
                             {{/paper-tooltip}}
                         {{/paper-icon}}
                     {{/paper-button}}
@@ -60,12 +60,11 @@
                                 asset=asset
                                 transaction=txn
                                 parameters=txn.parameters
+                                showingParams=false
+                                schema=schema
                                 selectedTxn=selectedTxn
                                 editingTxnTitle=editingTxnTitle
                                 selectTxn=(action 'selectTxn' txn)
-                                toggleOffTxn=(action 'toggleOffTxn' txn.title)
-                                toggleTxn=(action 'toggleTxn' txn.title)
-                                deleteTxn=(action 'deleteTxn' txn.title)
                             }}
                         {{/each}}
                     </div>
@@ -77,7 +76,6 @@
                 {{/if}}
                 {{#if showDialog}}
                     {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin}}
-
                         {{#paper-dialog-content}}
                             <div class="layout-row">
                                 <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
@@ -102,8 +100,7 @@
                                         {{option}}
                                     {{/paper-select}}
                                     </div>
-                                </div>
-                                
+                                </div>                                
                             {{/each}}
                             <br/>
                             <div class="layout-row">
@@ -125,17 +122,17 @@
                     {{/paper-dialog}}
                 {{/if}}
                 {{#if showNewAssetDialog}}
-                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin as |newAssetModal|}}
+                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog") origin=dialogOrigin as |newAssetModal|}}
                         {{#paper-dialog-content}}
                             <div class="layout-row">
                                 <div class="layout-column flex-100">
-                                    {{paper-input input="text" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
+                                    {{paper-input input="text" required="true" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
                                 </div>
                             </div>
                         {{/paper-dialog-content}}
                         {{#paper-dialog-actions class="layout-row"}}
                             <span class="flex"></span>
-                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog")}}Add{{/paper-button}}
+                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog") disabled=isInputEmpty}}Add{{/paper-button}}
                         {{/paper-dialog-actions}}
 
                     {{/paper-dialog}}

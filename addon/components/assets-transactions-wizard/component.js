@@ -30,6 +30,9 @@ export default Component.extend({
     options: computed(function () {
         return ['string', 'bytes32', 'uint', 'address'];
     }),
+    isInputEmpty: computed('newAssetTitle', function() {
+        return !(this.get('newAssetTitle') && this.get('newAssetTitle').length > 0);
+    }),
     origTxnTitle: '',
     origParamTitle: '',
     tranAssetTitle: '',
@@ -41,7 +44,9 @@ export default Component.extend({
     selectedTxn: O.create({}),
 
     typeSelected: '',
-    tnxTitlesBeingEdited: [],
+    // tnxTitlesBeingEdited: computed(function() {
+    //     return [];
+    // }),
 
     schemaChanged: observer('schema', function () {
         this.generateView(this.schema);
@@ -61,10 +66,10 @@ export default Component.extend({
         let assets = this.blockchainUtils.extractAssetsTransactions(schema);
         assets.forEach(x => {
             x.expanded = false;
-            if(x.transactions && x.transactions.length) {
+            if (x.transactions && x.transactions.length) {
                 x.transactions.forEach(txn => {
                     txn.parameters = this.getParams(txn);
-                    if(!txn.returnType) {
+                    if (!txn.returnType) {
                         txn.returnType = 'void';
                     }
                 })
@@ -125,17 +130,17 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
             this.set('schema', schema);
         },
-        toggleTxn(origTxn) {
-            this.set('origTxnTitle', origTxn);
-            this.set('editingTxnTitle', true);
-            this.get('tnxTitlesBeingEdited').push(origTxn);
-        },
-        toggleOffTxn(newTxn) {
-            this.set('editingTxnTitle', false);
-            let schema = this.blockchainUtils.updateTxnSchema(newTxn, this.origTxnTitle, this.schema);
-            this.get('tnxTitlesBeingEdited').remove(newTxn);
-            this.set('schema', schema);
-        },
+        // toggleTxn(origTxn) {
+        //     this.set('origTxnTitle', origTxn);
+        //     this.set('editingTxnTitle', true);
+        //     this.get('tnxTitlesBeingEdited').push(origTxn);
+        // },
+        // toggleOffTxn(newTxn) {
+        //     this.set('editingTxnTitle', false);
+        //     let schema = this.blockchainUtils.updateTxnSchema(newTxn, this.origTxnTitle, this.schema);
+        //     this.get('tnxTitlesBeingEdited').remove(newTxn);
+        //     this.set('schema', schema);
+        // },
         toggleParam(origParam) {
             this.set('origParamTitle', origParam);
             this.set('editingParamTitle', true);
@@ -173,15 +178,14 @@ export default Component.extend({
             this.set('editingTxnDelete', false);
             this.set('editingTxnDeleteName', true);
         },
-        deleteTxn(txnName) {
-            debugger;
-            if(txnName && !this.get('deleteTxnName')) {
-                this.set('deleteTxnName', txnName);
-            }
-            let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema);
-            this.set('schema', schema);
-            this.set('deleteTxnName', '');
-        },
+        // deleteTxn(txnName) {
+        //     if (txnName && !this.get('deleteTxnName')) {
+        //         this.set('deleteTxnName', txnName);
+        //     }
+        //     let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema);
+        //     this.set('schema', schema);
+        //     this.set('deleteTxnName', '');
+        // },
         toggleInput() {
             this.set('addInput', true);
         },
@@ -200,6 +204,13 @@ export default Component.extend({
             this.set('showDialog', false);
             this.set('editingTxnAdd', true);
             this.set('editingTxnAddName', false);
+        },
+        openNewAssetDialog() {
+            this.set('showNewAssetDialog', true);
+        },
+        closeNewAssetDialog() {
+            this.set('newAssetTitle', '');
+            this.set('showNewAssetDialog', false);
         }
 
     }
