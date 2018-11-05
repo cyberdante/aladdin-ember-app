@@ -2,22 +2,37 @@
 @import "mixins";
 
 .blockchain-transaction {
-
   md-list-item {
+    input {
+      -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+      margin: 0;
+    }
     .button-with-icon-container {
       .md-button.md-default-theme {
         min-width: 20px;
-        
-        &.md-primary:not([disabled]) > md-icon {
+
+        &.md-primary:not([disabled]) {
+          &.md-focused {
+            background-color: transparent;
+          }
+          md-icon {
             color: #64b5f6;
+          }
         }
       }
 
       &.red {
-          md-icon {
-              color: #F92672 !important;
-          }
+        md-icon {
+          color: #f92672 !important;
+        }
       }
+    }
+  }
+  md-card {
+    .parameters-header {
+      padding-left: 25px;
     }
   }
 }

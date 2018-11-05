@@ -59,7 +59,17 @@ export default Component.extend({
     generateView(schema) {
         const self = this;
         let assets = this.blockchainUtils.extractAssetsTransactions(schema);
-        assets.forEach(x => x.expanded = false);
+        assets.forEach(x => {
+            x.expanded = false;
+            if(x.transactions && x.transactions.length) {
+                x.transactions.forEach(txn => {
+                    txn.parameters = this.getParams(txn);
+                    if(!txn.returnType) {
+                        txn.returnType = 'void';
+                    }
+                })
+            }
+        });
         self.set('assets', assets);
     },
 
@@ -75,6 +85,16 @@ export default Component.extend({
     }),
     doneButtonEnabled: and('newMethodHasName', 'validNewParameters'),
     doneButtonDisabled: not('doneButtonEnabled'),
+
+    getParams(txn) {
+        let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
+            if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
+                acc.push({ title: paramTitle, type: txn.meta[paramTitle].type, txn: txn });
+            }
+            return acc;
+        }, []);
+        return params;
+    },
 
     actions: {
         toggleAssetState(asset) {
@@ -94,16 +114,6 @@ export default Component.extend({
             }, []);
             this.set('txnReturnsType', 'void');
             this.set('txnParameters', A(params));
-        },
-
-        getParams(txn) {
-            let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
-                if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
-                    acc.push({ title: paramTitle, type: txn.meta[paramTitle].type, txn: txn });
-                }
-                return acc;
-            }, []);
-            return params;
         },
 
         toggleAsset(origAsset) {

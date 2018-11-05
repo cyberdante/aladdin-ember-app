@@ -18,35 +18,6 @@
               {{#leftpanel.content}}
                 {{#if editingTxnAdd}}
                   <div class="atat-options">
-                    {{!-- {{#paper-speed-dial
-                      onMouseEnter=(action (mut open) true) onMouseLeave=(action (mut open) false)
-                      open=open direction="left" onToggle=(action (mut open)) as |dial|}}
-                      {{#dial.trigger}}
-                        {{#paper-button accent=true fab=true}}
-                          {{paper-icon "more-vert"}}
-                        {{/paper-button}}
-                      {{/dial.trigger}}
-                      {{#dial.actions as |actions|}}
-                        {{#actions.action}}
-                          {{#paper-button mini=true onClick=(action "toggleOffDeleteTxn")}}
-                            {{#paper-icon "remove"}}
-                              {{#paper-tooltip position="top"}}
-                                Remove asset or transaction
-                              {{/paper-tooltip}}
-                            {{/paper-icon}}
-                          {{/paper-button}}
-                        {{/actions.action}}
-                        {{#actions.action}}
-                          {{#paper-button mini=true onClick=(action "toggleOffAddTxn")}}
-                            {{#paper-icon "add"}}
-                              {{#paper-tooltip position="top"}}
-                                Add asset or transaction
-                              {{/paper-tooltip}}
-                            {{/paper-icon}}
-                          {{/paper-button}}
-                        {{/actions.action}}
-                      {{/dial.actions}}
-                    {{/paper-speed-dial}} --}}
                     {{#paper-button fab=true primary=true accent=true raised=true disabled=isCompiling onClick=(action "toggleOffAddTxn")}}
                         {{#paper-icon "add"}}
                             {{#paper-tooltip position="top"}}
@@ -88,6 +59,7 @@
                             {{blockchain-transaction 
                                 asset=asset
                                 transaction=txn
+                                parameters=txn.parameters
                                 selectedTxn=selectedTxn
                                 editingTxnTitle=editingTxnTitle
                                 selectTxn=(action 'selectTxn' txn)
@@ -148,6 +120,22 @@
                             {{#paper-dialog-actions class="layout-row"}}
                             <span class="flex"></span>
                             {{#paper-button primary=true onClick=(action "closePromptDialog")}}Exit{{/paper-button}}
+                        {{/paper-dialog-actions}}
+
+                    {{/paper-dialog}}
+                {{/if}}
+                {{#if showNewAssetDialog}}
+                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin as |newAssetModal|}}
+                        {{#paper-dialog-content}}
+                            <div class="layout-row">
+                                <div class="layout-column flex-100">
+                                    {{paper-input input="text" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
+                                </div>
+                            </div>
+                        {{/paper-dialog-content}}
+                        {{#paper-dialog-actions class="layout-row"}}
+                            <span class="flex"></span>
+                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog")}}Add{{/paper-button}}
                         {{/paper-dialog-actions}}
 
                     {{/paper-dialog}}
