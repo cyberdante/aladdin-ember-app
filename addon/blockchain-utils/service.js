@@ -87,11 +87,11 @@ export default Service.extend({
                 if (func !== null && Object.keys(func) !== 'asset') {
                     for (let key in func) {
                         for (let ikey in func[key]) {
-                            if (typeof func[key][ikey].properties !== 'undefined')
-                                schema.properties[func[key][ikey].title] = func[key][ikey].properties
+                            if (typeof func[key][ikey].properties !== 'undefined') {
+                                schema.properties[func[key][ikey].title] = func[key][ikey].properties;
+                            }
                             Object.keys(func[key][ikey]).forEach(function (pkey) {
-                                if (pkey == 'title') {
-
+                                if (pkey === 'title') {
                                     schema.properties[func[key][ikey].title].title = func[key][ikey].title;
                                 }
                             });
@@ -283,8 +283,8 @@ export default Service.extend({
                             let depend = schema[key][ikey][inkey];
 
                             if (depend !== 'none') {
-                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].name + ',    /* parameter needed for linking assets and transactions */' );
-                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].type + ')   /* parameter needed for linking assets and transactions */ ' );
+                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].name + ',    /* parameter needed for linking assets and transactions */');
+                                sol2 = sol2.appendLine('string ' + schema[key][ikey][inkey].type + ')   /* parameter needed for linking assets and transactions */ ');
 
                             } else {
                                 if (sol.substr(-1) === ',') {
@@ -419,17 +419,17 @@ export default Service.extend({
     },
 
     updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema) {
-
+        if (oldParamTitle === newParamTitle) { return schema; }
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
 
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
-                if (txnTitle == schema.properties[property].title) {
+                if (txnTitle === schema.properties[property].title) {
                     for (let pkey in schema.properties[property]) {
-                        if (pkey == oldParamTitle) {
-                            schema.properties[property][newParamTitle] = {}
+                        if (pkey === oldParamTitle) {
+                            schema.properties[property][newParamTitle] = {};
                             schema.properties[property][newParamTitle].name = newParamTitle;
                             schema.properties[property][newParamTitle].type = paramType;
                             delete (schema.properties[property][pkey]);
@@ -477,7 +477,7 @@ export default Service.extend({
             if (schema.properties.hasOwnProperty(property)) {
                 let assetMeta = schema.properties[property];
                 let assetType = assetMeta.dependencies.type;
-                if (assetType == oldAssetTitle) {
+                if (assetType === oldAssetTitle) {
                     schema.properties[property].dependencies.type = newAssetTitle;
                 }
             }
@@ -522,7 +522,7 @@ export default Service.extend({
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-        
+
         schema.properties[txnName] = {};
         schema.properties[txnName].title = txnName;
         schema.properties[txnName].dependencies = {};
@@ -531,12 +531,12 @@ export default Service.extend({
         parameters.forEach(func => {
             // console.log(func)
             // if(func === 'name' || func === 'type'){
-                schema.properties[txnName][func.name] = {}
-                schema.properties[txnName][func.name].name =func.name;
-                schema.properties[txnName][func.name].type = func.type;
+            schema.properties[txnName][func.name] = {}
+            schema.properties[txnName][func.name].name = func.name;
+            schema.properties[txnName][func.name].type = func.type;
             // }
         });
-        
+
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         // console.log(jsonSchema)
@@ -605,7 +605,7 @@ export default Service.extend({
 
     solToYaml(code, cb) {
         // Don't compile an empty string
-        if(code.trim() === '') {
+        if (code.trim() === '') {
             cb();
             return;
         }
@@ -667,7 +667,7 @@ export default Service.extend({
             const compiledCode = compiler.compile(code);
             // Check if an error occured during compilation. This is the case if
             // compiledCode.contracts is an empty object.
-            if(Object.keys(compiledCode.contracts).length === 0 && compiledCode.contracts.constructor === Object) {
+            if (Object.keys(compiledCode.contracts).length === 0 && compiledCode.contracts.constructor === Object) {
                 // Update the error log with errors
                 cb(compiledCode.errors);
                 return;

@@ -209,6 +209,9 @@ export default Component.extend({
             this.set('showNewAssetDialog', true);
         },
         closeNewAssetDialog() {
+            debugger;
+            let schema = this.blockchainUtils.updateAssetSchema(this.get('newAssetTitle'), '', this.schema);
+            this.set('schema', schema);
             this.set('newAssetTitle', '');
             this.set('showNewAssetDialog', false);
         }

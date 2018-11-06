@@ -1,0 +1,43 @@
+{{#paper-item class="parameter-wrapper" as |parameter-wrapper|}}
+    <div class="layout-row">
+        <div class="layout-column flex-30 layout-align-center-end {{if editingTitle 'editing'}} {{if (not param.title.length) 'error'}}">
+            {{#if editingTitle}}
+                {{input class="input-title" value=param.title enter=(action 'toggleOffParam' param.txn param) }}
+            {{else}}
+                <div class="param-title"><span class="clickable" onClick={{action "toggleParam" param.title}}>{{param.title}}</span></div>
+            {{/if}}
+        </div>
+        {{#if editingParamType}}
+            <div class="layout-column layout-md-column flex-30">
+                <select onchange={{action "changeParamTypeSelection"}}>
+                    {{#each possibleTypeOptions as |option|}}
+                        <option selected={{eq option param.type}} value={{option}}>{{option}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="layout-column layout-md-column flex-40">
+                <div class="button-with-icon-container">
+                    {{#parameter-wrapper.button raised=true iconButton=true onClick=(action "paramTypeChange")}}
+                        {{paper-icon "check" title="Save Parameter"}}
+                    {{/parameter-wrapper.button}}
+                </div>
+            </div>
+        {{else}}
+            <div class="layout-column layout-md-column layout-align-center-start flex-30">
+                <span class="param-type clickable" onClick={{action "toggleParamTypeEdition"}}>: {{param.type}}</span>
+            </div>
+            <div class="layout-column layout-md-column flex-40">
+                <div class="button-with-icon-container">
+                    {{#parameter-wrapper.button raised=true primary=true iconButton=true onClick=(action "toggleParam" param.title)}}
+                        {{paper-icon "edit" title="Edit Parameter"}}
+                    {{/parameter-wrapper.button}}
+                </div>
+                <div class="button-with-icon-container red">
+                    {{#parameter-wrapper.button raised=true class="shaking" iconButton=true onClick=(action "deleteParameter")}}
+                        {{paper-icon "delete_forever" title="Delete Parameter"}}
+                    {{/parameter-wrapper.button}}
+                </div>
+            </div>   
+        {{/if}}
+    </div>
+{{/paper-item}}

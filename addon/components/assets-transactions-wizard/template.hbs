@@ -151,7 +151,7 @@
                       {{#paper-subheader}}Parameters{{/paper-subheader}}
                     </div>
                     {{#each txnParameters as |param|}}
-                      <div class="layout-row" style="margin-bottom: 15px;">
+                      <div class="layout-row">
                         <div class="layout-column flex-30 layout-align-center-end" style="margin-right: 15px;">
                           {{#if editingParamTitle}}
                             {{input value=param.title enter=(action 'toggleOffParam' param.txn param) }}

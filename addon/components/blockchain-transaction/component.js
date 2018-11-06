@@ -1,8 +1,6 @@
 import Component from '@ember/component';
 import layout from './template';
 import { computed } from '@ember/object';
-import { debounce } from '@ember/runloop';
-// import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 
 export default Component.extend({
