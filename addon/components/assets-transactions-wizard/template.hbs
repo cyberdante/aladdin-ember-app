@@ -116,9 +116,13 @@
                                 {{option}}
                             {{/paper-select}}
                             </div>
+ 
                         </div>
                         
                     {{/each}}
+                    {{#paper-checkbox value=bundlehash onChange=(action (mut bundlehash))}}
+                    off-chain files
+                    {{/paper-checkbox}}
                     <br/>
                     <div class="layout-row">
                         <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'moreParams'}}  disabled={{doneButtonDisabled}}>

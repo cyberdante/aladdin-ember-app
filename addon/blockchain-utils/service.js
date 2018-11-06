@@ -680,7 +680,7 @@ export default Service.extend({
 
     },
 
-    updateSchemaAddTxn(txnName, assTitle, parameters, schema) {
+    updateSchemaAddTxn(txnName, assTitle, parameters, schema, bundlehash) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
@@ -694,8 +694,15 @@ export default Service.extend({
                 schema.properties[txnName][func.name] = {}
                 schema.properties[txnName][func.name].name =func.name;
                 schema.properties[txnName][func.name].type = func.type;
+
         });
         
+        if(bundlehash === true){
+            schema.properties[txnName]['bundlehash'] = {}
+            schema.properties[txnName]['bundlehash'].name ='bundlehash'
+            schema.properties[txnName]['bundlehash'].type = 'string';
+            
+        }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
