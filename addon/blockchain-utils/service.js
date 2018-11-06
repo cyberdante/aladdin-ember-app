@@ -23,6 +23,8 @@ export default Service.extend({
     //        signifies an asset relationship
     // *************************************************
     generateSchema(schemaInterface, title, code) {
+        
+
         var parse = code.split("Assets")
 
         let myRe = new RegExp(/\_/); 
@@ -582,15 +584,18 @@ export default Service.extend({
 
     updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema) {
 
+        if(oldParamTitle === newParamTitle) return schema;
+        if(newParamTitle){
+
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
 
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
-                if (txnTitle == schema.properties[property].title) {
+                if (txnTitle === schema.properties[property].title) {
                     for (let pkey in schema.properties[property]) {
-                        if (pkey == oldParamTitle) {
+                        if (pkey === oldParamTitle) {
                             schema.properties[property][newParamTitle] = {};
                             schema.properties[property][newParamTitle].name = newParamTitle;
                             schema.properties[property][newParamTitle].type = paramType;
@@ -605,6 +610,10 @@ export default Service.extend({
 
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
+    }
+    else {
+        throw new Error('invalid param title');
+    }
 
     },
 
@@ -630,6 +639,7 @@ export default Service.extend({
 
     },
     updateAssetSchema(newAssetTitle, oldAssetTitle, schema) {
+        if(newAssetTitle){
 
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
@@ -648,6 +658,10 @@ export default Service.extend({
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
+    }
+    else {
+        throw new Error('invalid Asset name');
+    }
     },
     updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
 
