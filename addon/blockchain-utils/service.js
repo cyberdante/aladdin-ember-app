@@ -706,7 +706,7 @@ export default Service.extend({
 
             }
         } else {
-            throw new Error('Invalid schema. No properties attribute inside.");
+            throw new Error('Invalid schema. No properties attribute inside.');
         }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
