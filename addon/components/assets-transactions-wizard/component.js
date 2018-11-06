@@ -140,9 +140,9 @@ export default Component.extend({
       this.set('paramName', '');
       this.set('paramType', '');
       this.set('txnParamType', '');
-    //   this.set('parameters', [{}]);
-    this.get('parameters').clear();
-    this.set('bundlehash', false)
+      //   this.set('parameters', [{}]);
+      this.get('parameters').clear();
+      this.set('bundlehash', false);
     },
     toggleOffAddTxn() {
       this.set('editingTxnAdd', false);
