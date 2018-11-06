@@ -27,6 +27,7 @@ export default Component.extend({
   editingTxnDeleteName: false,
   showDialog: false,
   addParams: true,
+  bundlehash: false,
   origTitle: '',
   tranParamTitle: '',
   txnName: '',
@@ -134,7 +135,7 @@ export default Component.extend({
       this.set('schema', schema);
     },
     addNewTxn() {
-      let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema);
+      let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
       this.set('schema', schema);
       this.set('editingTxnAddName', false);
       this.set('editingTxnAdd', true);
@@ -143,7 +144,9 @@ export default Component.extend({
       this.set('paramName', '');
       this.set('paramType', '');
       this.set('txnParamType', '');
+      //   this.set('parameters', [{}]);
       this.get('parameters').clear();
+      this.set('bundlehash', false);
     },
     toggleOffAddTxn() {
       this.set('editingTxnAdd', false);
