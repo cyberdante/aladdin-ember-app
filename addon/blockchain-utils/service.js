@@ -591,7 +591,7 @@ export default Service.extend({
                 if (txnTitle == schema.properties[property].title) {
                     for (let pkey in schema.properties[property]) {
                         if (pkey == oldParamTitle) {
-                            schema.properties[property][newParamTitle] = {}
+                            schema.properties[property][newParamTitle] = {};
                             schema.properties[property][newParamTitle].name = newParamTitle;
                             schema.properties[property][newParamTitle].type = paramType;
                             delete (schema.properties[property][pkey]);
@@ -680,22 +680,34 @@ export default Service.extend({
 
     },
 
-    updateSchemaAddTxn(txnName, assTitle, parameters, schema) {
+    updateSchemaAddTxn(txnName, assTitle, parameters, schema, bundlehash) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
         
-        schema.properties[txnName] = {};
-        schema.properties[txnName].title = txnName;
-        schema.properties[txnName].dependencies = {};
-        schema.properties[txnName].dependencies.type = assTitle;
-        schema.properties[txnName].dependencies.name = 'assetId';
-        parameters.forEach(func => {
-                schema.properties[txnName][func.name] = {}
-                schema.properties[txnName][func.name].name =func.name;
-                schema.properties[txnName][func.name].type = func.type;
-        });
-        
+        if(schema.properties) {
+            schema.properties[txnName] = {};
+            schema.properties[txnName].title = txnName;
+            schema.properties[txnName].dependencies = {};
+            schema.properties[txnName].dependencies.type = assTitle;
+            schema.properties[txnName].dependencies.name = 'assetId';
+            parameters.forEach(func => {
+                if(func && func.name) {
+                    schema.properties[txnName][func.name] = {};
+                    schema.properties[txnName][func.name].name = func.name;
+                    schema.properties[txnName][func.name].type = func.type;
+                }
+            });
+
+            if(bundlehash) {
+                schema.properties[txnName]['bundlehash'] = {};
+                schema.properties[txnName]['bundlehash'].name ='bundlehash';
+                schema.properties[txnName]['bundlehash'].type = 'string';
+
+            }
+        } else {
+            throw new Error('Invalid schema. No properties attribute inside.');
+        }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
