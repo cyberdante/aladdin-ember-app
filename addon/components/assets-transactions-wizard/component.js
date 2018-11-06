@@ -143,7 +143,7 @@ export default Component.extend({
       this.set('paramName', '');
       this.set('paramType', '');
       this.set('txnParamType', '');
-      this.set('parameters', [{}]);
+      this.get('parameters').clear();
     },
     toggleOffAddTxn() {
       this.set('editingTxnAdd', false);
