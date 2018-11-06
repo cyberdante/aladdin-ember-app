@@ -307,7 +307,7 @@ export default Service.extend({
         sol = sol.appendLine(newsolEns);
     
         for (var asset in assetsfunc){
-            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]}`);
+            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
     
         }
     
@@ -422,7 +422,7 @@ export default Service.extend({
         sol = sol.appendLine(newsolEns);
     
         for (var asset in assetsfunc){
-            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]}`);
+            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
     
         }
     

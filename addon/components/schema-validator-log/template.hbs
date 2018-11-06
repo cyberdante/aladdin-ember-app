@@ -1,7 +1,7 @@
 {{#paper-card as |card|}}
     {{#card.title as |title|}}
         {{#title.text as |text|}}
-            {{#text.headline}}Log{{/text.headline}}
+            {{#text.headline}}Solidity Compiler Errors{{/text.headline}}
         {{/title.text}}
         {{#if (not readOnly)}}
             {{#paper-button primary=false raised=true onClick=(action "compile") disabled=isCompiling}}
