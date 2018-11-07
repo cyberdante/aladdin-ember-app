@@ -13,6 +13,9 @@ export default Component.extend({
     blockchainUtils: service(),
     schema: '',
     assets: A([]),
+    assetTitles: computed('assets', function() {
+        return this.get('assets').mapBy('title');
+    }),
 
     editingContract: false,
     editingAssetTitle: false,
@@ -24,6 +27,7 @@ export default Component.extend({
     editingTxnDeleteName: false,
     showDialog: false,
     addParams: true,
+    bundlehash: false,
     origTitle: '',
     tranParamTitle: '',
     txnName: '',
@@ -50,8 +54,8 @@ export default Component.extend({
 
     schemaChanged: observer('schema', function () {
         this.generateView(this.schema);
+        this.set('tranAssetTitle', this.get('assetTitles')[0]);
     }),
-
 
     init() {
         this._super(...arguments);
@@ -100,7 +104,7 @@ export default Component.extend({
         }, []);
         return params;
     },
-
+    
     actions: {
         toggleAssetState(asset) {
             asset.set('expanded', !asset.get('expanded'));
@@ -158,7 +162,7 @@ export default Component.extend({
             this.set('schema', schema);
         },
         addNewTxn() {
-            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema);
+            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);
             this.set('editingTxnAdd', true);
@@ -167,7 +171,9 @@ export default Component.extend({
             this.set('paramName', '');
             this.set('paramType', '');
             this.set('txnParamType', '');
-            this.set('parameters', [{}]);
+            // this.set('parameters', [{}]);
+            this.get('parameters').clear();
+            this.set('bundlehash', false);
         },
         toggleOffAddTxn() {
             this.set('editingTxnAdd', false);
@@ -209,12 +215,9 @@ export default Component.extend({
             this.set('showNewAssetDialog', true);
         },
         closeNewAssetDialog() {
-            debugger;
-            let schema = this.blockchainUtils.updateAssetSchema(this.get('newAssetTitle'), '', this.schema);
-            this.set('schema', schema);
+            // TODO: add new asset to the chema
             this.set('newAssetTitle', '');
             this.set('showNewAssetDialog', false);
         }
-
     }
 });
