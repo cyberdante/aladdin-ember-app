@@ -1,0 +1,21 @@
+@import "palette";
+@import "mixins";
+
+.blockchain-asset {
+
+    .clickable {
+        cursor: pointer;
+    }
+    &.error {
+        .asset-title {
+            outline: #f92672 auto 5px !important;
+            outline-offset: 0 !important;
+        }
+    }
+
+    .red {
+        md-icon {
+            color: #f92672 !important;
+        }
+    }
+}

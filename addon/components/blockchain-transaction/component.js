@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 export default Component.extend({
     layout,
     classNames: ['blockchain-transaction'],
+    classNameBindings: ['inputTitleEmpty:error'],
     blockchainUtils: service(),
     editingTitle: false,
     title: computed('transaction', 'transaction.title', function() {
@@ -13,13 +14,26 @@ export default Component.extend({
         return txn ? txn.title : '';
     }),
     isSelected: computed.equal('selectedTxn.title', 'transaction.title'),
+    hasValidTitle: computed.gt('transaction.title.length', 0),
+    inputTitleEmpty: computed.not('hasValidTitle'),
+
+    init() {
+        this._super(...arguments);
+        this.set('origTxnTitle', this.get('title'));
+    },
+    
+    saveTitle(transactionTitle) {
+        let modifiedSchema = this.blockchainUtils.updateTxnSchema(transactionTitle, this.origTxnTitle, this.schema);
+        this.set('transaction.title', transactionTitle);
+        this.set('schema', modifiedSchema);
+        this.set('editingTitle', false);
+    },
 
     actions: {
         createTransaction(asset) {
             console.log('creating new transaction for ', asset);
         },
         deleteTxn() {
-            console.log('deleting transaction');
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
             this.set('schema', schema);
         },
@@ -28,10 +42,11 @@ export default Component.extend({
             this.set('origTxnTitle', this.get('transaction.title'));
         },
         setNewTransactionTitle(txnTitle) {
-            let schema = this.blockchainUtils.updateTxnSchema(txnTitle, this.origTxnTitle, this.schema);
-            this.set('transaction.title', txnTitle);
-            this.set('schema', schema);
-            this.set('editingTitle', false);
+            if(txnTitle && txnTitle.length) {
+                this.saveTitle(txnTitle);
+            } else {
+                this.set('transaction.title', this.get('origTxnTitle'));
+            }
         },
         selectTxn(txn) {
             this.get('selectTxn')(txn);

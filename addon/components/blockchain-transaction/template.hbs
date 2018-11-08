@@ -1,8 +1,8 @@
 {{#paper-item as |controls|}}
     {{#if editingTitle}}
-        {{input value=transaction.title enter=(action "setNewTransactionTitle" transaction.title) }}
+        {{input value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
     {{else}}
-        <p onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
+        <p class="clickable" onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
     {{/if}}
     <div class="button-with-icon-container">
         {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTransactionDisplay")}}
@@ -27,7 +27,16 @@
 {{#if showingParams}}
     {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |paramspanel|}}
         {{#paramspanel.content}}
-            {{#paper-subheader class="parameters-header"}}Parameters{{/paper-subheader}}
+            {{#paper-item class="parameter-header-wrapper"}}
+                <div class="layout-row" style="width: 100%">
+                    <div class="layout-column flex-30 layout-align-center-end">
+                        {{!-- {{#paper-subheader class="parameters-header"}}Parameters{{/paper-subheader}} --}}
+                        <div class="parameters-header">
+                            Parameters
+                        </div>
+                    </div>
+                </div>
+            {{/paper-item}}
             {{#each parameters as |param|}}
                 {{blockchain-transaction-parameter 
                     param=param

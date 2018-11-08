@@ -14,8 +14,8 @@
           <span style= "color: white;"> Disabled</span>
         {{else}}
           <div class="layout-row layout-wrap">
-            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |leftpanel|}}
-              {{#leftpanel.content}}
+            {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |assetpanel|}}
+              {{#assetpanel.content}}
                 {{#if editingTxnAdd}}
                   <div class="atat-options">
                     {{#paper-button fab=true primary=true accent=true raised=true disabled=isCompiling onClick=(action "openNewAssetDialog")}}
@@ -29,46 +29,13 @@
                 {{/if}}
                 {{#paper-subheader}}Assets{{/paper-subheader}}
                 {{#each assets as |asset|}}
-                  {{#paper-item as |controls|}}
-                    {{#if editingAssetTitle}}
-                      {{input value=asset.title enter=(action 'toggleOff' asset.title ) }}
-                    {{else}}
-                      <p onClick= {{action "toggleAsset" asset.title}}>{{asset.title}}</p>
-                    {{/if}}
-                    <div class="md-secondary-container">
-                      {{#controls.button raised=true onClick=(action "toggleAssetState" asset)}}
-                        {{#if asset.expanded}}
-                          Hide Transactions {{fa-icon 'chevron-up'}}
-                        {{else}}
-                          View Transactions {{fa-icon 'chevron-down'}}
-                        {{/if}}
-                      {{/controls.button}}
-                    </div>
-                  {{/paper-item}}
-                  {{#if (and asset.expanded asset.transactions)}}
-                    <div class="transaction-container">
-                        {{#paper-item as |txns|}}
-                            {{#paper-subheader class="txn-header"}}Transactions{{/paper-subheader}}
-                            <div class="md-secondary-container">
-                                {{#txns.button raised=true onClick=(action "toggleOffAddTxn")}}
-                                    {{paper-icon "add" title="Add a new Transaction"}}
-                                {{/txns.button}}
-                            </div>
-                        {{/paper-item}}
-                        {{#each asset.transactions as |txn|}}
-                            {{blockchain-transaction 
-                                asset=asset
-                                transaction=txn
-                                parameters=txn.parameters
-                                showingParams=false
-                                schema=schema
-                                selectedTxn=selectedTxn
-                                editingTxnTitle=editingTxnTitle
-                                selectTxn=(action 'selectTxn' txn)
-                            }}
-                        {{/each}}
-                    </div>
-                  {{/if}}
+                    {{blockchain-asset 
+                        asset=asset
+                        schema=schema
+                        toggleOffAddTxn=(action "toggleOffAddTxn")
+                        toggleOffDeleteTxn=(action "toggleOffDeleteTxn")
+                        selectTxn=(action "selectTxn")
+                    }}
                 {{/each}}
                 {{paper-divider}}
                 {{#if editingTxnAddName}}
@@ -149,7 +116,7 @@
                   {{#paper-input input="text" label="Txn to delete" style="color: #DE2A00"  value=deleteTxnName onChange=(action (mut deleteTxnName))}}{{/paper-input}}
                   {{#paper-button raised=true mini=true onClick=(action 'deleteTxn')}}-{{/paper-button}}
                 {{/if}}
-              {{/leftpanel.content}}
+              {{/assetpanel.content}}
             {{/paper-card}}
             {{#if txnParameters}}
               {{#paper-card class="gray left bordered flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |rightpanel|}}

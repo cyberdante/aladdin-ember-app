@@ -19,7 +19,6 @@ export default Component.extend({
 
     editingContract: false,
     editingAssetTitle: false,
-    editingTxnTitle: false,
     editingParamTitle: false,
     editingTxnAdd: true,
     editingTxnDelete: true,
@@ -48,9 +47,6 @@ export default Component.extend({
     selectedTxn: O.create({}),
 
     typeSelected: '',
-    // tnxTitlesBeingEdited: computed(function() {
-    //     return [];
-    // }),
 
     schemaChanged: observer('schema', function () {
         this.generateView(this.schema);
@@ -106,10 +102,6 @@ export default Component.extend({
     },
     
     actions: {
-        toggleAssetState(asset) {
-            asset.set('expanded', !asset.get('expanded'));
-        },
-
         selectTxn(txn) {
             this.set('selectedTxn.isSelected', false);
             txn.set('isSelected', true);
@@ -184,14 +176,6 @@ export default Component.extend({
             this.set('editingTxnDelete', false);
             this.set('editingTxnDeleteName', true);
         },
-        // deleteTxn(txnName) {
-        //     if (txnName && !this.get('deleteTxnName')) {
-        //         this.set('deleteTxnName', txnName);
-        //     }
-        //     let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.deleteTxnName, this.schema);
-        //     this.set('schema', schema);
-        //     this.set('deleteTxnName', '');
-        // },
         toggleInput() {
             this.set('addInput', true);
         },
@@ -215,7 +199,7 @@ export default Component.extend({
             this.set('showNewAssetDialog', true);
         },
         closeNewAssetDialog() {
-            // TODO: add new asset to the chema
+            // TODO: add new asset to the schema
             this.set('newAssetTitle', '');
             this.set('showNewAssetDialog', false);
         }
