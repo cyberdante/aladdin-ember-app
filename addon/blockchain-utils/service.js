@@ -3,6 +3,7 @@ import {
     A
 } from '@ember/array';
 import O from '@ember/object';
+import { computed } from '@ember/object';
 import yaml from 'js-yaml';
 import dagreD3 from 'dagre-d3';
 import dot from 'graphlib-dot';
@@ -10,6 +11,9 @@ import solc from 'solc';
 import { typeOf } from 'remedial';
 
 export default Service.extend({
+    solCversion: computed(function() {
+        return 'soljson-v0.4.24+commit.e67f0147.js';
+    }),
     // *************************************************
     // Inputs: schemaInterface - An ABI definition object 
     //         corresponding to the given JSON text
@@ -23,13 +27,11 @@ export default Service.extend({
     //        signifies an asset relationship
     // *************************************************
     generateSchema(schemaInterface, title, code) {
+        let parse = code.split("Assets");
 
-
-        var parse = code.split("Assets")
-
-        let myRe = new RegExp(/\_/);
+        let myRe = new RegExp(/_/);
         let myRe2 = new RegExp(/\./);
-        var assetType = {}
+        let assetType = {}
 
         for (let i = 1; i < parse.length; ++i) {
             if (myRe.exec(parse[i]) && myRe2.exec(parse[i + 1])) {
@@ -41,10 +43,9 @@ export default Service.extend({
                 assetName = assetName[0];
                 let fn = {};
                 fn.assetName = assetName;
-                fn.functionName = functionName
+                fn.functionName = functionName;
                 assetType[functionName] = fn;
             }
-
         }
 
         let schema = {};
@@ -59,33 +60,27 @@ export default Service.extend({
                 let fn = {};
                 fn.dependencies = {};
 
-                for (var key in func) {
-
-                    if (key === "name") {
+                for (let key in func) {
+                    if (key === 'name') {
                         fn.title = func[key];
-                        for (var functionName in assetType) {
+                        for (let functionName in assetType) {
                             if (functionName === fn.title) {
                                 if (isAsset) {
                                     let assets = {};
                                     assets.type = assetType[functionName].assetName;
-                                    assets.name = functionName
+                                    assets.name = functionName;
                                     fn.dependencies = assets;
                                     isAsset = false;
-
                                 }
                             }
-
                         }
                         break;
-
                     }
 
-                    if (key === "inputs") {
-                        for (var ikey in func[key]) {
-
+                    if (key === 'inputs') {
+                        for (let ikey in func[key]) {
                             if (func[key][ikey].name === "assetId") {
                                 isAsset = true;
-
                             }
                             let prop = {};
                             prop.type = func[key][ikey].type;
@@ -95,10 +90,10 @@ export default Service.extend({
                     }
                     if (key === 'outputs') {
                         if (func[key].length < 1) {
-                            let dummyReturn = {}
+                            let dummyReturn = {};
                             fn.properties.returns = dummyReturn;
                         }
-                        for (ikey in func[key]) {
+                        for (let ikey in func[key]) {
                             fn.properties.returns = func[key][ikey];
                         }
                     }
@@ -107,16 +102,15 @@ export default Service.extend({
                 schema.properties[fn.title] = fn;
             }
             if (func.type === 'constructor') {
-                for (key in func) {
-                    //   console.log(func[key])
+                for (let key in func) {
+                    // console.log(func[key]);
                 }
             }
 
         });
 
-        let json_schema = JSON.stringify(schema).replace(/[\[\]']+/g, '');
+        let json_schema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return json_schema;
-
     },
 
     generateSchemaYaml(yamlString, title) {
@@ -196,7 +190,7 @@ export default Service.extend({
 
         g.nodes().forEach(function (v) {
             let x = JSON.stringify(g.node(v));
-            if (x === undefined) {
+            if (!x) {
                 g.setNode(v, {
                     style: nodeTransaction.style,
                     fillcolor: nodeTransaction.color
@@ -224,11 +218,10 @@ export default Service.extend({
 
         let g = new dagreD3.graphlib.Graph({
             compound: true
-        })
-            .setGraph({})
-            .setDefaultEdgeLabel(function () {
-                return {};
-            });
+        }).setGraph({})
+        .setDefaultEdgeLabel(function () {
+            return {};
+        });
 
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
@@ -251,7 +244,7 @@ export default Service.extend({
 
         g.nodes().forEach(function (v) {
             let x = JSON.stringify(g.node(v));
-            if (x === undefined) {
+            if (!x) {
                 g.setNode(v, {
                     style: nodeTransaction.style,
                     fillcolor: nodeTransaction.color
@@ -264,7 +257,7 @@ export default Service.extend({
 
     generateContract(schemaString) {
         String.prototype.appendLine = function (s) {
-            return `${this}\n${s}`
+            return `${this}\n${s}`;
         };
 
         let schema = JSON.parse(schemaString);
@@ -276,10 +269,8 @@ export default Service.extend({
 
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc = []
-        let assets = []
-
-
+        let assetsfunc = [];
+        let assets = [];
 
         Object.keys(schema).forEach(function (key) {
             //array of assets for enum
@@ -287,11 +278,10 @@ export default Service.extend({
                 if (typeof schema[key][ikey] === 'object') {
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
                         if (inkey === "dependencies") {
-                            assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type
-                            assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name
+                            assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type;
+                            assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name;
                         }
                     });
-
                 }
             }
         });
@@ -300,7 +290,7 @@ export default Service.extend({
         // enum Assets {container, lock}
 
         let solEns = "enum Assets {"
-        for (var enms in assets) {
+        for (let enms in assets) {
             solEns = solEns + `${enms}, `;
         }
 
@@ -308,18 +298,13 @@ export default Service.extend({
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
 
-        for (var asset in assetsfunc) {
+        for (let asset in assetsfunc) {
             sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
-
         }
 
-
-
-
-
-        let length = []
-        let len = 0
-        for (var key in schema) {
+        let length = [];
+        let len = 0;
+        for (let key in schema) {
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] === 'object') {
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
@@ -334,7 +319,6 @@ export default Service.extend({
         }
 
         Object.keys(schema).forEach(function (key) {
-
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] === 'object') {
                     sol = sol.appendLine('');
@@ -348,9 +332,7 @@ export default Service.extend({
                                 }
                                 if (schema[key][ikey][inkey].name === 'assetId') {
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name},    /* parameter needed for linking assets and transactions */`);
-
-                                }
-                                else {
+                                } else {
                                     sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
                                 }
                             }
@@ -360,19 +342,15 @@ export default Service.extend({
                                 }
                                 if (schema[key][ikey][inkey].name === 'assetId') {
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name} )    /* parameter needed for linking assets and transactions */`);
-
-                                }
-                                else {
+                                } else {
                                     sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
                                 }
                             }
                         }
-
                     });
                     len = 0;
                     sol = sol.appendLine('public{}');
                 }
-
             }
         });
         sol = sol.appendLine('}');
@@ -406,7 +384,6 @@ export default Service.extend({
                             assets[schema[key][ikey][inkey].type] = ikey;
                         }
                     });
-
                 }
             }
         });
@@ -414,7 +391,7 @@ export default Service.extend({
         // enum Assets {container, lock}
 
         let solEns = "enum Assets {";
-        for (var enms in assets) {
+        for (let enms in assets) {
             solEns = solEns + `${enms}, `;
         }
 
@@ -422,13 +399,13 @@ export default Service.extend({
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
 
-        for (var asset in assetsfunc) {
+        for (let asset in assetsfunc) {
             sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
         }
 
         let length = [];
         let len = 0;
-        for (var key in schema) {
+        for (let key in schema) {
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] === 'object') {
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
@@ -443,7 +420,6 @@ export default Service.extend({
         }
 
         Object.keys(schema).forEach(function (key) {
-
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] === 'object') {
                     sol = sol.appendLine('');
@@ -458,9 +434,7 @@ export default Service.extend({
                                 }
                                 if (schema[key][ikey][inkey].name === 'assetId') {
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name},    /* parameter needed for linking assets and transactions */`);
-
-                                }
-                                else {
+                                } else {
                                     sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
                                 }
                             }
@@ -470,19 +444,15 @@ export default Service.extend({
                                 }
                                 if (schema[key][ikey][inkey].name === 'assetId') {
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name} )    /* parameter needed for linking assets and transactions */`);
-
-                                }
-                                else {
+                                } else {
                                     sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
                                 }
                             }
                         }
-
                     });
                     len = 0;
                     sol = sol.appendLine('public{}');
                 }
-
             }
         });
         sol = sol.appendLine('}');
@@ -536,7 +506,6 @@ export default Service.extend({
                     return result;
                 }
             }
-
         }
         //checking rules that asset id and type is set for an asset
         let myRe = new RegExp(/[-]\sasset:/);
@@ -554,7 +523,6 @@ export default Service.extend({
                 }
             }
         }
-
     },
 
     validateYaml(yamlString) {
@@ -565,11 +533,10 @@ export default Service.extend({
             result = this.depErr(yamlString);
         } catch (err) {
             depResult = this.depErr(yamlString);
-            if (depResult === undefined) {
+            if (!depResult) {
                 result.push({ type: 'error', text: err.message, range: [err.mark.line, err.mark.column, err.mark.line, 0] });
                 return result;
-            }
-            else {
+            } else {
                 return depResult;
             }
         }
@@ -577,10 +544,8 @@ export default Service.extend({
     },
 
     updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema) {
-
         if (oldParamTitle === newParamTitle) return schema;
         if (newParamTitle) {
-
             if (typeof schema === 'string') {
                 schema = JSON.parse(schema);
             }
@@ -597,15 +562,13 @@ export default Service.extend({
 
                             }
                         }
-
                     }
                 }
             }
 
             let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
             return jsonSchema;
-        }
-        else {
+        } else {
             throw new Error('invalid param title');
         }
 
@@ -617,9 +580,9 @@ export default Service.extend({
         }
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
-                if (txnTitle == schema.properties[property].title) {
+                if (txnTitle === schema.properties[property].title) {
                     for (let pkey in schema.properties[property]) {
-                        if (pkey == paramTitle) {
+                        if (pkey === paramTitle) {
                             schema.properties[property][pkey].type = newParamType;
                         }
                     }
@@ -634,7 +597,6 @@ export default Service.extend({
     },
     updateAssetSchema(newAssetTitle, oldAssetTitle, schema) {
         if (newAssetTitle) {
-
             if (typeof schema === 'string') {
                 schema = JSON.parse(schema);
             }
@@ -652,13 +614,11 @@ export default Service.extend({
             let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
             return jsonSchema;
-        }
-        else {
+        } else {
             throw new Error('invalid Asset name');
         }
     },
     updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
-
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
@@ -770,7 +730,7 @@ export default Service.extend({
     },
 
     compileSol(code, cb) {
-        solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
+        solc.BrowserSolc.loadVersion(this.get('solCversion'), function (compiler) {
             try {
                 let c = compiler.compile(code);
                 cb(c.errors);
@@ -839,7 +799,7 @@ export default Service.extend({
 
         }
 
-        solc.BrowserSolc.loadVersion("soljson-v0.4.24+commit.e67f0147.js", function (compiler) {
+        solc.BrowserSolc.loadVersion(this.get('solCversion'), function (compiler) {
             const compiledCode = compiler.compile(code);
             // Check if an error occured during compilation. This is the case if
             // compiledCode.contracts is an empty object.
