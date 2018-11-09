@@ -1,5 +1,5 @@
-@import 'palette';
-@import 'mixins';
+@import "palette";
+@import "mixins";
 
 $simba-fab-bgcolor: #cddc39;
 $simba-fab-highlight: #aeea00;
@@ -97,7 +97,7 @@ $simba-fab-highlight: #aeea00;
       }
     }
     .dropdown-container {
-      md-input-container { 
+      md-input-container {
         width: 100%;
 
         md-select > md-select-value > .ember-power-select-selected-item {
@@ -112,7 +112,9 @@ $simba-fab-highlight: #aeea00;
           }
         }
         &.md-input-has-value {
-          label {color: rgba(255, 255, 255, 0.62);}
+          label {
+            color: rgba(255, 255, 255, 0.62);
+          }
         }
         md-select-value,
         md-select-value > .md-select-icon {
@@ -125,7 +127,7 @@ $simba-fab-highlight: #aeea00;
     md-input-container {
       &.md-default-theme:not(.md-input-invalid) {
         &.md-input-focused,
-        &.md-input-has-value  {
+        &.md-input-has-value {
           label,
           md-icon {
             color: rgba(255, 255, 255, 0.62);
@@ -135,7 +137,7 @@ $simba-fab-highlight: #aeea00;
           }
         }
       }
-      
+
       margin: 0;
       label {
         color: rgba(255, 255, 255, 0.62);
@@ -176,7 +178,7 @@ $simba-fab-highlight: #aeea00;
       height: calc(100% - 48px);
 
       md-content,
-      .md-subheader > .md-subheader-inner{
+      .md-subheader > .md-subheader-inner {
         background: aladdin-color("background");
 
         md-card-content > h2 {
@@ -190,7 +192,7 @@ $simba-fab-highlight: #aeea00;
       button[disabled] {
         background: white;
         cursor: not-allowed;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       .md-button.md-default-theme:not([disabled]):hover,
@@ -235,6 +237,18 @@ $simba-fab-highlight: #aeea00;
             position: absolute;
             right: 0;
             top: 0;
+          }
+
+          .transaction-container {
+              padding-left: 40px;
+
+              md-list-item > .md-list-item-inner > .txn-header > .md-subheader-inner {
+                  padding-left: 0;
+              }
+
+              button > md-icon:not(red) {
+                color: #64b5f6;
+              }
           }
         }
       }

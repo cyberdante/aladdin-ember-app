@@ -1,0 +1,44 @@
+{{#paper-item as |controls|}}
+    {{#if editingAssetTitle}}
+        {{input value=asset.title class="asset-title" enter=(action "toggleAssetTitleEdition") }}
+    {{else}}
+        <p class="clickable" onClick={{action "toggleAssetTitleEdition"}}>{{asset.title}}</p>
+    {{/if}}
+    <div class="md-secondary-container">
+        {{#controls.button raised=true onClick=(action "toggleAssetState" asset)}}
+            {{#if asset.expanded}}
+                {{fa-icon 'eye-slash'}} Transactions {{fa-icon 'chevron-up'}}
+            {{else}}
+                {{fa-icon 'eye'}} Transactions {{fa-icon 'chevron-down'}}
+            {{/if}}
+        {{/controls.button}}
+    </div>
+    <div class="md-secondary-container red">
+        {{#controls.button raised=true class="shaking" iconButton=true onClick=(action "deleteAsset")}}
+            {{paper-icon "delete_forever" title="Delete Asset"}}
+        {{/controls.button}}
+    </div>
+{{/paper-item}}
+{{#if (and asset.expanded asset.transactions)}}
+    <div class="transaction-container">
+        {{#paper-item as |txns|}}
+            {{#paper-subheader class="txn-header"}}Transactions{{/paper-subheader}}
+            <div class="md-secondary-container">
+                {{#txns.button raised=true onClick=(action "toggleOffAddTxn")}}
+                    {{paper-icon "add" title="Add a new Transaction"}}
+                {{/txns.button}}
+            </div>
+        {{/paper-item}}
+        {{#each asset.transactions as |txn|}}
+            {{blockchain-transaction
+                asset=asset
+                transaction=txn
+                parameters=txn.parameters
+                showingParams=false
+                schema=schema
+                selectedTxn=selectedTxn
+                selectTxn=(action 'selectTxn' txn)
+            }}
+        {{/each}}
+    </div>
+{{/if}}
