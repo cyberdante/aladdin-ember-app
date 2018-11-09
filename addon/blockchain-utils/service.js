@@ -168,7 +168,7 @@ export default Service.extend({
         });
             
         let json_schema = JSON.stringify(schemaToParse).replace(/[\[\]']+/g,'');
-        console.log(json_schema)
+    
         return json_schema;
     },
    deleteAsset(genSchema, assetName){
@@ -183,6 +183,9 @@ export default Service.extend({
                 }
              }
         });
+        let json_schema = JSON.stringify(schemaToParse).replace(/[\[\]']+/g,'');
+    
+        return json_schema;
     },
 
     generateSchemaYaml(yamlString, title) {
