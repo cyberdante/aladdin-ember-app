@@ -432,12 +432,13 @@ export default Service.extend({
         let newsolEns= solEns.substr(0, solEns.length - 2);
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
-    
+        let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc){
+            if(!myRe.exec(asset)){
             sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
+            }
     
         }
-    
     
     
     
@@ -546,9 +547,11 @@ export default Service.extend({
         let newsolEns= solEns.substr(0, solEns.length - 2);
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
-    
+        let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc){
+            if(!myRe.exec(asset)){
             sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
+            }
     
         }
     
