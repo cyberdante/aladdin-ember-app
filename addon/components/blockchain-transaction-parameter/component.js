@@ -55,9 +55,10 @@ export default Component.extend({
             }
             this.set('editingParamType', false);
         },
-        deleteParameter() {
-            // TODO
-            console.log('deleting parameter: ', this.get('param.title'));
+        deleteParameter(transaction) {
+            let schema = this.blockchainUtils.deleteParam(transaction.title, this.get('param.title'),this.schema);
+            this.set('schema', schema);
+           
         }
     }
 });

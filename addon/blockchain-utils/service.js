@@ -28,16 +28,16 @@ export default Service.extend({
     // *************************************************
     generateSchema(schemaInterface, title, code) {
     
-    let enumEx = new RegExp(/enum\s{1,10}Assets/)
+    let enumEx = new RegExp(/enum\s{1,10}Assets/);
   
     let parse = code.split("Assets");
     let myRe = new RegExp(/\_/); 
     let myRe2 = new RegExp(/\./); 
     let assetType = {}
    
-    let parseEnum = code.split(enumEx)
-    parseEnum = parseEnum[1].split('}')
-    parseEnum = parseEnum[0].split(',')
+    let parseEnum = code.split(enumEx);
+    parseEnum = parseEnum[1].split('}');
+    parseEnum = parseEnum[0].split(',');
   
     for (let i = 0 ; i < parseEnum.length; ++i){
       parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g,"");
@@ -52,8 +52,8 @@ export default Service.extend({
         let functionName = parse[i].split("_");  
         functionName = functionName[1].split(" ");
         functionName = functionName[0];
-        let assetName = parse[i+1].split(".")
-        assetName = assetName[1].split(";")
+        let assetName = parse[i+1].split(".");
+        assetName = assetName[1].split(";");
         assetName = assetName[0];
         let fn = {};
         fn.assetName = assetName;
@@ -70,14 +70,14 @@ export default Service.extend({
     let schema = {}; 
     schema.$schema = "http://json-schema.org/draft-04/schema"; 
     schema.title = title; 
-    schema.descrption = "Smart Contract Form for the demo" 
+    schema.descrption = "Smart Contract Form for the demo";
     schema.type = typeof(schema);
     schema.properties = {};
     let isAsset;
     schemaInterface.forEach(func =>{
       if(func.type != 'constructor'){
       let fn = {};      
-      fn.dependencies ={}
+      fn.dependencies ={};
          
         for (let key in func){
          
@@ -86,9 +86,9 @@ export default Service.extend({
                  for(let functionName in assetType){
                     if (functionName === fn.title){
                       if(isAsset === true){
-                        let assets = {}
+                        let assets = {};
                         assets.type = assetType[functionName].assetName;
-                        assets.name = functionName
+                        assets.name = functionName;
                         fn.dependencies= assets;
                         isAsset = false;
                      
@@ -107,15 +107,15 @@ export default Service.extend({
                       isAsset = true;
                                            
                    }
-                    let prop = {}
-                    prop.type = func[key][ikey].type
-                    prop.name = func[key][ikey].name
+                    let prop = {};
+                    prop.type = func[key][ikey].type;
+                    prop.name = func[key][ikey].name;
                     fn[func[key][ikey].name] = prop;
                     }            
             }
             if(key == 'outputs'){
                 if( func[key].length < 1){
-                  dummyReturn = {}
+                  dummyReturn = {};
                   fn.properties.returns= dummyReturn;
               }
               for(let ikey in func[key]){
@@ -137,8 +137,8 @@ export default Service.extend({
         if (parseEnum[x]!=undefined){
             schema.properties[`_new_standalone_asset_${parseEnum[x]}`]={};
             let fn = {};      
-            fn.dependencies ={}
-            let assets = {}
+            fn.dependencies ={};
+            let assets = {};
             assets.type = parseEnum[x];
             assets.name = 'unknown';
             fn.dependencies= assets;
@@ -158,7 +158,7 @@ export default Service.extend({
         Object.keys(schemaToParse).forEach(function (key) {
             if (key === 'properties') {
                 schemaToParse.properties[`_new_standalone_asset_${assetName}`]={};
-                let assets = {}
+                let assets = {};
                 assets.type = assetName;
                 assets.name = 'unknown';
                 fn.dependencies= assets;
@@ -196,7 +196,7 @@ export default Service.extend({
         schema.type = typeof (schema);
         schema.properties = {};
         const config = yaml.safeLoad(yamlString);
-        let parseAssets = []
+        let parseAssets = [];
 
 
         if (Array.isArray(config)) {
@@ -206,7 +206,7 @@ export default Service.extend({
                         for (let akey in func[key]) {
                             if (func[key][akey]!='assetId'){
                                 if(typeof func[key][akey] != 'object' && func[key][akey]!='object'){
-                                parseAssets[func[key][akey]] =func[key][akey] 
+                                parseAssets[func[key][akey]] =func[key][akey];
                                 }
 
                             }
@@ -231,7 +231,7 @@ export default Service.extend({
                                     }
                                 }
                             }
-                                schema.properties[func[key][ikey].title] = func[key][ikey].properties
+                                schema.properties[func[key][ikey].title] = func[key][ikey].properties;
                                      Object.keys(func[key][ikey]).forEach(function (pkey) {
                                          if (pkey === 'title') {
                                              schema.properties[func[key][ikey].title].title = func[key][ikey].title;
@@ -245,8 +245,8 @@ export default Service.extend({
                 if (parseAssets[x]!=undefined){
                     schema.properties[`_new_standalone_asset_${parseAssets[x]}`]={};
                     let fn = {};      
-                    fn.dependencies ={}
-                    let assets = {}
+                    fn.dependencies ={};
+                    let assets = {};
                     assets.type = parseAssets[x];
                     assets.name = 'unknown';
                     fn.dependencies= assets;
@@ -401,8 +401,8 @@ export default Service.extend({
     
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc= []
-        let assets= []
+        let assetsfunc= [];
+        let assets= [];
     
     
         
@@ -412,8 +412,8 @@ export default Service.extend({
                     if (typeof schema[key][ikey] === 'object') {
                         Object.keys(schema[key][ikey]).forEach(function (inkey) {
                             if (inkey === "dependencies") {
-                                assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type
-                                assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name
+                                assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type;
+                                assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name;
                             }
                         });
                         
@@ -439,12 +439,8 @@ export default Service.extend({
             }
     
         }
-    
-    
-    
-    
-        let length = []
-        let len = 0
+        let length = [];
+        let len = 0;
             for( let key in schema ) {
                 for (let ikey in schema[key]) {
                     if (typeof schema[key][ikey] === 'object') {
@@ -518,8 +514,8 @@ export default Service.extend({
     
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc= []
-        let assets= []
+        let assetsfunc= [];
+        let assets= [];
            
         Object.keys(schema).forEach(function (key) {
                 //array of assets for enum
@@ -527,17 +523,14 @@ export default Service.extend({
                     if (typeof schema[key][ikey] === 'object') {
                         Object.keys(schema[key][ikey]).forEach(function (inkey) {
                             if (inkey === "dependencies") {
-                                assetsfunc[ikey] = schema[key][ikey][inkey].type
-                                assets[schema[key][ikey][inkey].type] = ikey
+                                assetsfunc[ikey] = schema[key][ikey][inkey].type;
+                                assets[schema[key][ikey][inkey].type] = ikey;
                             }
                         });
                         
                     }
                 } 
         });
-    
-       
-        // enum Assets {container, lock}
     
         let solEns = "enum Assets {"
         for (let enms in assets){
@@ -554,13 +547,8 @@ export default Service.extend({
             }
     
         }
-    
-    
-    
-    
-    
-        let length = []
-        let len = 0
+        let length = [];
+        let len = 0;
             for( let key in schema ) {
                 for (let ikey in schema[key]) {
                     if (typeof schema[key][ikey] === 'object') {
@@ -746,6 +734,28 @@ export default Service.extend({
     }
 
     },
+    deleteParam(txnTitle, paramTitle,schema) {
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
+
+        for (const property in schema.properties) {
+            if (schema.properties.hasOwnProperty(property)) {
+                if (txnTitle === schema.properties[property].title) {
+                    for (let pkey in schema.properties[property]) {
+                        if (pkey === paramTitle) {
+                            delete (schema.properties[property][pkey]);
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+        return jsonSchema;
+    },
 
     updateParamSchemaType(txnTitle, paramTitle, newParamType, schema) {
         if (typeof schema === 'string') {
@@ -768,6 +778,7 @@ export default Service.extend({
         return jsonSchema;
 
     },
+
     updateAssetSchema(newAssetTitle, oldAssetTitle, schema) {
         if(newAssetTitle){
 
@@ -891,8 +902,6 @@ export default Service.extend({
                     }
                 
                 }
-
-                // }
             }
 
             }
@@ -905,7 +914,7 @@ export default Service.extend({
         }
         yamlString += "\n";
         let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
-        let stripedYml = ymlText.replace("---", '')
+        let stripedYml = ymlText.replace("---", '');
 
         let outputYaml = yamlString + stripedYml;
         return outputYaml;
@@ -938,11 +947,11 @@ export default Service.extend({
         let myRe2 = new RegExp(/\./); 
         let assetType = {}
               
-        let parseEnum = code.split(enumEx)
+        let parseEnum = code.split(enumEx);
        
         if(parseEnum.length >1){
-        parseEnum = parseEnum[1].split('}')
-        parseEnum = parseEnum[0].split(',')
+        parseEnum = parseEnum[1].split('}');
+        parseEnum = parseEnum[0].split(',');
       
         for (let i = 0 ; i < parseEnum.length; ++i){
           parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g,"");
@@ -957,12 +966,12 @@ export default Service.extend({
             let functionName = parse[i].split("_");  
             functionName = functionName[1].split(" ");
             functionName = functionName[0];
-            let assetName = parse[i+1].split(".")
-            assetName = assetName[1].split(";")
+            let assetName = parse[i+1].split(".");
+            assetName = assetName[1].split(";");
             assetName = assetName[0];
             let fn = {};
             fn.assetName = assetName;
-            fn.functionName = functionName
+            fn.functionName = functionName;
             assetType[functionName] = fn;
             for(let x = 0; x <parseEnum.length; ++x ){
                 if(parseEnum[x]===assetName){
@@ -1033,10 +1042,10 @@ export default Service.extend({
                       for(let functionName in assetType){
                           if (functionName === fn.title){
                             if(isAsset === true){
-                            fn.dependencies = {}
-                            let assets = {}
+                            fn.dependencies = {};
+                            let assets = {};
                             assets.type = assetType[functionName].assetName;
-                            assets.name = "assetId"
+                            assets.name = "assetId";
                             fn.dependencies= assets;
                             isAsset = false;
                             fn.properties.dependencies  = "*" + assets.type;
