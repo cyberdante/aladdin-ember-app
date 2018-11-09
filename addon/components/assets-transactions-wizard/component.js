@@ -198,8 +198,10 @@ export default Component.extend({
         openNewAssetDialog() {
             this.set('showNewAssetDialog', true);
         },
-        closeNewAssetDialog() {
-            // TODO: add new asset to the schema
+        closeNewAssetDialog(newAsset) {
+            // console.log(this.schema, this.newAssetTitle)
+            let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle);
+            this.set('schema', schema);
             this.set('newAssetTitle', '');
             this.set('showNewAssetDialog', false);
         }
