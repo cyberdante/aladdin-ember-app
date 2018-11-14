@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-aladdin",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "description": "Ember application for Aladdin Blockchain Research Framework",
   "keywords": [
