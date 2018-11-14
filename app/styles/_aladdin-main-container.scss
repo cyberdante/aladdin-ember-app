@@ -40,4 +40,23 @@
             }
         }
     }
+
+    @media (max-width: $screen-md-min) {
+        .top {
+            position: fixed;
+            top: 0;
+            height: 80%;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .bottom {
+            position: fixed;
+            bottom: 0;
+            height: 20%;
+            top: 80%;
+            width: 100%;
+            z-index: 5;
+        }
+    }
 }
