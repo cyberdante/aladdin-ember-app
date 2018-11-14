@@ -196,7 +196,7 @@ export default Service.extend({
         schema.type = typeof (schema);
         schema.properties = {};
         const config = yaml.safeLoad(yamlString);
-        let parseAssets = [];
+        let parseAssets = {};
 
 
         if (Array.isArray(config)) {
@@ -205,7 +205,7 @@ export default Service.extend({
                     for (let key in func) {
                         for (let akey in func[key]) {
                             if (func[key][akey]!='assetId'){
-                                if(typeof func[key][akey] != 'object' && func[key][akey]!='object'){
+                                if(typeof func[key][akey] != 'object' && func[key][akey]!='object' && func[key][akey]!='_super'){
                                 parseAssets[func[key][akey]] =func[key][akey];
                                 }
 
@@ -241,16 +241,18 @@ export default Service.extend({
                     }
                 }
              });
+
              for (let x in parseAssets) {
-                if (parseAssets[x]!=undefined){
-                    schema.properties[`_new_standalone_asset_${parseAssets[x]}`]={};
+                // if (parseAssets[x]!=undefined){
+                if (x!==undefined){
+                    schema.properties[`_new_standalone_asset_${x}`]={};
                     let fn = {};      
                     fn.dependencies ={};
                     let assets = {};
-                    assets.type = parseAssets[x];
+                    assets.type = x;
                     assets.name = 'unknown';
                     fn.dependencies= assets;
-                    schema.properties[`_new_standalone_asset_${parseAssets[x]}`] = fn;
+                    schema.properties[`_new_standalone_asset_${x}`] = fn;
                 }
 
              }
@@ -401,8 +403,8 @@ export default Service.extend({
     
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc= [];
-        let assets= [];
+        let assetsfunc= {};
+        let assets= {};
     
     
         
@@ -516,13 +518,13 @@ export default Service.extend({
         sol = sol.appendLine('function ' + schema.title + '() public{}');
         let assetsfunc= {};
         let assets= {};
-           
+
         Object.keys(schema).forEach(function (key) {
                 //array of assets for enum
                 for (let ikey in schema[key]) {
                     if (typeof schema[key][ikey] === 'object') {
                         Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                            if (inkey === "dependencies") {
+                          if (inkey === "dependencies") {
                                 assetsfunc[ikey] = schema[key][ikey][inkey].type;
                                 assets[schema[key][ikey][inkey].type] = ikey;
                             }
@@ -531,9 +533,10 @@ export default Service.extend({
                     }
                 } 
         });
-    
+        // console.log(assets);
         let solEns = "enum Assets {"
         for (let enms in assets){
+          // console.log(enms);
             solEns = solEns + `${enms}, `;        
         }
     
