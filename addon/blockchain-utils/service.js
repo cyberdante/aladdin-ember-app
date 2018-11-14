@@ -514,8 +514,8 @@ export default Service.extend({
     
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc= [];
-        let assets= [];
+        let assetsfunc= {};
+        let assets= {};
            
         Object.keys(schema).forEach(function (key) {
                 //array of assets for enum
