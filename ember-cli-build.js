@@ -16,7 +16,8 @@ module.exports = function(defaults) {
       themes: ['monokai', 'ambiance', 'chaos'],
       modes: ['yaml', 'golang'],
       exts: ['language_tools', 'beautify']
-    }
+    },
+    solidityCompilerVersion: 'soljson-v0.4.24+commit.e67f0147.js'
   });
 
   /*

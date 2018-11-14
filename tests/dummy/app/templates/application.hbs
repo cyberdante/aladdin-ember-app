@@ -1,81 +1,84 @@
 <div class="flex layout-row" style="height: 100vh;">
     {{outlet}}
     {{aladdin-main-container code="pragma solidity ^0.4.24;
-
 contract Application {
     function Application() public {}
+    enum Assets {
+        Container, Lock, Manifest
+    }
+    Assets _arrived = Assets.Container;
+    Assets _tampered = Assets.Lock;
+    Assets _Lock = Assets.Container;
+    Assets _idle = Assets.Container;
+    Assets _unlock = Assets.Lock;
+    Assets _locked = Assets.Lock;
+    Assets _saveManifest = Assets.Manifest;
+    Assets _departed = Assets.Container;
+    Assets _Manifest = Assets.Container;
+    Assets _received = Assets.Container;
 
     function arrived (
-        uint sNum,
-        uint arrived,
-        bytes32 assetId,
-        bytes32 container)
+        uint sNum, /* optional parameter */
+        uint arrived,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function tampered (
-        uint sNum,
-        uint tampered,
-        bytes32 assetId,
-        bytes32 lock)
+        uint sNum, /* optional parameter */
+        uint tampered,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
-    function lock (
-        uint sNum,
-        uint locked,
-        bytes32 assetId,
-        bytes32 container)
+    function Lock (
+        uint sNum, /* optional parameter */
+        uint locked,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function idle (
-        uint sNum,
-        uint idle,
-        bytes32 assetId,
-        bytes32 container)
+        uint sNum, /* optional parameter */
+        uint idle,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function unlock (
-        uint sNum,
-        uint tampered,
-        uint unlocked,
-        bytes32 assetId,
-        bytes32 lock)
+        uint sNum, /* optional parameter */
+        uint tampered, /* optional parameter */
+        uint unlocked,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function locked (
-        uint sNum,
-        uint tampered,
-        uint locked,
-        bytes32 assetId,
-        bytes32 lock)
+        uint sNum, /* optional parameter */
+        uint tampered, /* optional parameter */
+        uint locked,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function saveManifest (
-        uint sNum,
-        uint carNum,
-        bytes32 assetId,
-        bytes32 manifest)
+        uint sNum, /* optional parameter */
+        uint carNum,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function departed (
-        uint sNum,
-        uint departed,
-        bytes32 assetId,
-        bytes32 container)
+        uint sNum, /* optional parameter */
+        uint departed,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
-    function manifest (
-        string contents,
-        uint locked,
-        bytes32 assetId,
-        bytes32 container)
+    function Manifest (
+        string contents, /* optional parameter */
+        uint locked,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
 
     function received (
-        uint sNum,
-        uint received,
-        bytes32 assetId,
-        bytes32 container)
+        uint sNum, /* optional parameter */
+        uint received,   /* optional parameter */
+        string assetId) /* parameter needed for linking assets and transactions */
     public {}
+
 }
 "}}
 </div>

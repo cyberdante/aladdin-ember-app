@@ -1,0 +1,54 @@
+@import "palette";
+@import "mixins";
+
+.blockchain-transaction {
+    md-list-item {
+        input {
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            margin: 0;
+        }
+
+        .clickable {
+            cursor: pointer;
+        }
+        
+        .button-with-icon-container {
+            .md-button.md-default-theme {
+                min-width: 20px;
+
+                &.md-primary:not([disabled]) {
+                    &.md-focused {
+                        background-color: transparent;
+                    }
+                    md-icon {
+                        color: #64b5f6;
+                    }
+                }
+            }
+
+            &.red {
+                md-icon {
+                    color: #f92672 !important;
+                }
+            }
+        }
+    }
+    &.error {
+        .transaction-title {
+            outline: #f92672 auto 5px !important;
+            outline-offset: 0 !important;
+        }
+    }
+    md-card {
+        .parameters-header {
+            // padding-left: 25px;
+            font-weight: bold;
+            color: #989892;
+            background: #272822;
+            font-size: 14px;
+            line-height: 1em;
+        }
+    }
+}

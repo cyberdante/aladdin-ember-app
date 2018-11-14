@@ -11,6 +11,13 @@ export default Component.extend({
     layout,
     
     blockchainUtils: service(),
+    
+    solCversion: computed(function() {
+        let version = this.blockchainUtils.solCversion;
+        let start = version.indexOf('-') + 2;
+        let end = this.blockchainUtils.solCversion.indexOf('+');
+        return version.substring(start, end);
+    }),
 
     title: 'Application',
 

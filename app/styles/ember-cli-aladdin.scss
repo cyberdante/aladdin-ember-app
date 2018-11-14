@@ -7,9 +7,13 @@
 @import "code";
 @import "output-pane";
 @import "mixins";
+@import "animations";
 
 @import "aladdin-main-container";
 @import "assets-transactions-wizard";
+@import "blockchain-asset";
+@import "blockchain-transaction";
+@import "blockchain-transaction-parameter";
 @import "center-column";
 @import "contract-editor";
 @import "contract-viewer";
