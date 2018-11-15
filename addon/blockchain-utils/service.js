@@ -838,7 +838,7 @@ export default Service.extend({
 
     },
 
-    updateSchemaAddTxn(txnName, assTitle, parameters, schema, bundlehash) {
+    updateSchemaAddTxn(txnName, assTitle, parameters, schema, _bundleHash) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
@@ -857,10 +857,10 @@ export default Service.extend({
                 }
             });
 
-            if(bundlehash) {
-                schema.properties[txnName]['bundlehash'] = {};
-                schema.properties[txnName]['bundlehash'].name ='bundlehash';
-                schema.properties[txnName]['bundlehash'].type = 'string';
+            if(_bundleHash) {
+                schema.properties[txnName]['_bundleHash'] = {};
+                schema.properties[txnName]['_bundleHash'].name ='_bundleHash';
+                schema.properties[txnName]['_bundleHash'].type = 'string';
 
             }
         } else {
