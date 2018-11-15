@@ -13,6 +13,7 @@ export default Component.extend({
     editingAssetTitle: false,
     hasValidTitle: computed.gt('title.length', 0),
     inputTitleEmpty: computed.not('hasValidTitle'),
+    schema:'',
 
     init() {
         this._super(...arguments);
@@ -30,6 +31,9 @@ export default Component.extend({
         },
         deleteAsset() {
             console.log('deleting asset ', this.get('asset.title'));
+            console.log(this.schema)
+            let schema = this.blockchainUtils.deleteAsset(this.schema,this.get('asset.title'));
+            this.set('schema', schema);
         },
         toggleAssetTitleEdition() {
             let asset = this.get('asset');

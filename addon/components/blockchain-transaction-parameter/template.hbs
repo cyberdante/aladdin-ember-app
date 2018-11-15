@@ -33,7 +33,7 @@
                     {{/parameter-wrapper.button}}
                 </div>
                 <div class="button-with-icon-container red">
-                    {{#parameter-wrapper.button raised=true class="shaking" iconButton=true onClick=(action "deleteParameter")}}
+                    {{#parameter-wrapper.button raised=true class="shaking" iconButton=true onClick=(action "deleteParameter" param.txn)}}
                         {{paper-icon "delete_forever" title="Delete Parameter"}}
                     {{/parameter-wrapper.button}}
                 </div>
