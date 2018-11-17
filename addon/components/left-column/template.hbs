@@ -1,30 +1,59 @@
 <div class="header">
-  <div class="nav-right">
-    {{#if canHideLeftColumn}}
-      <span class="hint--bottom hint--rounded" {{action 'hideLeftColumn'}} title="Hide {{leftComponentName}}">
-        {{fa-icon 'times'}}
-      </span>
+    {{#if showTitleOnMainPanels}}
+        {{#if (eq leftComponentName 'Smart Contract and Graph')}}
+            <div class="tabs">
+                {{#paper-tabs
+                    class="aladdin-tab"
+                    selected=selectedTab
+                    borderBottom="false"
+                    shouldPaginate=false
+                    onChange=(action 'onChange') as |tabs|}}
+                    {{#each tabTitles as |tabtitle|}}
+                        {{#tabs.tab}}
+                            {{tabtitle}}
+                        {{/tabs.tab}}
+                    {{/each}}
+                {{/paper-tabs}}
+            </div>
+        {{else}}
+            <md-card-title-text>
+                <span class="md-headline">
+                    {{leftComponentName}}
+                </span>
+            </md-card-title-text>
+        {{/if}}
     {{/if}}
-    {{#if centerColumnShow}}
-      <span class="hint--bottom hint--rounded" {{action "swapComponents" "left,center"}} title="Swap {{leftComponentName}} and {{centerComponentName}}">
-        {{fa-icon 'exchange-alt'}}
-      </span>
-    {{else}}
-      <span class="hint--bottom hint--rounded" {{action (action this.openCentralColumn)}} title="Show {{centerComponentName}}">
-        {{fa-icon centerColumnIcon}}
-      </span>
-    {{/if}}
-    {{#if rightColumnShow}}
-      <span class="hint--bottom hint--rounded" {{action "swapComponents" "left,right"}} title="Swap {{leftComponentName}} and {{rightComponentName}}">
-        {{fa-icon 'angle-double-right'}}
-      </span>
-    {{/if}}
-  </div>
+    <div class="nav-right">
+        {{#if canHideLeftColumn}}
+            <span class="hint--bottom hint--rounded" {{action 'hideLeftColumn'}} title="Hide {{leftComponentName}}">
+                {{fa-icon 'times'}}
+            </span>
+        {{/if}}
+        {{#if centerColumnShow}}
+            <span class="hint--bottom hint--rounded" {{action "swapComponents" "left,center"}} title="Swap {{leftComponentName}} and {{centerComponentName}}">
+                {{fa-icon 'exchange-alt'}}
+            </span>
+        {{else}}
+            <span class="hint--bottom hint--rounded" {{action (action this.openCentralColumn)}} title="Show {{centerComponentName}}">
+                {{fa-icon centerColumnIcon}}
+            </span>
+        {{/if}}
+        {{#if rightColumnShow}}
+            <span class="hint--bottom hint--rounded" {{action "swapComponents" "left,right"}} title="Swap {{leftComponentName}} and {{rightComponentName}}">
+                {{fa-icon 'angle-double-right'}}
+            </span>
+        {{/if}}
+    </div>
 </div>
-
-{{component 
+{{component
     leftComponent
-    showTitle=true
+    showTitle=showTitle
+    showTitleOnMainPanels=showTitleOnMainPanels
+    solCversion=solCversion
+    selected=selectedTab
+    selectedTab=selectedTab
+    selectedComponent=selectedComponent
+    tabTitles=tabTitles
     schema=schema
     code=code
     yaml=yaml

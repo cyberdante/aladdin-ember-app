@@ -1,5 +1,6 @@
 @import 'palette';
 @import 'mixins';
+@import 'variables';
 
 $simba-fab-bgcolor: #cddc39;
 $simba-fab-highlight: #aeea00;
@@ -7,6 +8,13 @@ $simba-fab-highlight: #aeea00;
 .contract-viewer {
     height: 100%;
     width: 100%;
+    &.show-title {
+        height: calc(100% - #{$title-bar});
+
+        md-card > md-card-content {
+            height: 100%;
+        }
+    }
 
     md-progress-circular {
       position: absolute;
@@ -85,6 +93,54 @@ $simba-fab-highlight: #aeea00;
         height: 100%;
         padding: 0;
         margin: 0;
+
+        .layout-row > .alert {
+            padding: 0 0 0 15px;
+            background: orange;
+            color: white;
+            height: 24px;
+            width: 100%;
+
+            &.opened {
+                display: block;
+                .version {
+                    font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
+                    font-size: 12px;
+                    font-weight: 700;
+                    -webkit-font-smoothing: antialiased;
+                }
+                button {
+                    background: transparent;
+                    border: 0;
+                    bottom: 2px;
+                    color: #fff;
+                    cursor: pointer;
+                    float: right;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    height: 24px;
+                    line-height: 1;
+                    position: relative;
+                    -webkit-appearance: none;
+                }
+                button:focus {
+                    outline: none;
+                }
+            }
+            &.closed {
+                display: none;
+            }
+        }
+
+        .layout-row > .alert.opened + md-card {
+            height: calc(100% - 24px);
+
+            .manual-toggler {
+                height: calc(100% - 24px);
+                top: 24px;
+            }
+        }
+
         .layout-row,
         md-card {
             height: 100%;

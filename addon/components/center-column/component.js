@@ -17,7 +17,7 @@ export default Component.extend(ResizeMixin, {
 
     isFirstColumn: computed.equal('col', '1'),
 
-    canCloseCentralColumn: computed('leftColumnShow', 'rightColumnShow', function() {
+    canCloseCentralColumn: computed('leftColumnShow', 'rightColumnShow', function () {
         return this.get('leftColumnShow') || this.get('rightColumnShow');
     }),
 
@@ -31,15 +31,15 @@ export default Component.extend(ResizeMixin, {
 
     actions: {
         didBecomeReady() {
-          if(this.didBecomeReady) {
-            this.didBecomeReady();
-          }
+            if (this.didBecomeReady) {
+                this.didBecomeReady();
+            }
         },
-    
+
         didChange() {
-          if (this.didChange) {
-            this.didChange();
-          }
+            if (this.didChange) {
+                this.didChange();
+            }
         },
 
         valueUpdated(value, __, changeObj) {
@@ -60,27 +60,30 @@ export default Component.extend(ResizeMixin, {
         },
 
         viewChange() {
-          this.viewChange();
+            this.viewChange();
         },
 
         swapComponents(comps) {
-          if(!comps) {
-            return;
-          }
-          comps = comps.split(',');
-          let center = comps[0];
-          let right = comps[1];
-          let tempName = this.get(right + 'ComponentName');
-          let tempComponent = this.get(right + 'Component');
-          let tempIcon = this.get(right + 'ColumnIcon');
-    
-          this.set(right + 'ComponentName', this.get(center + 'ComponentName'));
-          this.set(right + 'Component', this.get(center + 'Component'));
-          this.set(right + 'ColumnIcon', this.get(center + 'ColumnIcon'));
-    
-          this.set(center + 'ComponentName', tempName);
-          this.set(center + 'Component', tempComponent);
-          this.set(center + 'ColumnIcon', tempIcon);
+            if (!comps) {
+                return;
+            }
+            comps = comps.split(',');
+            let center = comps[0];
+            let right = comps[1];
+            let tempName = this.get(right + 'ComponentName');
+            let tempComponent = this.get(right + 'Component');
+            let tempIcon = this.get(right + 'ColumnIcon');
+
+            this.set(right + 'ComponentName', this.get(center + 'ComponentName'));
+            this.set(right + 'Component', this.get(center + 'Component'));
+            this.set(right + 'ColumnIcon', this.get(center + 'ColumnIcon'));
+
+            this.set(center + 'ComponentName', tempName);
+            this.set(center + 'Component', tempComponent);
+            this.set(center + 'ColumnIcon', tempIcon);
+        },
+        onChange(selected) {
+            this.onChange(selected);
         }
     }
 });
