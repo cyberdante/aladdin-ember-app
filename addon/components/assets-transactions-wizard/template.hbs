@@ -1,5 +1,5 @@
 {{#paper-card as |card|}}
-  {{#if showTitle}}
+  {{#if (not showTitleOnMainPanels)}}
     {{#card.title as |title|}}
       {{#title.text as |text|}}
         {{#text.headline}}

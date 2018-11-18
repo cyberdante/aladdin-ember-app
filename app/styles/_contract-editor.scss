@@ -1,21 +1,30 @@
 @import 'palette';
 @import 'mixins';
+@import 'variables';
 
 .contract-editor {
     height: 100%;
     width: 100%;
+    &.show-title {
+        height: calc(100% - #{$title-bar});
+
+        md-card > md-card-content {
+            height: 100%;
+        }
+    }
     
     md-card {
         height: 100%;
         md-card-title {
             background-color: aladdin-color('secondary'); //#ff5722;
             color: #fff;
-            height: 48px;
-            max-height: 48px;
+            height: $title-bar;
+            max-height: $title-bar;
             padding: 0;
 
             md-card-title-text {
                 @include aladdin-card-title-text;
+                cursor: auto;
 
                 .md-headline {
                   font-size: 14px;
@@ -27,7 +36,7 @@
         md-card-content {
             padding: 0;
             margin: 0;
-            height: calc(100% - 48px);
+            height: 100%;
             div {
                 height: 100%;
                 opacity: 1;

@@ -1,9 +1,9 @@
 {{#paper-card class="aladdin-tabs-container" as |card|}}
     {{#card.content}}
-        {{#paper-tabs
+        {{!-- {{#paper-tabs
             class="aladdin-tab"
             selected=selectedTab
-            borderBottom="true"
+            borderBottom="false"
             shouldPaginate=false
             onChange=(action 'onChange') as |tabs|}}
             {{#each tabTitles as |title|}}
@@ -11,19 +11,20 @@
                     {{title}}
                 {{/tabs.tab}}
             {{/each}}
-        {{/paper-tabs}}
+        {{/paper-tabs}} --}}
         {{#if (not-eq selectedComponent 'contract-viewer')}}
             {{component 
                 selectedComponent
-                showTitle=false
+                showTitle=showTitle
                 schema=schema
                 viewChange=(action viewChange) }}
         {{else}}
             {{component 
                 selectedComponent
-                showTitle=false
+                showTitle=showTitle
                 contractType='ethereum'
                 value=code
+                solCversion=solCversion
                 viewChange=(action viewChange)
                 logValues=logValues
                 manualMode=manualMode

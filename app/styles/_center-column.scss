@@ -1,9 +1,10 @@
 @import 'palette';
+@import 'variables';
 
 .center-column {
     .md-padding {
         padding: 0;
-        height: calc(100% - 60px);
+        height: calc(100% - #{$title-bar});
 
         md-card {
             margin: 0;

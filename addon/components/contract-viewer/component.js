@@ -12,6 +12,7 @@ export default Component.extend({
   classNames: ['md-padding', 'contract-viewer'],
   classNameBindings: ['manualMode'],
   blockchainUtils: service(),
+  showSolCVersion: true,
 
   value: '',
   editorSession: null,
@@ -117,6 +118,10 @@ export default Component.extend({
     toggleEditMode() {
       const updatedValue = this.get('value');
       this.get('toggleEditMode')(updatedValue);
+    },
+
+    closeVersionAlertBar() {
+        this.set('showSolCVersion', false);
     }
   }
 });

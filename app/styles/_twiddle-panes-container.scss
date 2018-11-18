@@ -1,0 +1,76 @@
+@import "mixins";
+@import "variables";
+
+.show-title-on-main-panels {
+    .twiddle-panes > .twiddle-pane > .ember-view {
+        .header {
+            background: aladdin-color("secondary");
+            color: #fff;
+
+            md-card-title-text {
+                @include aladdin-card-title-text;
+                cursor: auto;
+
+                .md-headline {
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 24px;
+                }
+            }
+
+            .tabs {
+                max-width: 280px;
+                width: 280px;
+                background-color: aladdin-color("secondary"); //#ff5722;
+                color: #fff;
+                height: $title-bar;
+                max-height: $title-bar;
+                padding: 0;
+
+                md-tabs .md-default-theme .md-tab, 
+                md-tabs .md-tab {
+                    color: #fff;
+                }
+
+                md-tabs.md-default-theme md-ink-bar,
+                md-tabs md-ink-bar {
+                    color: aladdin-color('primary');
+                    background: aladdin-color('primary');
+                }
+
+                md-tabs {
+                    border-radius: 0;
+
+                    md-tab-item {
+                        color: #fff;
+                        background-color: aladdin-color('secondary');
+
+                        &.md-active {
+                            color: aladdin-color('primary') !important;
+                            background-color: aladdin-color('foreground') !important;
+                        }
+                    }
+                }
+            }
+        }
+        .nav-left,
+        .nav-right {
+            span > svg {
+                color: #fff;
+            }
+        }
+        .nav-left {
+            margin-left: 15px;
+        }
+        .nav-left + .tabs {
+            margin-left: 15px;
+        }
+        .tabbed-container {
+            .aladdin-tabs-container {
+                md-card-content > .md-padding {
+                    height: 100%;
+                }
+            }
+        }
+    }
+}
