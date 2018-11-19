@@ -94,7 +94,7 @@
                     {{/paper-dialog}}
                 {{/if}}
                 {{#if showNewAssetDialog}}
-                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog") origin=dialogOrigin as |newAssetModal|}}
+                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog" newAssetTitle) origin=dialogOrigin as |newAssetModal|}}
                         {{#paper-dialog-content}}
                             <div class="layout-row">
                                 <div class="layout-column flex-100">
@@ -104,7 +104,7 @@
                         {{/paper-dialog-content}}
                         {{#paper-dialog-actions class="layout-row"}}
                             <span class="flex"></span>
-                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog") disabled=isInputEmpty}}Add{{/paper-button}}
+                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog" newAssetTitle) disabled=isInputEmpty}}Add{{/paper-button}}
                         {{/paper-dialog-actions}}
                      {{/paper-dialog}}
                 {{/if}}
