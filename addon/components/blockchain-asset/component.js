@@ -26,12 +26,7 @@ export default Component.extend({
     },
 
     actions: {
-        createNewAsset() {
-
-        },
         deleteAsset() {
-            console.log('deleting asset ', this.get('asset.title'));
-            console.log(this.schema)
             let schema = this.blockchainUtils.deleteAsset(this.schema,this.get('asset.title'));
             this.set('schema', schema);
         },

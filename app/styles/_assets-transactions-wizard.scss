@@ -247,6 +247,18 @@ $simba-fab-highlight: #aeea00;
                         top: 0;
                     }
 
+                    .asset-header-container {
+                        .md-list-item-inner {
+                            .asset-header > .md-subheader-inner {
+                                padding-left: 0;
+                            }
+                            .md-secondary-container {
+                                button > md-icon:not(red) {
+                                    color: #64b5f6;
+                                }
+                            }
+                        }
+                    }
                     .transaction-container {
                         padding-left: 40px;
 

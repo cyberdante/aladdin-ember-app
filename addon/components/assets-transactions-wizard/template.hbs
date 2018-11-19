@@ -16,18 +16,14 @@
           <div class="layout-row layout-wrap">
             {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |assetpanel|}}
               {{#assetpanel.content}}
-                {{#if editingTxnAdd}}
-                  <div class="atat-options">
-                    {{#paper-button fab=true primary=true accent=true raised=true disabled=isCompiling onClick=(action "openNewAssetDialog")}}
-                        {{#paper-icon "add"}}
-                            {{#paper-tooltip position="top"}}
-                                Add a new asset
-                            {{/paper-tooltip}}
-                        {{/paper-icon}}
-                    {{/paper-button}}
-                  </div>
-                {{/if}}
-                {{#paper-subheader}}Assets{{/paper-subheader}}
+                {{#paper-item class="asset-header-container" as |assetHeader|}}
+                    {{#paper-subheader class="asset-header"}}Assets{{/paper-subheader}}
+                    <div class="md-secondary-container">
+                        {{#assetHeader.button primary=true raised=true disabled=isCompiling onClick=(action "openNewAssetDialog")}}
+                            {{paper-icon "add" title="Add a new Asset" position="left"}}
+                        {{/assetHeader.button}}
+                    </div>
+                {{/paper-item}}
                 {{#each assets as |asset|}}
                     {{blockchain-asset 
                         asset=asset
