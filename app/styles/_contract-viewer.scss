@@ -65,12 +65,16 @@ $simba-fab-highlight: #aeea00;
                 height: 100%;
                 width: 100%;
                 margin-top: 0;
+                overflow-x: auto;
 
                 textarea {
                     opacity: 1 !important;
                     height: 100%;
                     width: 100%;
                     left: 0;
+                }
+                .ace_scrollbar-h {
+                    overflow-x: auto;
                 }
 
                 .ember-ace-error { background-color: rgba(255, 0, 0, 0.5); position: absolute; }

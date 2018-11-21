@@ -1,0 +1,21 @@
+{{#paper-dialog onClose=(action "closePromptDialog" "cancel") origin=dialogOrigin as |confirmationModal|}}
+    {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+            <h2>Delete confirmation</h2>
+            <span class="flex"></span>
+            {{#paper-button iconButton=true onClick=(action "closePromptDialog" "cancel")}}{{paper-icon icon="close"}}{{/paper-button}}
+        {{/paper-toolbar-tools}}
+    {{/paper-toolbar}}
+    {{#paper-dialog-content}}
+        <div class="layout-row">
+            <div class="layout-column flex-100">
+                Are you sure you want to delete {{modelType}} "{{model.title}}"?
+            </div>
+        </div>
+    {{/paper-dialog-content}}
+    {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        {{#paper-button onClick=(action "closePromptDialog" "cancel")}}Cancel{{/paper-button}}
+        {{#paper-button primary=true onClick=(action "closePromptDialog" "ok" model)}}Confirm{{/paper-button}}
+    {{/paper-dialog-actions}}
+{{/paper-dialog}}
