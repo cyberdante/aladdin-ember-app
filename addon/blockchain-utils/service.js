@@ -505,7 +505,7 @@ export default Service.extend({
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
         };
-
+        
         let schema = JSON.parse(schemaString);
 
         schema.title = "Application";
@@ -811,15 +811,18 @@ export default Service.extend({
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-
+        if (newTxnTitle && oldTxnTitle){
         for (const property in schema.properties) {
-            if (schema.properties.hasOwnProperty(property)) {
-                if (oldTxnTitle === schema.properties[property].title) {
-                    schema.properties[property].title = newTxnTitle;
-                }
-            }
-        }
+            if (oldTxnTitle === schema.properties[property].title) {
+                    schema.properties[newTxnTitle] = schema.properties[property];
+                    schema.properties[newTxnTitle].title = newTxnTitle;
+                    delete  schema.properties[property];
 
+                }
+        }
+        } else {
+        throw new Error('Invalid schema. No properties attribute inside.');
+        }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
