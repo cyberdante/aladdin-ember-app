@@ -33,9 +33,7 @@ export default Component.extend({
 
     viewChange() {
       this.viewChange();
-    },
-    onChange(selected) {
-        this.onChange(selected);
     }
   }
+
 });

@@ -11,7 +11,7 @@ import solc from 'solc';
 import { typeOf } from 'remedial';
 
 export default Service.extend({
-    solCversion: computed(function () {
+    solCversion: computed(function() {
         return 'soljson-v0.4.24+commit.e67f0147.js';
     }),
     // *************************************************
@@ -27,163 +27,164 @@ export default Service.extend({
     //        signifies an asset relationship
     // *************************************************
     generateSchema(schemaInterface, title, code) {
-
-        let enumEx = new RegExp(/enum\s{1,10}Assets/);
-
-        let parse = code.split('Assets');
-        let myRe = new RegExp(/_/);
-        let myRe2 = new RegExp(/\./);
-        let assetType = {}
-
-        let parseEnum = code.split(enumEx);
-        parseEnum = parseEnum[1].split('}');
-        parseEnum = parseEnum[0].split(',');
-
-        for (let i = 0; i < parseEnum.length; ++i) {
-            parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g, '');
-            parseEnum[i] = parseEnum[i].replace(/{/g, '');
-            parseEnum[i] = parseEnum[i].replace(/ /g, '');
-
-        }
-
-
-        for (let i = 1; i < parse.length; ++i) {
-            if (myRe.exec(parse[i]) && myRe2.exec(parse[i + 1])) {
-                let functionName = parse[i].split('_');
-                functionName = functionName[1].split(' ');
-                functionName = functionName[0];
-                let assetName = parse[i + 1].split('.');
-                assetName = assetName[1].split(';');
-                assetName = assetName[0];
-                let fn = {};
-                fn.assetName = assetName;
-                fn.functionName = functionName
-                assetType[functionName] = fn;
-                for (let x = 0; x < parseEnum.length; ++x) {
-                    if (parseEnum[x] === assetName) {
-                        delete parseEnum[x];
-                    }
-                }
+    
+    let enumEx = new RegExp(/enum\s{1,10}Assets/);
+  
+    let parse = code.split("Assets");
+    let myRe = new RegExp(/\_/); 
+    let myRe2 = new RegExp(/\./); 
+    let assetType = {}
+   
+    let parseEnum = code.split(enumEx);
+    parseEnum = parseEnum[1].split('}');
+    parseEnum = parseEnum[0].split(',');
+  
+    for (let i = 0 ; i < parseEnum.length; ++i){
+      parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g,"");
+      parseEnum[i] = parseEnum[i].replace(/{/g,"");
+      parseEnum[i] = parseEnum[i].replace(/ /g,"");
+  
+    }
+  
+  
+    for ( let i = 1 ; i < parse.length; ++i){
+        if(myRe.exec(parse[i]) && myRe2.exec(parse[i+1]) ){
+        let functionName = parse[i].split("_");  
+        functionName = functionName[1].split(" ");
+        functionName = functionName[0];
+        let assetName = parse[i+1].split(".");
+        assetName = assetName[1].split(";");
+        assetName = assetName[0];
+        let fn = {};
+        fn.assetName = assetName;
+        fn.functionName = functionName
+        assetType[functionName] = fn;
+        for(let x = 0; x <parseEnum.length; ++x ){
+            if(parseEnum[x]===assetName){
+              delete parseEnum[x];          
             }
         }
-
-        let schema = {};
-        schema.$schema = 'http://json-schema.org/draft-04/schema';
-        schema.title = title;
-        schema.descrption = 'Smart Contract Form for the demo';
-        schema.type = typeof (schema);
-        schema.properties = {};
-        let isAsset;
-        schemaInterface.forEach(func => {
-            if (func.type != 'constructor') {
-                let fn = {};
-                fn.dependencies = {};
-
-                for (let key in func) {
-
-                    if (key === 'name') {
-                        fn.title = func[key];
-                        for (let functionName in assetType) {
-                            if (functionName === fn.title) {
-                                if (isAsset) {
-                                    let assets = {};
-                                    assets.type = assetType[functionName].assetName;
-                                    assets.name = functionName;
-                                    fn.dependencies = assets;
-                                    isAsset = false;
-
-                                }
-                            }
-
-                        }
-                        break;
-
-                    }
-
-                    if (key === "inputs") {
-                        for (let ikey in func[key]) {
-                            if (func[key][ikey].name === "assetId") {
-                                isAsset = true;
-                            }
-                            let prop = {};
-                            prop.type = func[key][ikey].type;
-                            prop.name = func[key][ikey].name;
-                            fn[func[key][ikey].name] = prop;
-                        }
-                    }
-                    if (key === 'outputs') {
-                        if (func[key].length) {
-                            for (let ikey in func[key]) {
-                                fn.properties.returns = func[key][ikey];
-                            }
-                        } else {
-                            let dummyReturn = {};
-                            fn.properties.returns = dummyReturn;
-                        }
-                        
-                    }
-                }
-
-                schema.properties[fn.title] = fn;
-            }
-            //     if(func.type === 'constructor'){
-            //     for (let key in func){
-            //       //   console.log(func[key])
-            //     }
-            //   }
-
-        });
-        for (let x = 0; x < parseEnum.length; ++x) {
-            if (parseEnum[x] != undefined) {
-                schema.properties[`_new_standalone_asset_${parseEnum[x]}`] = {};
-                let fn = {};
-                fn.dependencies = {};
-                let assets = {};
-                assets.type = parseEnum[x];
-                assets.name = 'unknown';
-                fn.dependencies = assets;
-                schema.properties[`_new_standalone_asset_${parseEnum[x]}`] = fn;
-            }
         }
+    }
+  
+    let schema = {}; 
+    schema.$schema = "http://json-schema.org/draft-04/schema"; 
+    schema.title = title; 
+    schema.descrption = "Smart Contract Form for the demo";
+    schema.type = typeof(schema);
+    schema.properties = {};
+    let isAsset;
+    schemaInterface.forEach(func =>{
+      if(func.type != 'constructor'){
+      let fn = {};      
+      fn.dependencies ={};
+         
+        for (let key in func){
+         
+            if(key =="name"){
+                 fn.title = func[key];
+                 for(let functionName in assetType){
+                    if (functionName === fn.title){
+                      if(isAsset === true){
+                        let assets = {};
+                        assets.type = assetType[functionName].assetName;
+                        assets.name = functionName;
+                        fn.dependencies= assets;
+                        isAsset = false;
+                     
+                     }
+                  }
+  
+               }
+               break;
+  
+            }
+          
+            if(key == "inputs"){
+                for(let ikey in func[key]){
+                
+                  if(func[key][ikey].name == "assetId"){
+                      isAsset = true;
+                                           
+                   }
+                    let prop = {};
+                    prop.type = func[key][ikey].type;
+                    prop.name = func[key][ikey].name;
+                    fn[func[key][ikey].name] = prop;
+                    }            
+            }
+            if(key == 'outputs'){
+                if( func[key].length < 1){
+                  dummyReturn = {};
+                  fn.properties.returns= dummyReturn;
+              }
+              for(let ikey in func[key]){
+                  fn.properties.returns =func[key][ikey];
+             }
+          }
+        }
+     
+        schema.properties[fn.title] = fn;
+        }
+    //     if(func.type == 'constructor'){
+    //     for (let key in func){
+    //       //   console.log(func[key])
+    //     }
+    //   }
+        
+    });
+    for(let x = 0; x <parseEnum.length; ++x ){
+        if (parseEnum[x]!=undefined){
+            schema.properties[`_new_standalone_asset_${parseEnum[x]}`]={};
+            let fn = {};      
+            fn.dependencies ={};
+            let assets = {};
+            assets.type = parseEnum[x];
+            assets.name = 'unknown';
+            fn.dependencies= assets;
+            schema.properties[`_new_standalone_asset_${parseEnum[x]}`] = fn;
+        }
+    }
 
-        let json_schema = JSON.stringify(schema).replace(/[[\]']+/g, '');
-        return json_schema;
+    let json_schema = JSON.stringify(schema).replace(/[\[\]']+/g,'');
+    return json_schema;
     },
 
-    addAsset(genSchema, assetName) {
+     addAsset(genSchema, assetName){
         let schemaToParse = JSON.parse(genSchema);
-
-        let fn = {};
-
+    
+       let fn = {};
+    
         Object.keys(schemaToParse).forEach(function (key) {
             if (key === 'properties') {
-                schemaToParse.properties[`_new_standalone_asset_${assetName}`] = {};
+                schemaToParse.properties[`_new_standalone_asset_${assetName}`]={};
                 let assets = {};
                 assets.type = assetName;
                 assets.name = 'unknown';
-                fn.dependencies = assets;
+                fn.dependencies= assets;
                 schemaToParse.properties[`_new_standalone_asset_${assetName}`] = fn;
-
+               
             }
         });
-
-        let json_schema = JSON.stringify(schemaToParse).replace(/[[\]']+/g, '');
-
+            
+        let json_schema = JSON.stringify(schemaToParse).replace(/[\[\]']+/g,'');
+    
         return json_schema;
     },
-    deleteAsset(genSchema, assetName) {
+   deleteAsset(genSchema, assetName){
         let schemaToParse = JSON.parse(genSchema);
-        Object.keys(schemaToParse).forEach(function (key) {
+          Object.keys(schemaToParse).forEach(function (key) {
             for (let ikey in schemaToParse[key]) {
-                if (schemaToParse[key][ikey].dependencies) {
-                    if (schemaToParse[key][ikey].dependencies.type === assetName) {
-                        delete schemaToParse[key][ikey];
-                    }
+                if(schemaToParse[key][ikey].dependencies){
+                    if(schemaToParse[key][ikey].dependencies.type === assetName){
+                    delete schemaToParse[key][ikey];
+                   }
+    
                 }
-            }
+             }
         });
-        let json_schema = JSON.stringify(schemaToParse).replace(/[[\]']+/g, '');
-
+        let json_schema = JSON.stringify(schemaToParse).replace(/[\[\]']+/g,'');
+    
         return json_schema;
     },
 
@@ -203,16 +204,16 @@ export default Service.extend({
                 if (func !== null && Object.keys(func) !== 'asset') {
                     for (let key in func) {
                         for (let akey in func[key]) {
-                            if (func[key][akey] != 'assetId') {
-                                if (typeof func[key][akey] != 'object' && func[key][akey] != 'object' && func[key][akey] != '_super') {
-                                    parseAssets[func[key][akey]] = func[key][akey];
+                            if (func[key][akey]!='assetId'){
+                                if(typeof func[key][akey] != 'object' && func[key][akey]!='object' && func[key][akey]!='_super'){
+                                parseAssets[func[key][akey]] =func[key][akey];
                                 }
 
                             }
                         }
                     }
                 }
-            });
+            }); 
         }
 
         if (Array.isArray(config)) {
@@ -220,41 +221,41 @@ export default Service.extend({
                 if (func !== null && Object.keys(func) !== 'asset') {
                     for (let key in func) {
                         for (let ikey in func[key]) {
-
+                                        
                             if (typeof func[key][ikey].properties !== 'undefined')
-                                if (func[key][ikey].properties.dependencies) {
-
-                                    for (let x in parseAssets) {
-                                        if (parseAssets[x] === func[key][ikey].properties.dependencies.type) {
-                                            delete parseAssets[x];
-                                        }
+                            if(func[key][ikey].properties.dependencies){
+                            
+                                for (let x in parseAssets) {
+                                    if(parseAssets[x]===func[key][ikey].properties.dependencies.type){
+                                      delete parseAssets[x];          
                                     }
                                 }
-                            schema.properties[func[key][ikey].title] = func[key][ikey].properties;
-                            Object.keys(func[key][ikey]).forEach(function (pkey) {
-                                if (pkey === 'title') {
-                                    schema.properties[func[key][ikey].title].title = func[key][ikey].title;
-                                }
+                            }
+                                schema.properties[func[key][ikey].title] = func[key][ikey].properties;
+                                     Object.keys(func[key][ikey]).forEach(function (pkey) {
+                                         if (pkey === 'title') {
+                                             schema.properties[func[key][ikey].title].title = func[key][ikey].title;
+                                } 
                             });
                         }
                     }
                 }
-            });
+             });
 
-            for (let x in parseAssets) {
+             for (let x in parseAssets) {
                 // if (parseAssets[x]!=undefined){
-                if (x !== undefined) {
-                    schema.properties[`_new_standalone_asset_${x}`] = {};
-                    let fn = {};
-                    fn.dependencies = {};
+                if (x!==undefined){
+                    schema.properties[`_new_standalone_asset_${x}`]={};
+                    let fn = {};      
+                    fn.dependencies ={};
                     let assets = {};
                     assets.type = x;
                     assets.name = 'unknown';
-                    fn.dependencies = assets;
+                    fn.dependencies= assets;
                     schema.properties[`_new_standalone_asset_${x}`] = fn;
                 }
 
-            }
+             }
         }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
@@ -287,7 +288,7 @@ export default Service.extend({
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
                 if (schema[key][ikey].type === 'object') {
-                    if (schema[key][ikey].properties.dependencies && schema[key][ikey].properties.dependencies.name != 'unknown') {
+                    if (schema[key][ikey].properties.dependencies && schema[key][ikey].properties.dependencies.name!='unknown') {
                         g.setEdge(schema[key][ikey].title, schema[key][ikey].properties.dependencies.assetId.type, {
                             style: edge.style,
                             fillcolor: edge.color
@@ -299,7 +300,7 @@ export default Service.extend({
                             fillcolor: nodeAsset.color
                         });
                     }
-                    if (schema[key][ikey].properties.dependencies && schema[key][ikey].properties.dependencies.name === 'unknown') {
+                    if (schema[key][ikey].properties.dependencies && schema[key][ikey].properties.dependencies.name==='unknown') {
                         g.setNode(schema[key][ikey].properties.dependencies.assetId.type, {
                             asset: 'true',
                             shape: nodeAsset.shape,
@@ -350,7 +351,7 @@ export default Service.extend({
         Object.keys(schema).forEach(function (key) {
             for (let ikey in schema[key]) {
                 Object.keys(schema[key][ikey]).forEach(function (pkey) {
-                    if (pkey === 'dependencies' && schema[key][ikey].dependencies.name != 'unknown') {
+                    if (pkey === 'dependencies' && schema[key][ikey].dependencies.name!='unknown' ) {
                         g.setEdge(schema[key][ikey].title, schema[key][ikey][pkey].type, {
                             style: edge.style,
                             fillcolor: edge.color
@@ -362,8 +363,8 @@ export default Service.extend({
                             fillcolor: nodeAsset.color
                         });
                     }
-                    if (pkey === 'dependencies' && schema[key][ikey].dependencies.name === 'unknown') {
-                        g.setNode(schema[key][ikey][pkey].type, {
+                    if (pkey === 'dependencies' && schema[key][ikey].dependencies.name==='unknown' ) {
+                            g.setNode(schema[key][ikey][pkey].type, {
                             asset: 'true',
                             shape: nodeAsset.shape,
                             style: nodeAsset.style,
@@ -388,76 +389,76 @@ export default Service.extend({
     },
 
     generateContract(schemaString) {
-
+        
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
         };
-
+       
         let schema = JSON.parse(schemaString);
-
+        
         schema.title = "Application";
         let sol = 'pragma solidity ^0.4.24;';
-
+    
         sol = sol.appendLine('');
-
+    
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc = {};
-        let assets = {};
-
-
-
+        let assetsfunc= {};
+        let assets= {};
+    
+    
+        
         Object.keys(schema).forEach(function (key) {
-            //array of assets for enum
-            for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] === 'object') {
-                    Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                        if (inkey === "dependencies") {
-                            assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type;
-                            assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name;
-                        }
-                    });
-
-                }
-            }
+                //array of assets for enum
+                for (let ikey in schema[key]) {
+                    if (typeof schema[key][ikey] === 'object') {
+                        Object.keys(schema[key][ikey]).forEach(function (inkey) {
+                            if (inkey === "dependencies") {
+                                assetsfunc[schema[key][ikey][inkey].name] = schema[key][ikey][inkey].type;
+                                assets[schema[key][ikey][inkey].type] = schema[key][ikey][inkey].name;
+                            }
+                        });
+                        
+                    }
+                } 
         });
-
-
+    
+       
         // enum Assets {container, lock}
-
+   
         let solEns = "enum Assets {"
-        for (let enms in assets) {
-            solEns = solEns + `${enms}, `;
+        for (let enms in assets){
+            solEns = solEns + `${enms}, `;        
         }
-
-        let newsolEns = solEns.substr(0, solEns.length - 2);
+    
+        let newsolEns= solEns.substr(0, solEns.length - 2);
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
-        for (let asset in assetsfunc) {
-            if (!myRe.exec(asset)) {
-                sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
+        for (let asset in assetsfunc){
+            if(!myRe.exec(asset)){
+            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
             }
-
+    
         }
         let length = [];
         let len = 0;
-        for (let key in schema) {
-            for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] === 'object') {
-                    Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                        if (inkey != 'title') {
-                            ++len;
-                            length[ikey] = len;
-                        }
-                    });
+            for( let key in schema ) {
+                for (let ikey in schema[key]) {
+                    if (typeof schema[key][ikey] === 'object') {
+                        Object.keys(schema[key][ikey]).forEach(function (inkey) {
+                            if (inkey != 'title' ) {
+                                ++len;
+                                length[ikey]= len;
+                            }
+                        });
                     len = 0;
+                    }
                 }
             }
-        }
-
+       
         Object.keys(schema).forEach(function (key) {
-
+    
             for (let ikey in schema[key]) {
                 if (typeof schema[key][ikey] === 'object') {
                     sol = sol.appendLine('');
@@ -465,37 +466,37 @@ export default Service.extend({
                     Object.keys(schema[key][ikey]).forEach(function (inkey) {
                         if (inkey !== 'title') {
                             ++len;
-                            if (len < length[ikey]) {
+                            if( len < length[ikey]){
                                 if (schema[key][ikey][inkey].type === 'number') {
                                     schema[key][ikey][inkey].type = 'uint';
                                 }
-                                if (schema[key][ikey][inkey].name === 'assetId') {
+                                if(schema[key][ikey][inkey].name === 'assetId'){
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name},    /* parameter needed for linking assets and transactions */`);
-
+                                    
                                 }
-                                else {
-                                    sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
+                                else{
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
                                 }
                             }
-                            else {
+                            else{
                                 if (schema[key][ikey][inkey].type === 'number') {
                                     schema[key][ikey][inkey].type = 'uint';
                                 }
-                                if (schema[key][ikey][inkey].name === 'assetId') {
+                                if(schema[key][ikey][inkey].name === 'assetId'){
                                     sol = sol.appendLine(`string ${schema[key][ikey][inkey].name} )    /* parameter needed for linking assets and transactions */`);
-
+                                    
                                 }
-                                else {
-                                    sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
+                                else{
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
                                 }
                             }
-                        }
-
+                            }
+                            
                     });
                     len = 0;
                     sol = sol.appendLine('public{}');
                 }
-
+    
             }
         });
         sol = sol.appendLine('}');
@@ -505,110 +506,110 @@ export default Service.extend({
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
         };
-
+       
         let schema = JSON.parse(schemaString);
-
+        
         schema.title = "Application";
         let sol = 'pragma solidity ^0.4.24;';
-
+    
         sol = sol.appendLine('');
-
+    
         sol = sol.appendLine(' contract ' + schema.title + '{');
         sol = sol.appendLine('function ' + schema.title + '() public{}');
-        let assetsfunc = {};
-        let assets = {};
+        let assetsfunc= {};
+        let assets= {};
 
         Object.keys(schema).forEach(function (key) {
-            //array of assets for enum
-            for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] === 'object') {
-                    Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                        if (inkey === "dependencies") {
-                            assetsfunc[ikey] = schema[key][ikey][inkey].type;
-                            assets[schema[key][ikey][inkey].type] = ikey;
-                        }
-                    });
-
-                }
-            }
+                //array of assets for enum
+                for (let ikey in schema[key]) {
+                    if (typeof schema[key][ikey] === 'object') {
+                        Object.keys(schema[key][ikey]).forEach(function (inkey) {
+                          if (inkey === "dependencies") {
+                                assetsfunc[ikey] = schema[key][ikey][inkey].type;
+                                assets[schema[key][ikey][inkey].type] = ikey;
+                            }
+                        });
+                        
+                    }
+                } 
         });
         // console.log(assets);
         let solEns = "enum Assets {"
-        for (let enms in assets) {
-            // console.log(enms);
-            solEns = solEns + `${enms}, `;
+        for (let enms in assets){
+          // console.log(enms);
+            solEns = solEns + `${enms}, `;        
         }
-
-        let newsolEns = solEns.substr(0, solEns.length - 2);
+    
+        let newsolEns= solEns.substr(0, solEns.length - 2);
         newsolEns += '}';
         sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
-        for (let asset in assetsfunc) {
-            if (!myRe.exec(asset)) {
-                sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
+        for (let asset in assetsfunc){
+            if(!myRe.exec(asset)){
+            sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
             }
-
+    
         }
         let length = [];
         let len = 0;
-        for (let key in schema) {
-            for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] === 'object') {
-                    Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                        if (inkey != 'title') {
-                            ++len;
-                            length[ikey] = len;
-                        }
-                    });
-                    len = 0;
-                }
-            }
-        }
-
-        Object.keys(schema).forEach(function (key) {
-
-            for (let ikey in schema[key]) {
-                if (typeof schema[key][ikey] === 'object') {
-                    if (schema[key][ikey].title != undefined) {
-                        sol = sol.appendLine('');
-                        sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
+            for( let key in schema ) {
+                for (let ikey in schema[key]) {
+                    if (typeof schema[key][ikey] === 'object') {
                         Object.keys(schema[key][ikey]).forEach(function (inkey) {
-                            if (inkey !== 'title') {
+                            if (inkey != 'title') {
                                 ++len;
-                                if (len < length[ikey]) {
-
-                                    if (schema[key][ikey][inkey].type === 'number') {
-                                        schema[key][ikey][inkey].type = 'uint';
-                                    }
-                                    if (schema[key][ikey][inkey].name === 'assetId') {
-                                        sol = sol.appendLine(`string ${schema[key][ikey][inkey].name},    /* parameter needed for linking assets and transactions */`);
-
-                                    }
-                                    else {
-                                        sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
-                                    }
-                                }
-                                else {
-                                    if (schema[key][ikey][inkey].type === 'number') {
-                                        schema[key][ikey][inkey].type = 'uint';
-                                    }
-                                    if (schema[key][ikey][inkey].name === 'assetId') {
-                                        sol = sol.appendLine(`string ${schema[key][ikey][inkey].name} )    /* parameter needed for linking assets and transactions */`);
-
-                                    }
-                                    else {
-                                        sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
-                                    }
-                                }
+                                length[ikey]= len;
                             }
-
-
                         });
-                        len = 0;
-                        sol = sol.appendLine('public{}');
+                    len = 0;
                     }
                 }
-
+            }
+       
+        Object.keys(schema).forEach(function (key) {
+    
+            for (let ikey in schema[key]) {
+                if (typeof schema[key][ikey] === 'object') {
+                    if(schema[key][ikey].title!= undefined){
+                    sol = sol.appendLine('');
+                    sol = sol.appendLine('function ' + schema[key][ikey].title + ' (');
+                    Object.keys(schema[key][ikey]).forEach(function (inkey) {
+                        if (inkey !== 'title' ) {
+                            ++len;
+                            if( len < length[ikey]){
+                              
+                                if (schema[key][ikey][inkey].type === 'number') {
+                                    schema[key][ikey][inkey].type = 'uint';
+                                }
+                                if(schema[key][ikey][inkey].name === 'assetId'){
+                                    sol = sol.appendLine(`string ${schema[key][ikey][inkey].name},    /* parameter needed for linking assets and transactions */`);
+                                    
+                                }
+                                else{
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name},    /* optional parameter */`);
+                                }
+                            }
+                            else{
+                                if (schema[key][ikey][inkey].type === 'number') {
+                                    schema[key][ikey][inkey].type = 'uint';
+                                }
+                                if(schema[key][ikey][inkey].name === 'assetId'){
+                                    sol = sol.appendLine(`string ${schema[key][ikey][inkey].name} )    /* parameter needed for linking assets and transactions */`);
+                                    
+                                }
+                                else{
+                                sol = sol.appendLine(`${schema[key][ikey][inkey].type} ${schema[key][ikey][inkey].name} )   /* optional parameter */`);
+                                }
+                            }
+                            }
+                            
+                            
+                    });
+                    len = 0;
+                    sol = sol.appendLine('public{}');
+                }
+            }
+    
             }
         });
         sol = sol.appendLine('}');
@@ -621,7 +622,7 @@ export default Service.extend({
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-
+        
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
                 let assetMeta = schema.properties[property];
@@ -704,39 +705,39 @@ export default Service.extend({
 
     updateParamSchema(txnTitle, oldParamTitle, newParamTitle, paramType, schema) {
 
-        if (oldParamTitle === newParamTitle) return schema;
-        if (newParamTitle) {
+        if(oldParamTitle === newParamTitle) return schema;
+        if(newParamTitle){
 
-            if (typeof schema === 'string') {
-                schema = JSON.parse(schema);
-            }
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
 
-            for (const property in schema.properties) {
-                if (schema.properties.hasOwnProperty(property)) {
-                    if (txnTitle === schema.properties[property].title) {
-                        for (let pkey in schema.properties[property]) {
-                            if (pkey === oldParamTitle) {
-                                schema.properties[property][newParamTitle] = {};
-                                schema.properties[property][newParamTitle].name = newParamTitle;
-                                schema.properties[property][newParamTitle].type = paramType;
-                                delete (schema.properties[property][pkey]);
+        for (const property in schema.properties) {
+            if (schema.properties.hasOwnProperty(property)) {
+                if (txnTitle === schema.properties[property].title) {
+                    for (let pkey in schema.properties[property]) {
+                        if (pkey === oldParamTitle) {
+                            schema.properties[property][newParamTitle] = {};
+                            schema.properties[property][newParamTitle].name = newParamTitle;
+                            schema.properties[property][newParamTitle].type = paramType;
+                            delete (schema.properties[property][pkey]);
 
-                            }
                         }
-
                     }
+
                 }
             }
+        }
 
-            let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
-            return jsonSchema;
-        }
-        else {
-            throw new Error('invalid param title');
-        }
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+        return jsonSchema;
+    }
+    else {
+        throw new Error('invalid param title');
+    }
 
     },
-    deleteParam(txnTitle, paramTitle, schema) {
+    deleteParam(txnTitle, paramTitle,schema) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
@@ -765,9 +766,9 @@ export default Service.extend({
         }
         for (const property in schema.properties) {
             if (schema.properties.hasOwnProperty(property)) {
-                if (txnTitle === schema.properties[property].title) {
+                if (txnTitle == schema.properties[property].title) {
                     for (let pkey in schema.properties[property]) {
-                        if (pkey === paramTitle) {
+                        if (pkey == paramTitle) {
                             schema.properties[property][pkey].type = newParamType;
                         }
                     }
@@ -782,29 +783,29 @@ export default Service.extend({
     },
 
     updateAssetSchema(newAssetTitle, oldAssetTitle, schema) {
-        if (newAssetTitle) {
+        if(newAssetTitle){
 
-            if (typeof schema === 'string') {
-                schema = JSON.parse(schema);
-            }
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
 
-            for (const property in schema.properties) {
-                if (schema.properties.hasOwnProperty(property)) {
-                    let assetMeta = schema.properties[property];
-                    let assetType = assetMeta.dependencies.type;
-                    if (assetType === oldAssetTitle) {
-                        schema.properties[property].dependencies.type = newAssetTitle;
-                    }
+        for (const property in schema.properties) {
+            if (schema.properties.hasOwnProperty(property)) {
+                let assetMeta = schema.properties[property];
+                let assetType = assetMeta.dependencies.type;
+                if (assetType == oldAssetTitle) {
+                    schema.properties[property].dependencies.type = newAssetTitle;
                 }
             }
-
-            let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
-
-            return jsonSchema;
         }
-        else {
-            throw new Error('invalid Asset name');
-        }
+
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+
+        return jsonSchema;
+    }
+    else {
+        throw new Error('invalid Asset name');
+    }
     },
     updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
 
@@ -841,24 +842,24 @@ export default Service.extend({
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-
-        if (schema.properties) {
+        
+        if(schema.properties) {
             schema.properties[txnName] = {};
             schema.properties[txnName].title = txnName;
             schema.properties[txnName].dependencies = {};
             schema.properties[txnName].dependencies.type = assTitle;
             schema.properties[txnName].dependencies.name = 'assetId';
             parameters.forEach(func => {
-                if (func && func.name) {
+                if(func && func.name) {
                     schema.properties[txnName][func.name] = {};
                     schema.properties[txnName][func.name].name = func.name;
                     schema.properties[txnName][func.name].type = func.type;
                 }
             });
 
-            if (_bundleHash) {
+            if(_bundleHash) {
                 schema.properties[txnName]['_bundleHash'] = {};
-                schema.properties[txnName]['_bundleHash'].name = '_bundleHash';
+                schema.properties[txnName]['_bundleHash'].name ='_bundleHash';
                 schema.properties[txnName]['_bundleHash'].type = 'string';
 
             }
@@ -871,7 +872,7 @@ export default Service.extend({
 
     },
     schemaToYaml(genSchema) {
-
+        
         let schemaToParse = JSON.parse(genSchema);
         let schema = {};
         schema.transaction = {};
@@ -880,7 +881,7 @@ export default Service.extend({
         Object.keys(schemaToParse).forEach(function (key) {
             if (key === 'properties') {
                 for (let ikey in schemaToParse[key]) {
-
+                    
                     let fn = {};
                     fn.title;
                     fn.type = typeof (fn);
@@ -890,21 +891,21 @@ export default Service.extend({
                         assetList[schemaToParse[key][ikey].dependencies.type] = 0;
                         fn.properties.dependencies = "*" + schemaToParse[key][ikey].dependencies.type;
                     }
-
+                    
                     if (schemaToParse[key][ikey].hasOwnProperty('title')) {
                         fn.title = schemaToParse[key][ikey].title;
+                    
 
-
-                        for (let pkey in schemaToParse[key][ikey]) {
-                            if (pkey != 'dependencies' && pkey != 'title')
-                                fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
-                        }
-                        if (fn.hasOwnProperty('title')) {
-                            schema.transaction[fn.title] = fn;
-                        }
-
+                    for (let pkey in schemaToParse[key][ikey]) {
+                        if (pkey != 'dependencies' && pkey != 'title')
+                            fn.properties[schemaToParse[key][ikey][pkey].name] = schemaToParse[key][ikey][pkey];
                     }
+                    if (fn.hasOwnProperty('title')) {
+                        schema.transaction[fn.title] = fn;
+                    }
+                
                 }
+            }
 
             }
 
@@ -936,58 +937,58 @@ export default Service.extend({
 
     solToYaml(code, cb) {
         // Don't compile an empty string
-        if (code.trim() === '') {
+        if(code.trim() === '') {
             cb();
             return;
         }
 
         // const compiledCode = solc.compile(code)
         let enumEx = new RegExp(/enum\s{1,10}Assets/)
-
+      
         let parse = code.split("Assets");
-        let myRe = new RegExp(/_/);
-        let myRe2 = new RegExp(/\./);
+        let myRe = new RegExp(/\_/); 
+        let myRe2 = new RegExp(/\./); 
         let assetType = {}
-
+              
         let parseEnum = code.split(enumEx);
-
-        if (parseEnum.length > 1) {
-            parseEnum = parseEnum[1].split('}');
-            parseEnum = parseEnum[0].split(',');
-
-            for (let i = 0; i < parseEnum.length; ++i) {
-                parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g, "");
-                parseEnum[i] = parseEnum[i].replace(/{/g, "");
-                parseEnum[i] = parseEnum[i].replace(/ /g, "");
-
-            }
-
-
-            for (let i = 1; i < parse.length; ++i) {
-                if (myRe.exec(parse[i]) && myRe2.exec(parse[i + 1])) {
-                    let functionName = parse[i].split("_");
-                    functionName = functionName[1].split(" ");
-                    functionName = functionName[0];
-                    let assetName = parse[i + 1].split(".");
-                    assetName = assetName[1].split(";");
-                    assetName = assetName[0];
-                    let fn = {};
-                    fn.assetName = assetName;
-                    fn.functionName = functionName;
-                    assetType[functionName] = fn;
-                    for (let x = 0; x < parseEnum.length; ++x) {
-                        if (parseEnum[x] === assetName) {
-                            delete parseEnum[x];
-                        }
-                    }
+       
+        if(parseEnum.length >1){
+        parseEnum = parseEnum[1].split('}');
+        parseEnum = parseEnum[0].split(',');
+      
+        for (let i = 0 ; i < parseEnum.length; ++i){
+          parseEnum[i] = parseEnum[i].replace(/(\r\n\t|\n|\r\t)/g,"");
+          parseEnum[i] = parseEnum[i].replace(/{/g,"");
+          parseEnum[i] = parseEnum[i].replace(/ /g,"");
+      
+        }
+      
+      
+        for ( let i = 1 ; i < parse.length; ++i){
+            if(myRe.exec(parse[i]) && myRe2.exec(parse[i+1]) ){
+            let functionName = parse[i].split("_");  
+            functionName = functionName[1].split(" ");
+            functionName = functionName[0];
+            let assetName = parse[i+1].split(".");
+            assetName = assetName[1].split(";");
+            assetName = assetName[0];
+            let fn = {};
+            fn.assetName = assetName;
+            fn.functionName = functionName;
+            assetType[functionName] = fn;
+            for(let x = 0; x <parseEnum.length; ++x ){
+                if(parseEnum[x]===assetName){
+                  delete parseEnum[x];          
                 }
             }
+            }
         }
-        solc.BrowserSolc.loadVersion(this.get('solCversion'), function (compiler) {
+    }
+    solc.BrowserSolc.loadVersion(this.get('solCversion'), function (compiler) {
             const compiledCode = compiler.compile(code);
             // Check if an error occured during compilation. This is the case if
             // compiledCode.contracts is an empty object.
-            if (Object.keys(compiledCode.contracts).length === 0 && compiledCode.contracts.constructor === Object) {
+            if(Object.keys(compiledCode.contracts).length === 0 && compiledCode.contracts.constructor === Object) {
                 // Update the error log with errors
                 cb(compiledCode.errors);
                 return;
@@ -995,89 +996,90 @@ export default Service.extend({
             // Return errors if there are any before proceeding
             let className = /contract\s+(\w+)\s?{/.exec(code)[1];
             const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface);
-            let schema = {};
+            let schema = {}; 
             schema.transaction = {};
             schema.transaction.properties = (typeof schema);
-            let assetList = [];
-            codeInterface.forEach(func => {
-                if (func.type != 'constructor') {
-                    let fn = {};
+            let assetList =[];
+            codeInterface.forEach(func =>{
+                if(func.type != 'constructor'){
+                    let fn = {};      
                     fn.title;
-                    fn.type = typeof (fn);
+                    fn.type = typeof(fn);
                     fn.properties = {};
                     let isAsset = false;
-
-                    for (let key in func) {
-                        //   let asset = {};
-
-                        if (key === "name") {
+           
+                    for (let key in func){
+                      //   let asset = {};
+                        
+                        if(key =="name"){
                             fn.title = func[key];
-                        }
-                        if (key === "inputs") {
-                            for (let ikey in func[key]) {
-                                if (isAsset === true) {
-                                    isAsset = false;
-                                    assetList[func[key][ikey].name] += 1;
-                                    fn.properties.dependencies = "*" + func[key][ikey].name;
-                                    break;
-                                }
-                                if (func[key][ikey].name === "assetId") {
+                          }
+                          if(key == "inputs"){
+                              for(let ikey in func[key]){
+                                  if(isAsset == true){
+                                      isAsset = false;
+                                      assetList[func[key][ikey].name]+=1;
+                                      fn.properties.dependencies  = "*" + func[key][ikey].name;
+                                      break;
+                                  }
+                                  if(func[key][ikey].name == "assetId"){
                                     //   asset = func[key][ikey].name;
-                                    isAsset = true;
-                                    break;
-                                }
-                                else {
-                                    fn.properties[func[key][ikey].name] = func[key][ikey];
-                                    if (func[key][ikey].type.startsWith("byte")) {
-                                        func[key][ikey].type = "string";
-                                    }
-                                    if (func[key][ikey].type.startsWith("uint") || func[key][ikey].type.startsWith("uint")) {
-                                        func[key][ikey].type = "number";
-
-                                    }
-                                }
-                            }
+                                      isAsset = true;
+                                      break;
+                                  }
+                                  else{
+                                      fn.properties[func[key][ikey].name] = func[key][ikey];
+                                      if(func[key][ikey].type.startsWith("byte")){
+                                          func[key][ikey].type = "string";
+                                      }
+                                      if(func[key][ikey].type.startsWith("uint")||func[key][ikey].type.startsWith("uint") ) {
+                                          func[key][ikey].type = "number";
+                                      
+                                      }
+                                  }
+                               }            
+                          }
+          
+                      }
+          
+                      for(let functionName in assetType){
+                          if (functionName === fn.title){
+                            if(isAsset === true){
+                            fn.dependencies = {};
+                            let assets = {};
+                            assets.type = assetType[functionName].assetName;
+                            assets.name = "assetId";
+                            fn.dependencies= assets;
+                            isAsset = false;
+                            fn.properties.dependencies  = "*" + assets.type;
+                            assetList[assets.type]+=1;
+                           
+                           }
                         }
-
-                    }
-
-                    for (let functionName in assetType) {
-                        if (functionName === fn.title) {
-                            if (isAsset === true) {
-                                fn.dependencies = {};
-                                let assets = {};
-                                assets.type = assetType[functionName].assetName;
-                                assets.name = "assetId";
-                                fn.dependencies = assets;
-                                isAsset = false;
-                                fn.properties.dependencies = "*" + assets.type;
-                                assetList[assets.type] += 1;
-
-                            }
-                        }
-                    }
-                    schema.transaction[fn.title] = fn;
-                }
+                      }
+                      schema.transaction[fn.title] = fn;      
+                  }
             });
-
-            let yamlString = '---';
+          
+          let yamlString='---';
             for (let assets in assetList) {
-                yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
+                yamlString += "\n- asset:  &" + assets +" \n      name:   assetId\n      type:   "+assets;
             }
-            for (let x = 0; x < parseEnum.length; ++x) {
-                if (parseEnum[x] != undefined) {
-                    yamlString += "\n- asset:  &" + parseEnum[x] + " \n      name:   assetId\n      type:   " + parseEnum[x];
-                }
-            }
-
-            yamlString += "\n";
+            for(let x = 0; x <parseEnum.length; ++x ){
+              if (parseEnum[x]!=undefined){
+                  yamlString += "\n- asset:  &" +parseEnum[x] +" \n      name:   assetId\n      type:   "+parseEnum[x];
+              }
+          }
+          
+            yamlString+="\n";
             let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
             let stripedYml = ymlText.replace("---", '')
-            let outputYaml = yamlString + stripedYml;
+            let outputYaml = yamlString + stripedYml; 
             cb(outputYaml);
         });
     }
 });
+
 
 function YAMLStringify(data) {
     let handlers,

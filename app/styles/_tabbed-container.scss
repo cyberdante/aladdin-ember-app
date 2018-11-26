@@ -1,5 +1,4 @@
 @import 'palette';
-@import 'variables';
 
 .tabbed-container {
     height: 100%;
@@ -11,9 +10,6 @@
         padding: 0;
         &.aladdin-tabs-container {
             width: 100%;
-        }
-        md-tabs-wrapper {
-            border-width: 0;
         }
         md-tabs-canvas {
           background: aladdin-color('secondary');
@@ -29,7 +25,7 @@
             margin: 0;
             height: 100%;
             .md-padding {
-                height: calc(100% - #{$title-bar});
+                height: calc(100% - 48px);
                 padding: 0;
                 md-card {
                     margin: 0;
