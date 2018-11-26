@@ -1,1 +1,0 @@
-export { default } from 'ember-cli-aladdin/components/confirmation-modal/component';

@@ -1,62 +1,33 @@
 <div class="header">
-    {{#if showLeftColumnOpenIcon}}
-        <span class="nav-left">
-            <span class="hint--bottom hint--rounded" {{action 'showLeftColumn'}} title="Show {{leftComponentName}}">
-                {{fa-icon leftColumnIcon}}
-            </span>
-        </span>
-    {{/if}}
-    {{#if showTitleOnMainPanels}}
-        {{#if (eq centerComponentName 'Smart Contract and Graph')}}
-            <div class="tabs">
-                {{#paper-tabs
-                    class="aladdin-tab"
-                    selected=selectedTab
-                    borderBottom="false"
-                    shouldPaginate=false
-                    onChange=(action 'onChange') as |tabs|}}
-                    {{#each tabTitles as |tabtitle|}}
-                        {{#tabs.tab}}
-                            {{tabtitle}}
-                        {{/tabs.tab}}
-                    {{/each}}
-                {{/paper-tabs}}
-            </div>
-        {{else}}
-            <md-card-title-text>
-                <span class="md-headline">
-                    {{centerComponentName}}
-                </span>
-            </md-card-title-text>
-        {{/if}}
-    {{/if}}
-    <span class="nav-right">
-        {{#if (and canCloseCentralColumn centerColumnShow)}}
-            <span class="hint--bottom hint--rounded" {{action 'closeCentralColumn'}} title="Hide {{centerComponentName}}">
-                {{fa-icon 'times'}}
-            </span>
-        {{/if}}
-        {{#if rightColumnShow}}
-            <span class="hint--bottom hint--rounded" {{action "swapComponents" "center,right"}} title="Swap {{centerComponentName}} and {{rightComponentName}}">
-                {{fa-icon 'exchange-alt'}}
-            </span>
-        {{/if}}
-        {{#if showRightColumnOpenIcon}}
-            <span class="hint--bottom hint--rounded" {{action 'showRightColumn'}} title="Show {{rightComponentName}}">
-                {{fa-icon rightColumnIcon}}
-            </span>
-        {{/if}}
+  {{#if showLeftColumnOpenIcon}}
+    <span class="nav-left">
+      <span class="hint--bottom hint--rounded" {{action 'showLeftColumn'}} title="Show {{leftComponentName}}">
+        {{fa-icon leftColumnIcon}}
+      </span>
     </span>
+  {{/if}}
+    <span style="color: rgba(0,0,0,0.87);">Solidity compiler supported version: {{solCversion}}</span>
+  <span class="nav-right">
+    {{#if (and canCloseCentralColumn centerColumnShow)}}
+      <span class="hint--bottom hint--rounded" {{action 'closeCentralColumn'}} title="Hide {{centerComponentName}}">
+        {{fa-icon 'times'}}
+      </span>
+    {{/if}}
+    {{#if rightColumnShow}}
+      <span class="hint--bottom hint--rounded" {{action "swapComponents" "center,right"}} title="Swap {{centerComponentName}} and {{rightComponentName}}">
+        {{fa-icon 'exchange-alt'}}
+      </span>
+    {{/if}}
+    {{#if showRightColumnOpenIcon}}
+      <span class="hint--bottom hint--rounded" {{action 'showRightColumn'}} title="Show {{rightComponentName}}">
+          {{fa-icon rightColumnIcon}}
+      </span>
+    {{/if}}
+  </span>
 </div>
-{{component
+{{component 
     centerComponent
-    showTitle=showTitle
-    showTitleOnMainPanels=showTitleOnMainPanels
-    selectedComponent=selectedComponent
-    selected=selectedTab
-    selectedTab=selectedTab
-    solCversion=solCversion
-    tabTitles=tabTitles
+    showTitle=true
     schema=schema
     code=code
     yaml=yaml

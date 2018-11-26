@@ -13,12 +13,11 @@ export default Component.extend({
   value: '',
  
   highlightActiveLine: true,
-  showPrintMargin: false,
+  showPrintMargin: true,
   readOnly: false,
   tabSize: 4,
   useSoftTabs: true,
   useWrapMode: true,
-  // printMarginColumn: 120,
   showInvisibles: false,
   showGutter: true,
   showIndentGuides: true,

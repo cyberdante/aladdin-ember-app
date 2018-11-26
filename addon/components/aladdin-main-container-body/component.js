@@ -9,10 +9,6 @@ import layout from './template';
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
     layout,
-    classNameBindings: ['showTitleOnMainPanels:show-title-on-main-panels'],
-    selectedTab: 0,
-    selectedComponent: 'contract-viewer',
-    tabTitles: computed(() => ['Smart Contract', 'Graph']),
     
     blockchainUtils: service(),
     
@@ -59,22 +55,5 @@ export default Component.extend({
 
     viewChange(view, yamlString) {
       this.set('yaml', yamlString);
-    },
-    onChange(selected) {
-        this.set('selectedTab', selected);
-
-        switch (selected) {
-            case 0:
-                this.set('selectedComponent', 'contract-viewer');
-                break;
-            case 1:
-                this.set('selectedComponent', 'graph-view');
-                break;
-            // case 2:
-            //   this.set('selectedComponent', 'assets-transactions-wizard');
-            //   break;
-            default:
-                this.set('selectedComponent', 'contract-viewer');
-        }
     }
 });

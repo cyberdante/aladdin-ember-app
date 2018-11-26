@@ -1,10 +1,9 @@
 @import 'palette';
-@import 'variables';
 
 .left-column {
     .md-padding {
         padding: 0;
-        height: calc(100% - #{$title-bar});
+        height: calc(100% - 60px);
 
         md-card {
             margin: 0;

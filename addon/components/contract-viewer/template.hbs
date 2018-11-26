@@ -2,16 +2,6 @@
     {{#card.content}}
         {{#paper-content scroll-y=true class="layout-padding flex grid-list"}}
             <div class="layout-row layout-wrap">
-                <div class="alert {{if showSolCVersion 'opened' 'closed'}}">
-                    <span class="version">Solidity compiler supported version: {{solCversion}}</span>
-                    <button type="button" 
-                            class="close" 
-                            data-dismiss="alert" 
-                            aria-label="Close"
-                            onclick={{action 'closeVersionAlertBar'}}>
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 {{#paper-card class="flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |btnContainer|}}
                     {{#btnContainer.content}}
                         <div class="manual-toggler">
