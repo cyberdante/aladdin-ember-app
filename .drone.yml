@@ -1,0 +1,12 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: install dependencies
+    image: node:8.12
+    commands:
+     - npm install
+  - name: eslint
+    image: node:8.12
+    commands:
+     - npm run lint:js

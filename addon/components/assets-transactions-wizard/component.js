@@ -34,7 +34,7 @@ export default Component.extend({
         return ['string', 'bytes32', 'uint', 'address'];
     }),
     isInputEmpty: computed('newAssetTitle', function() {
-        return !(this.get('newAssetTitle') && this.get('newAssetTitle').length > 0);
+        return !(this.get('newAssetTitle') && this.get('newAssetTitle').trim().length > 0);
     }),
     origTxnTitle: '',
     origParamTitle: '',
@@ -126,17 +126,6 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
             this.set('schema', schema);
         },
-        // toggleTxn(origTxn) {
-        //     this.set('origTxnTitle', origTxn);
-        //     this.set('editingTxnTitle', true);
-        //     this.get('tnxTitlesBeingEdited').push(origTxn);
-        // },
-        // toggleOffTxn(newTxn) {
-        //     this.set('editingTxnTitle', false);
-        //     let schema = this.blockchainUtils.updateTxnSchema(newTxn, this.origTxnTitle, this.schema);
-        //     this.get('tnxTitlesBeingEdited').remove(newTxn);
-        //     this.set('schema', schema);
-        // },
         toggleParam(origParam) {
             this.set('origParamTitle', origParam);
             this.set('editingParamTitle', true);
@@ -198,10 +187,11 @@ export default Component.extend({
         openNewAssetDialog() {
             this.set('showNewAssetDialog', true);
         },
-        closeNewAssetDialog(newAsset) {
-            // console.log(this.schema, this.newAssetTitle)
-            let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle);
-            this.set('schema', schema);
+        closeNewAssetDialog(newAssetTitle) {
+            if(newAssetTitle && newAssetTitle.trim().length) {
+                let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim());
+                this.set('schema', schema);
+            }
             this.set('newAssetTitle', '');
             this.set('showNewAssetDialog', false);
         }

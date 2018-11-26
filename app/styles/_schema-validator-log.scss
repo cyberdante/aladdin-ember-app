@@ -12,12 +12,13 @@ $simba-fab-highlight: #aeea00;
     md-card-title {
       background-color: aladdin-color("secondary");
       color: #fff;
-      height: 48px;
-      max-height: 48px;
+      height: $title-bar;
+      max-height: $title-bar;
       padding: 0;
 
       md-card-title-text {
         @include aladdin-card-title-text;
+        cursor: auto;
 
         .md-headline {
           font-size: 14px;

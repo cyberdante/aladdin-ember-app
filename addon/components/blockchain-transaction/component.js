@@ -30,12 +30,15 @@ export default Component.extend({
     },
 
     actions: {
-        createTransaction(asset) {
-            console.log('creating new transaction for ', asset);
-        },
         deleteTxn() {
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
             this.set('schema', schema);
+        },
+        showConfirmationDialog() {
+            this.set('showPromptDialog', true); 
+        },
+        closeConfirmationDialog() {
+            this.set('showPromptDialog', false);
         },
         toggleTxnEdition() {
             this.set('editingTitle', true);

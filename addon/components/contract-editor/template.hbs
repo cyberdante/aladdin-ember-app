@@ -1,9 +1,11 @@
 {{#paper-card as |card|}}
-    {{#card.title as |title|}}
-        {{#title.text as |text|}}
-            {{#text.headline}}Contract Editor{{/text.headline}}
-        {{/title.text}}
-    {{/card.title}}
+    {{#if (not showTitleOnMainPanels)}}
+        {{#card.title as |title|}}
+            {{#title.text as |text|}}
+                {{#text.headline}}Contract Editor{{/text.headline}}
+            {{/title.text}}
+        {{/card.title}}
+    {{/if}}
     {{#card.content}}
         {{#ember-ace
             minlines=10

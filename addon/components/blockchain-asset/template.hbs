@@ -14,11 +14,18 @@
         {{/controls.button}}
     </div>
     <div class="md-secondary-container red">
-        {{#controls.button raised=true class="shaking" iconButton=true onClick=(action "deleteAsset")}}
+        {{#controls.button raised=true class="shaking" iconButton=true onClick=(action "showConfirmationDialog")}}
             {{paper-icon "delete_forever" title="Delete Asset"}}
         {{/controls.button}}
     </div>
 {{/paper-item}}
+{{#if showPromptDialog}}
+    {{confirmation-modal 
+        confirmDelete=(action 'deleteAsset')
+        closeConfirmationDialog=(action 'closeConfirmationDialog')
+        modelType='asset'
+        model=asset}}
+{{/if}}
 {{#if (and asset.expanded asset.transactions)}}
     <div class="transaction-container">
         {{#paper-item as |txns|}}
