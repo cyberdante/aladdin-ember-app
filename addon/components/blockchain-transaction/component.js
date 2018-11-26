@@ -34,6 +34,12 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
             this.set('schema', schema);
         },
+        showConfirmationDialog() {
+            this.set('showPromptDialog', true); 
+        },
+        closeConfirmationDialog() {
+            this.set('showPromptDialog', false);
+        },
         toggleTxnEdition() {
             this.set('editingTitle', true);
             this.set('origTxnTitle', this.get('transaction.title'));

@@ -55,10 +55,15 @@ export default Component.extend({
             }
             this.set('editingParamType', false);
         },
-        deleteParameter(transaction) {
-            let schema = this.blockchainUtils.deleteParam(transaction.title, this.get('param.title'),this.schema);
+        showConfirmationDialog() {
+            this.set('showPromptDialog', true); 
+        },
+        deleteParameter() {
+            let schema = this.blockchainUtils.deleteParam(this.get('param.txn.title'), this.get('param.title'), this.schema);
             this.set('schema', schema);
-           
+        },
+        closeConfirmationDialog() {
+            this.set('showPromptDialog', false);
         }
     }
 });

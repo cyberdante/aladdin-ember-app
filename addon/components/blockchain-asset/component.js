@@ -30,6 +30,12 @@ export default Component.extend({
             let schema = this.blockchainUtils.deleteAsset(this.schema,this.get('asset.title'));
             this.set('schema', schema);
         },
+        showConfirmationDialog() {
+            this.set('showPromptDialog', true); 
+        },
+        closeConfirmationDialog() {
+            this.set('showPromptDialog', false);
+        },
         toggleAssetTitleEdition() {
             let asset = this.get('asset');
             let editing = this.get('editingAssetTitle');
