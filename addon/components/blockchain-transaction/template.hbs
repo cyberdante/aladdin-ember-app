@@ -37,13 +37,10 @@
     {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |paramspanel|}}
         {{#paramspanel.content}}
             {{#paper-item class="parameter-header-wrapper"}}
-                <div class="layout-row" style="width: 100%">
-                    <div class="layout-column flex-30 layout-align-center-end">
-                        <div class="parameters-header">
-                            Parameters
-                        </div>
-                    </div>
-                </div>
+            <div class="parameters-header">Parameters</div>
+            {{#paper-button raised=true onClick=(action "openPromptDialog") }}
+                {{paper-icon "add"}}    
+            {{/paper-button}}
             {{/paper-item}}
             {{#each parameters as |param|}}
                 {{blockchain-transaction-parameter 
@@ -55,3 +52,71 @@
         {{/paramspanel.content}}
     {{/paper-card}}
 {{/if}}
+                {{#if showDialog}}
+                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin}}
+                        {{#paper-dialog-content}}
+                            <div class="layout-row">
+                                <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                                    {{paper-input input="text" label=title value=newTxnName onChange=(action (mut newTxnName))}}
+                                </div>
+                                <div class="layout-column flex-50 dropdown-container">
+                                    {{#paper-select
+                                        label=assetName
+                                        options=assetTitles
+                                        selected=assetName
+                                        onChange=(action (mut assetName))
+                                        as |option|}}
+                                        {{option}}
+                                    {{/paper-select}}
+                                </div>
+                            </div>
+                            {{#each parameters as |parameter|}}
+                                <div class="layout-row">
+                                    <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
+                                        {{paper-input input="text" label=parameter.title value=parameter.title onChange=(action (mut parameter.title))}}
+                                    </div>
+                                    <div class="layout-column flex-50 layout-align-center-start dropdown-container">
+                                        {{#paper-select
+                                            label=parameter.type
+                                            options=options
+                                            selected=parameter.type
+                                            onChange=(action (mut parameter.type))
+                                            as |option|}}
+                                            {{option}}
+                                        {{/paper-select}}
+                                    </div>
+                                </div>                                
+                            {{/each}}
+                            <br/>
+                            <div class="layout-row">
+                                <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'addParams'}}  disabled={{doneButtonDisabled}}>
+                                <span>{{fa-icon "plus"}} Add parameter</span>
+                                </button>
+                                <br/>
+                                <button class="layout-column flex-50 md-button md-raised" {{action 'addNewTxn'}} disabled={{doneButtonDisabled}}>
+                                <span>{{fa-icon 'check'}} Done</span>
+                                </button>
+                            </div>
+                            <hr> 
+                        {{/paper-dialog-content}}
+                        {{#paper-dialog-actions class="layout-row"}}
+                            <span class="flex"></span>
+                            {{#paper-button primary=true onClick=(action "closePromptDialog")}}Exit{{/paper-button}}
+                        {{/paper-dialog-actions}}
+                    {{/paper-dialog}}
+                {{/if}}
+                {{#if showNewAssetDialog}}
+                    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog" newAssetTitle) origin=dialogOrigin as |newAssetModal|}}
+                        {{#paper-dialog-content}}
+                            <div class="layout-row">
+                                <div class="layout-column flex-100">
+                                    {{paper-input input="text" required="true" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
+                                </div>
+                            </div>
+                        {{/paper-dialog-content}}
+                        {{#paper-dialog-actions class="layout-row"}}
+                            <span class="flex"></span>
+                            {{#paper-button primary=true onClick=(action "closeNewAssetDialog" newAssetTitle) disabled=isInputEmpty}}Add{{/paper-button}}
+                        {{/paper-dialog-actions}}
+                     {{/paper-dialog}}
+                {{/if}}

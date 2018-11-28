@@ -175,6 +175,7 @@ export default Component.extend({
                     // TODO linter complains if this block is blank
                 }
             }
+         
         },
         openPromptDialog() {
             this.set('showDialog', true);

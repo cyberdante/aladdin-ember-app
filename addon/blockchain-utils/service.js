@@ -811,7 +811,7 @@ export default Service.extend({
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-        if (newTxnTitle && oldTxnTitle){
+        if (newTxnTitle && oldTxnTitle && schema.properties ){
         for (const property in schema.properties) {
             if (oldTxnTitle === schema.properties[property].title) {
                     schema.properties[newTxnTitle] = schema.properties[property];
