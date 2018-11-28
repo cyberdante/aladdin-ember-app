@@ -54,6 +54,8 @@ export default Component.extend({
                 this.saveTitle(parameter.txn, parameter);
             }
             this.set('editingParamType', false);
+            delete parameter.editingTitle;
+            delete parameter.editingType;
         },
         showConfirmationDialog() {
             this.set('showPromptDialog', true); 

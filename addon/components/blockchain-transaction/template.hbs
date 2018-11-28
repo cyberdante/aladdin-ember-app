@@ -36,17 +36,19 @@
 {{#if (and showingParams parameters parameters.length)}}
     {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |paramspanel|}}
         {{#paramspanel.content}}
-            {{#paper-item class="parameter-header-wrapper"}}
-            <div class="parameters-header">Parameters</div>
-            {{#paper-button raised=true onClick=(action "openPromptDialog") }}
-                {{paper-icon "add"}}    
-            {{/paper-button}}
+            {{#paper-item class="parameter-header-wrapper" as |paramItem|}}
+                <div class="parameters-header">Parameters</div>
+                <div class="md-secondary-container">
+                    {{#paramItem.button raised=true onClick=(action "addParams") }}
+                        {{paper-icon "add"}}    
+                    {{/paramItem.button}}
+                </div>
             {{/paper-item}}
             {{#each parameters as |param|}}
                 {{blockchain-transaction-parameter 
                     param=param
-                    editingTitle=false
-                    editingParamType=false
+                    editingTitle=param.editingTitle
+                    editingParamType=param.editingType
                     schema=schema}}
             {{/each}}
         {{/paramspanel.content}}
@@ -70,7 +72,7 @@
                                     {{/paper-select}}
                                 </div>
                             </div>
-                            {{#each parameters as |parameter|}}
+                            {{#each params as |parameter|}}
                                 <div class="layout-row">
                                     <div class="layout-column flex-50 layout-align-center-end" style="margin-right: 15px;">
                                         {{paper-input input="text" label=parameter.title value=parameter.title onChange=(action (mut parameter.title))}}
@@ -87,7 +89,6 @@
                                     </div>
                                 </div>                                
                             {{/each}}
-                            <br/>
                             <div class="layout-row">
                                 <button class="layout-column flex-50 layout-align-center-center md-button md-raised" style="margin-right: 15px;" {{action 'addParams'}}  disabled={{doneButtonDisabled}}>
                                 <span>{{fa-icon "plus"}} Add parameter</span>

@@ -11,7 +11,6 @@ export default Component.extend({
     blockchainUtils: service(),
     editingTitle: false,
     showDialog: false,
-    blockchainUtils: service(),
     assets: A([]),
     assetTitles: computed('assets', function() {
         return this.get('assets').mapBy('title');
@@ -48,6 +47,9 @@ export default Component.extend({
     //     }, []);
     //     return params;
     // },
+    params: computed('parameters', 'parameters.length', function() {
+        return this.get('parameters');
+    }),
     actions: {
         deleteTxn() {
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
@@ -89,20 +91,10 @@ export default Component.extend({
                 })
             });
             self.set('assets', assets);
-       },
-       addParams() { 
-           
-        this.parameters.push({ title: '', type: '' });
-        // for (var key in this.parameters) {
-        //     if (this.parameters.hasOwnProperty(key)) {
-        //         // TODO linter complains if this block is blank
-        //     }
-        // }
-        this.parameters.forEach(x => {
-            console.log(`{ title: ${x.title}; type: ${x.type} }`);
-
-        });
-    },
+        },
+        addParams() {
+            A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
+        },
 
         closePromptDialog() {
             this.set('showDialog', false);
@@ -110,7 +102,7 @@ export default Component.extend({
             // this.set('editingTxnAddName', false);
         },
         addNewTxn() {
-            console.log(this.transaction.title, this.assetName, this.parameters, this.schema)
+            console.log(this.transaction.title, this.assetName, this.parameters, this.schema);
             // let schema = this.blockchainUtils.updateSchemaAddTxn(this.transaction.title, this.assetName, this.parameters, this.schema, false);
             // this.set('schema', schema);
             // this.set('editingTxnAddName', false);
