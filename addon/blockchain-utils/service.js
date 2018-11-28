@@ -758,7 +758,24 @@ export default Service.extend({
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
     },
+    addParam(txnTitle, newParamTitle, paramType, schema) {
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
 
+        for (const property in schema.properties) {
+            if(property === txnTitle){
+                schema.properties[property][newParamTitle] = {};
+                schema.properties[property][newParamTitle].name = newParamTitle;
+                schema.properties[property][newParamTitle].type = paramType;
+
+            }
+
+        }
+
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+        return jsonSchema;
+    },
     updateParamSchemaType(txnTitle, paramTitle, newParamType, schema) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);

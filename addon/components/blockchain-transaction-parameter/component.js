@@ -46,13 +46,21 @@ export default Component.extend({
             this.set('newParamType', event.target.value);
         },
         paramTypeChange() {
+
             this.set('param.type', this.get('newParamType'));
             let parameter = this.get('param');
+            
+            if(this.originalParamName===''){
+                let schema = this.blockchainUtils.addParam(parameter.txn.title, parameter.title, parameter.type, this.schema);
+                this.set('schema', schema);
+            }
+            else{
             let schema = this.blockchainUtils.updateParamSchemaType(parameter.txn.title, parameter.title, parameter.type, this.schema);
             this.set('schema', schema);
             if (this.get('editingTitle')) {
                 this.saveTitle(parameter.txn, parameter);
             }
+        }
             this.set('editingParamType', false);
             delete parameter.editingTitle;
             delete parameter.editingType;
