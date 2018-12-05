@@ -1,0 +1,31 @@
+<div class="layout-row param-row">
+    <div class="layout-column flex-40 layout-align-center-end" style="margin-right: 15px;">
+        {{paper-input
+            input="text"
+            label="Parameter Name"
+            value=parameter.title
+            customValidations=singleConstraint
+            onChange=(action (mut parameter.title))}}
+    </div>
+    <div class="layout-column flex-30 layout-align-center-start dropdown-container">
+        {{#paper-select
+            label="Parameter Type"
+            options=options
+            selected=parameter.type
+            onChange=(action (mut parameter.type))
+            as |option|}}
+            {{option}}
+        {{/paper-select}}
+    </div>
+    <div class="layout-column flex-30">
+        <div class="button-with-icon-container red">
+            {{#paper-button raised=true
+                class="shaking" 
+                iconButton=true 
+                onClick=(action "deleteParam" parameter.index)
+                disabled=cannotDelete}}
+                {{paper-icon "delete_forever" title="Delete Parameter"}}
+            {{/paper-button}}
+        </div>
+    </div>
+</div>

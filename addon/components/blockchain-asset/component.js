@@ -53,8 +53,8 @@ export default Component.extend({
             let asset = this.get('asset');
             asset.set('expanded', !asset.get('expanded'));
         },
-        toggleOffAddTxn() {
-            this.get('toggleOffAddTxn')();
+        toggleOffAddTxn(title) {
+            this.get('toggleOffAddTxn')(title);
         },
         toggleOffDeleteTxn() {
             this.get('toggleOffDeleteTxn')();
