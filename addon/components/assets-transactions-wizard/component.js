@@ -24,7 +24,7 @@ export default Component.extend({
     editingTxnDelete: true,
     editingTxnAddName: false,
     editingTxnDeleteName: false,
-    showDialog: false,
+    showTransactionEditorDialog: false,
     addParams: true,
     bundlehash: false,
     origTitle: '',
@@ -65,7 +65,7 @@ export default Component.extend({
         const self = this;
         let assets = this.blockchainUtils.extractAssetsTransactions(schema);
         assets.forEach(x => {
-            x.expanded = false;
+            x.expanded = x.expanded || false;
             var arr = JSON.parse(localStorage.getItem('asset'));
             if (arr != null) {
                 arr.forEach(function (obj) {
@@ -87,14 +87,14 @@ export default Component.extend({
         self.set('assets', assets);
     },
 
-    validNewParameters: computed('parameters', 'parameters.{length,@each.name}', function (/*parameters*/) {
+    validNewParameters: computed('parameters', 'parameters.{length,@each.title}', function () {
         let valid = true;
         this.get('parameters').forEach(p => {
-            valid = valid && (p.name && p.name.length > 0);
+            valid = valid && (p.title && p.title.length > 0);
         });
         return valid;
     }),
-    newMethodHasName: computed('newTxnName', 'newTxnName.length', function (/*newTxnName*/) {
+    newMethodHasName: computed('newTxnName', 'newTxnName.length', function () {
         return this.get('newTxnName').length > 0;
     }),
     doneButtonEnabled: and('newMethodHasName', 'validNewParameters'),
@@ -124,6 +124,9 @@ export default Component.extend({
             }, []);
             this.set('txnReturnsType', 'void');
             this.set('txnParameters', A(params));
+        },
+        generateView(schema) {
+            this.generateView(schema);
         },
 
         toggleAsset(origAsset) {
@@ -164,11 +167,15 @@ export default Component.extend({
             // this.set('parameters', [{}]);
             this.get('parameters').clear();
             this.set('bundlehash', false);
+            this.set('showTransactionEditorDialog', false);
         },
-        toggleOffAddTxn() {
+        toggleOffAddTxn(title) {
+            if(title && title.trim().length) {
+                this.set('tranAssetTitle', title);
+            }
             this.set('editingTxnAdd', false);
             this.set('editingTxnAddName', true);
-            this.set('showDialog', true);
+            this.set('showTransactionEditorDialog', true);
         },
         toggleOffDeleteTxn() {
             this.set('editingTxnDelete', false);
@@ -178,7 +185,7 @@ export default Component.extend({
             this.set('addInput', true);
         },
         moreParams() {
-            this.get('parameters').pushObject({ name: '', type: 'string' });
+            this.get('parameters').pushObject({ title: '', type: 'string' });
             for (var key in this.parameters) {
                 if (this.parameters.hasOwnProperty(key)) {
                     // TODO linter complains if this block is blank
@@ -187,10 +194,10 @@ export default Component.extend({
 
         },
         openPromptDialog() {
-            this.set('showDialog', true);
+            this.set('showTransactionEditorDialog', true);
         },
         closePromptDialog() {
-            this.set('showDialog', false);
+            this.set('showTransactionEditorDialog', false);
             this.set('editingTxnAdd', true);
             this.set('editingTxnAddName', false);
         },

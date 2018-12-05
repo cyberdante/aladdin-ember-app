@@ -1,13 +1,13 @@
 {{#paper-item class="parameter-wrapper" as |parameter-wrapper|}}
     <div class="layout-row">
-        <div class="layout-column flex-30 layout-align-center-end {{if editingTitle 'editing'}} {{if (not param.title.length) 'error'}}">
-            {{#if editingTitle}}
+        <div class="layout-column flex-30 layout-align-center-end {{if editing 'editing'}} {{if (not param.title.length) 'error'}}">
+            {{#if editing}}
                 {{input class="input-title" value=param.title enter=(action 'toggleOffParam' param.txn param) }}
             {{else}}
                 <div class="param-title"><span class="clickable" onClick={{action "toggleParam" param.title}}>{{param.title}}</span></div>
             {{/if}}
         </div>
-        {{#if editingParamType}}
+        {{#if editing}}
             <div class="layout-column layout-md-column flex-30">
                 <select onchange={{action "changeParamTypeSelection"}}>
                     {{#each possibleTypeOptions as |option|}}

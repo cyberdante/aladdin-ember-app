@@ -31,7 +31,7 @@
         {{#paper-item as |txns|}}
             {{#paper-subheader class="txn-header"}}Transactions{{/paper-subheader}}
             <div class="md-secondary-container">
-                {{#txns.button raised=true onClick=(action "toggleOffAddTxn")}}
+                {{#txns.button raised=true onClick=(action "toggleOffAddTxn" title)}}
                     {{paper-icon "add" title="Add a new Transaction"}}
                 {{/txns.button}}
             </div>

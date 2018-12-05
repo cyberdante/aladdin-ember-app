@@ -64,8 +64,8 @@ export default Component.extend({
             this.set('openAsset',asset);
             this.set('isOpenAsset', true);
         },
-        toggleOffAddTxn() {
-            this.get('toggleOffAddTxn')();
+        toggleOffAddTxn(title) {
+            this.get('toggleOffAddTxn')(title);
         },
         toggleOffDeleteTxn() {
             this.get('toggleOffDeleteTxn')();

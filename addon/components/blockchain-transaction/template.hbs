@@ -49,13 +49,13 @@
             {{#each parameters as |param|}}
                 {{blockchain-transaction-parameter 
                     param=param
-                    editingTitle=param.editingTitle
-                    editingParamType=param.editingType
+                    editing=param.editing
                     schema=schema}}
             {{/each}}
         {{/paramspanel.content}}
     {{/paper-card}}
 {{/if}}
+<<<<<<< HEAD
                 {{#if showDialog}}
                     {{#paper-dialog fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin}}
                         {{#paper-dialog-content}}
@@ -124,3 +124,30 @@
                      {{/paper-dialog}}
                 {{/if}}
                 
+=======
+{{#if showTransactionEditorDialog}}
+    {{transaction-editor
+        editing=true
+        transaction=transaction
+        tranAssetTitle=assetName
+        assets=assets
+        schema=schema
+        closePromptDialog=(action 'closePromptDialog')
+        upsertTransaction=(action 'saveTransaction')}}
+{{/if}}
+{{#if showNewAssetDialog}}
+    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog" newAssetTitle) origin=dialogOrigin as |newAssetModal|}}
+        {{#paper-dialog-content}}
+            <div class="layout-row">
+                <div class="layout-column flex-100">
+                    {{paper-input input="text" required="true" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
+                </div>
+            </div>
+        {{/paper-dialog-content}}
+        {{#paper-dialog-actions class="layout-row"}}
+            <span class="flex"></span>
+            {{#paper-button primary=true onClick=(action "closeNewAssetDialog" newAssetTitle) disabled=isInputEmpty}}Add{{/paper-button}}
+        {{/paper-dialog-actions}}
+        {{/paper-dialog}}
+{{/if}}
+>>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb

@@ -13,13 +13,16 @@ export default Component.extend({
     classNameBindings: ['inputTitleEmpty:error'],
     blockchainUtils: service(),
     editingTitle: false,
-    showDialog: false,
+    showTransactionEditorDialog: false,
     assets: A([]),
     assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
     assetName: '',
+<<<<<<< HEAD
     isOpenAsset: false,
+=======
+>>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
     title: computed('transaction', 'transaction.title', function () {
         let txn = this.get('transaction');
         return txn ? txn.title : '';
@@ -53,9 +56,25 @@ export default Component.extend({
         localStorage.setItem('asset', JSON.stringify(assetArray));
         this.set('editingTitle', false);
     },
+<<<<<<< HEAD
     params: computed('parameters', 'parameters.length', function () {
         return this.get('parameters');
     }),
+=======
+    openPromptDialog() {
+        this.set('showTransactionEditorDialog', true);
+        const self = this;
+        let assets = this.blockchainUtils.extractAssetsTransactions(this.schema);
+        assets.forEach(x => {
+            x.transactions.forEach(txn => {
+                if (txn.title === this.title) {
+                    this.set('assetName', x.title);
+                }
+            });
+        });
+        self.set('assets', assets);
+    },
+>>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
     actions: {
         deleteTxn() {
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
@@ -68,16 +87,37 @@ export default Component.extend({
             this.set('showPromptDialog', false);
         },
         toggleTxnEdition() {
-            this.set('editingTitle', true);
             this.set('origTxnTitle', this.get('transaction.title'));
+            this.openPromptDialog();
+            // this.set('editingTitle', true);
         },
         setNewTransactionTitle(txnTitle) {
+<<<<<<< HEAD
             
+=======
+>>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
             if (txnTitle && txnTitle.length) {
                 this.saveTitle(txnTitle);
             } else {
                 this.set('transaction.title', this.get('origTxnTitle'));
             }
+        },
+        saveTransaction(paramsChanged) {
+            let newTitle = this.get('title');
+            if(newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
+                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema);
+                this.set('transaction.title', newTitle);
+                this.set('schema', schema);
+                this.set('title', '');
+            } else {
+                this.set('title', this.get('transaction.title'));
+            }
+            if(paramsChanged) {
+                // we don't have this functionality yet
+                // TODO: Sarah, please add function on utils 
+                // and call it from here
+            }
+            this.set('showTransactionEditorDialog', false);
         },
         selectTxn(txn) {
             this.get('selectTxn')(txn);
@@ -86,6 +126,7 @@ export default Component.extend({
             let val = this.get('showingParams');
             this.set('showingParams', !val);
         },
+<<<<<<< HEAD
         openPromptDialog() {
             this.set('showDialog', true);
             const self = this;
@@ -101,6 +142,13 @@ export default Component.extend({
         },
         addParams() {
             A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
+=======
+        addParams() {
+            A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
+        },
+        closePromptDialog() {
+            this.set('showTransactionEditorDialog', false);
+>>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
         }
     }
 });
