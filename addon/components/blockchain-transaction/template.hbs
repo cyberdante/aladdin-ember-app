@@ -4,6 +4,7 @@
     {{else}}
         <p class="clickable" onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
     {{/if}}
+
     {{#if (and parameters parameters.length)}}
         <div class="button-with-icon-container">
             {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTransactionDisplay")}}
@@ -26,6 +27,7 @@
         {{/controls.button}}
     </div>
 {{/paper-item}}
+
 {{#if showPromptDialog}}
     {{confirmation-modal 
         confirmDelete=(action 'deleteTxn')
@@ -121,3 +123,4 @@
                         {{/paper-dialog-actions}}
                      {{/paper-dialog}}
                 {{/if}}
+                

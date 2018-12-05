@@ -3,6 +3,9 @@ import layout from './template';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+let assetArray = localStorage.getItem('asset') ? JSON.parse(localStorage.getItem('asset')) : [];
+
+
 
 export default Component.extend({
     layout,
@@ -12,11 +15,12 @@ export default Component.extend({
     editingTitle: false,
     showDialog: false,
     assets: A([]),
-    assetTitles: computed('assets', function() {
+    assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
-    assetName:'',
-    title: computed('transaction', 'transaction.title', function() {
+    assetName: '',
+    isOpenAsset: false,
+    title: computed('transaction', 'transaction.title', function () {
         let txn = this.get('transaction');
         return txn ? txn.title : '';
     }),
@@ -31,23 +35,25 @@ export default Component.extend({
         this._super(...arguments);
         this.set('origTxnTitle', this.get('title'));
     },
-    
+
     saveTitle(transactionTitle) {
         let modifiedSchema = this.blockchainUtils.updateTxnSchema(transactionTitle, this.origTxnTitle, this.schema);
         this.set('transaction.title', transactionTitle);
         this.set('schema', modifiedSchema);
+        let assets = this.blockchainUtils.extractAssetsTransactions(this.schema);
+        let assetOpen;
+        assets.forEach(x => {
+            x.transactions.forEach(txn => {
+                if (txn.title === this.title) {
+                     assetOpen = x.title;
+                }
+            })
+        });
+        assetArray.push(assetOpen);
+        localStorage.setItem('asset', JSON.stringify(assetArray));
         this.set('editingTitle', false);
     },
-    // getParams(txn) {
-    //     let params = Object.keys(txn.meta).reduce((acc, paramTitle) => {
-    //         if (paramTitle !== 'dependencies' && paramTitle !== 'returns' && paramTitle !== 'title') {
-    //             acc.push({ title: paramTitle, type: txn.meta[paramTitle].type, txn: txn });
-    //         }
-    //         return acc;
-    //     }, []);
-    //     return params;
-    // },
-    params: computed('parameters', 'parameters.length', function() {
+    params: computed('parameters', 'parameters.length', function () {
         return this.get('parameters');
     }),
     actions: {
@@ -56,7 +62,7 @@ export default Component.extend({
             this.set('schema', schema);
         },
         showConfirmationDialog() {
-            this.set('showPromptDialog', true); 
+            this.set('showPromptDialog', true);
         },
         closeConfirmationDialog() {
             this.set('showPromptDialog', false);
@@ -66,7 +72,8 @@ export default Component.extend({
             this.set('origTxnTitle', this.get('transaction.title'));
         },
         setNewTransactionTitle(txnTitle) {
-            if(txnTitle && txnTitle.length) {
+            
+            if (txnTitle && txnTitle.length) {
                 this.saveTitle(txnTitle);
             } else {
                 this.set('transaction.title', this.get('origTxnTitle'));
@@ -84,37 +91,16 @@ export default Component.extend({
             const self = this;
             let assets = this.blockchainUtils.extractAssetsTransactions(this.schema);
             assets.forEach(x => {
-                x.transactions.forEach(txn=> {
-                    if(txn.title === this.title){
-                    this.set('assetName', x.title);
-                  }
+                x.transactions.forEach(txn => {
+                    if (txn.title === this.title) {
+                        this.set('assetName', x.title);
+                    }
                 })
             });
             self.set('assets', assets);
         },
         addParams() {
             A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
-        },
-
-        closePromptDialog() {
-            this.set('showDialog', false);
-            // this.set('editingTxnAdd', true);
-            // this.set('editingTxnAddName', false);
-        },
-        addNewTxn() {
-            console.log(this.transaction.title, this.assetName, this.parameters, this.schema);
-            // let schema = this.blockchainUtils.updateSchemaAddTxn(this.transaction.title, this.assetName, this.parameters, this.schema, false);
-            // this.set('schema', schema);
-            // this.set('editingTxnAddName', false);
-            // this.set('editingTxnAdd', true);
-            // this.set('newTxnName', '');
-            // this.set('tranAssetTitle', '');
-            // this.set('paramName', '');
-            // this.set('paramType', '');
-            // this.set('txnParamType', '');
-            // // this.set('parameters', [{}]);
-            // this.get('parameters').clear();
-            // this.set('bundlehash', false);
         }
     }
 });

@@ -2,6 +2,9 @@ import Component from '@ember/component';
 import layout from './template';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+let assetArray = localStorage.getItem('asset') ? JSON.parse(localStorage.getItem('asset')) : [];
+
+
 
 export default Component.extend({
     layout,
@@ -14,7 +17,8 @@ export default Component.extend({
     hasValidTitle: computed.gt('title.length', 0),
     inputTitleEmpty: computed.not('hasValidTitle'),
     schema:'',
-
+    openAsset:'',
+    isOpenAsset: false,
     init() {
         this._super(...arguments);
         this.set('originalTitle', this.get('asset.title'));
@@ -51,7 +55,14 @@ export default Component.extend({
         },
         toggleAssetState() {
             let asset = this.get('asset');
+            console.log("Toggle State", localStorage.getItem('asset'));
             asset.set('expanded', !asset.get('expanded'));
+            if(asset.get('expanded')){
+            assetArray.push(assetOpen);
+            localStorage.setItem('asset', JSON.stringify(assetArray));
+            }
+            this.set('openAsset',asset);
+            this.set('isOpenAsset', true);
         },
         toggleOffAddTxn() {
             this.get('toggleOffAddTxn')();
@@ -61,6 +72,12 @@ export default Component.extend({
         },
         selectTxn(transaction) {
             this.get('selectTxn')(transaction);
+        },
+
+        clearLS(){
+            let asset = this.get('asset');
+            asset.set('expanded', false);
+            localStorage.clear();
         }
     }
 });

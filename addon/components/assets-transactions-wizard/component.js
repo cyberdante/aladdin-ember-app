@@ -13,7 +13,7 @@ export default Component.extend({
     blockchainUtils: service(),
     schema: '',
     assets: A([]),
-    assetTitles: computed('assets', function() {
+    assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
 
@@ -33,7 +33,7 @@ export default Component.extend({
     options: computed(function () {
         return ['string', 'bytes32', 'uint', 'address'];
     }),
-    isInputEmpty: computed('newAssetTitle', function() {
+    isInputEmpty: computed('newAssetTitle', function () {
         return !(this.get('newAssetTitle') && this.get('newAssetTitle').trim().length > 0);
     }),
     origTxnTitle: '',
@@ -66,6 +66,15 @@ export default Component.extend({
         let assets = this.blockchainUtils.extractAssetsTransactions(schema);
         assets.forEach(x => {
             x.expanded = false;
+            var arr = JSON.parse(localStorage.getItem('asset'));
+            if (arr != null) {
+                arr.forEach(function (obj) {
+                    if (obj === x.title) {
+                        x.expanded = true;
+                    }
+                });
+            }
+
             if (x.transactions && x.transactions.length) {
                 x.transactions.forEach(txn => {
                     txn.parameters = this.getParams(txn);
@@ -100,7 +109,7 @@ export default Component.extend({
         }, []);
         return params;
     },
-    
+
     actions: {
         selectTxn(txn) {
             this.set('selectedTxn.isSelected', false);
@@ -169,13 +178,13 @@ export default Component.extend({
             this.set('addInput', true);
         },
         moreParams() {
-            this.get('parameters').pushObject({ name: '', type: '' });
+            this.get('parameters').pushObject({ name: '', type: 'string' });
             for (var key in this.parameters) {
                 if (this.parameters.hasOwnProperty(key)) {
                     // TODO linter complains if this block is blank
                 }
             }
-         
+
         },
         openPromptDialog() {
             this.set('showDialog', true);
@@ -189,7 +198,7 @@ export default Component.extend({
             this.set('showNewAssetDialog', true);
         },
         closeNewAssetDialog(newAssetTitle) {
-            if(newAssetTitle && newAssetTitle.trim().length) {
+            if (newAssetTitle && newAssetTitle.trim().length) {
                 let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim());
                 this.set('schema', schema);
             }
