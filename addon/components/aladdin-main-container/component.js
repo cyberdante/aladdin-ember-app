@@ -54,6 +54,13 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
             { id: 0, type: "warning", value: "No errors detected" }
         ]));
     },
+    
+    solCversion: computed(function() {
+        let version = this.blockchainUtils.solCversion;
+        let start = version.indexOf('-') + 2;
+        let end = this.blockchainUtils.solCversion.indexOf('+');
+        return version.substring(start, end);
+    }),
 
     /**
      * If the code is currently being built

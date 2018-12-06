@@ -19,10 +19,6 @@ export default Component.extend({
         return this.get('assets').mapBy('title');
     }),
     assetName: '',
-<<<<<<< HEAD
-    isOpenAsset: false,
-=======
->>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
     title: computed('transaction', 'transaction.title', function () {
         let txn = this.get('transaction');
         return txn ? txn.title : '';
@@ -48,19 +44,18 @@ export default Component.extend({
         assets.forEach(x => {
             x.transactions.forEach(txn => {
                 if (txn.title === this.title) {
-                     assetOpen = x.title;
+                    assetOpen = x.title;
                 }
             })
         });
         assetArray.push(assetOpen);
         localStorage.setItem('asset', JSON.stringify(assetArray));
+        // console.log(localStorage)
         this.set('editingTitle', false);
     },
-<<<<<<< HEAD
     params: computed('parameters', 'parameters.length', function () {
         return this.get('parameters');
     }),
-=======
     openPromptDialog() {
         this.set('showTransactionEditorDialog', true);
         const self = this;
@@ -74,7 +69,6 @@ export default Component.extend({
         });
         self.set('assets', assets);
     },
->>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
     actions: {
         deleteTxn() {
             let schema = this.blockchainUtils.updateSchemaDeleteTxn(this.get('transaction.title'), this.schema);
@@ -92,31 +86,26 @@ export default Component.extend({
             // this.set('editingTitle', true);
         },
         setNewTransactionTitle(txnTitle) {
-<<<<<<< HEAD
-            
-=======
->>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
             if (txnTitle && txnTitle.length) {
                 this.saveTitle(txnTitle);
             } else {
                 this.set('transaction.title', this.get('origTxnTitle'));
             }
         },
-        saveTransaction(paramsChanged) {
-            let newTitle = this.get('title');
-            if(newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
-                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema);
+        saveTransaction(paramsChanged, newTxnName, newParams) {
+            
+            let newTitle = newTxnName;
+            if (newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
+                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
                 this.set('transaction.title', newTitle);
                 this.set('schema', schema);
                 this.set('title', '');
             } else {
                 this.set('title', this.get('transaction.title'));
-            }
-            if(paramsChanged) {
-                // we don't have this functionality yet
-                // TODO: Sarah, please add function on utils 
-                // and call it from here
-            }
+                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
+                this.set('schema', schema);
+             }
+
             this.set('showTransactionEditorDialog', false);
         },
         selectTxn(txn) {
@@ -126,7 +115,7 @@ export default Component.extend({
             let val = this.get('showingParams');
             this.set('showingParams', !val);
         },
-<<<<<<< HEAD
+
         openPromptDialog() {
             this.set('showDialog', true);
             const self = this;
@@ -140,15 +129,12 @@ export default Component.extend({
             });
             self.set('assets', assets);
         },
-        addParams() {
-            A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
-=======
+
         addParams() {
             A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
         },
         closePromptDialog() {
             this.set('showTransactionEditorDialog', false);
->>>>>>> f460a50e9e3f2e6a40eb01b371c5be70af1b2ffb
         }
     }
 });

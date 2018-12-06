@@ -13,7 +13,7 @@ export default Component.extend({
     newParamType: '',
 
     possibleTypeOptions: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
 
     init() {

@@ -12,7 +12,7 @@ export default Component.extend({
     blockchainUtils: service(),
     transaction: O.create({}),
     options: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
     assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
@@ -56,6 +56,7 @@ export default Component.extend({
     init() {
         this._super(...arguments);
         const txn = this.get('transaction');
+       
         if (txn) {
             if (txn.title && txn.title.length) {
                 this.set('newTxnName', txn.title);
@@ -99,7 +100,8 @@ export default Component.extend({
             this.get('closePromptDialog')();
         },
         upsertTransaction() {
-            this.get('upsertTransaction')(this.get('paramsChanged'));
+           
+            this.get('upsertTransaction')(this.get('paramsChanged'),this.get('newTxnName'), this.get('parameters'));
         },
         deleteParam(index) {
             A(this.get('parameters')).removeAt(index, 1);
@@ -107,12 +109,13 @@ export default Component.extend({
         },
         addParam() {
             const idx = this.get('parameters') ? this.get('parameters').length : 0;
-            A(this.get('parameters')).pushObject({ 
+            A(this.get('parameters')).pushObject({
                 title: '',
                 txn: this.get('transaction'),
                 type: 'string', index: idx
             });
             this.set('paramsChanged', true);
         }
+        
     }
 });

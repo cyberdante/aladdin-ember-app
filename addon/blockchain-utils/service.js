@@ -120,7 +120,7 @@ export default Service.extend({
                             let dummyReturn = {};
                             fn.properties.returns = dummyReturn;
                         }
-                        
+
                     }
                 }
 
@@ -505,7 +505,7 @@ export default Service.extend({
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
         };
-        
+
         let schema = JSON.parse(schemaString);
 
         schema.title = "Application";
@@ -532,10 +532,9 @@ export default Service.extend({
                 }
             }
         });
-        // console.log(assets);
+      
         let solEns = "enum Assets {"
         for (let enms in assets) {
-            // console.log(enms);
             solEns = solEns + `${enms}, `;
         }
 
@@ -764,7 +763,7 @@ export default Service.extend({
         }
 
         for (const property in schema.properties) {
-            if(property === txnTitle){
+            if (property === txnTitle) {
                 schema.properties[property][newParamTitle] = {};
                 schema.properties[property][newParamTitle].name = newParamTitle;
                 schema.properties[property][newParamTitle].type = paramType;
@@ -823,22 +822,37 @@ export default Service.extend({
             throw new Error('invalid Asset name');
         }
     },
-    updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
+    updateTxnSchema(newTxnTitle, oldTxnTitle, schema, newParams) {
 
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-        if (newTxnTitle && oldTxnTitle && schema.properties ){
-        for (const property in schema.properties) {
-            if (oldTxnTitle === schema.properties[property].title) {
-                    schema.properties[newTxnTitle] = schema.properties[property];
+        let newParameters = {};
+        if (newTxnTitle && oldTxnTitle && schema.properties) {
+            for (const property in schema.properties) {
+
+                for (const dep in schema.properties[property]) {
+                    if (dep === 'dependencies') {
+                        // newParameters[dep] = {};
+                        newParameters = schema.properties[property];
+                    }
+                }
+                newParams.forEach(param => {
+                    newParameters[param.title] = {}
+                    newParameters[param.title].name = param.title
+                    newParameters[param.title].type = param.type
+                });
+                if (oldTxnTitle === schema.properties[property].title) {
+                    schema.properties[newTxnTitle] = newParameters;
                     schema.properties[newTxnTitle].title = newTxnTitle;
-                    delete  schema.properties[property];
+                    if (oldTxnTitle != newTxnTitle)
+                        delete schema.properties[property];
 
                 }
-        }
+
+            }
         } else {
-        throw new Error('Invalid schema. No properties attribute inside.');
+            throw new Error('Invalid schema. No properties attribute inside.');
         }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
@@ -1079,7 +1093,6 @@ export default Service.extend({
                     schema.transaction[fn.title] = fn;
                 }
             });
-
             let yamlString = '---';
             for (let assets in assetList) {
                 yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
