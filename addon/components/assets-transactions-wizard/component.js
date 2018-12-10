@@ -214,6 +214,9 @@ export default Component.extend({
         openNewAssetDialog() {
             this.set('showNewAssetDialog', true);
         },
+        exitNewAssetDialog(){
+            this.set('showNewAssetDialog', false);
+        },
         closeNewAssetDialog(newAssetTitle) {
             if (newAssetTitle && newAssetTitle.trim().length) {
                 let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim());

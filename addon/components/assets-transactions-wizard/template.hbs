@@ -21,7 +21,7 @@
                     <div class="md-secondary-container">
                         {{#assetHeader.button primary=true raised=true disabled=isCompiling onClick=(action "openNewAssetDialog")}}
                             {{paper-icon "add" title="Add a new Asset" position="left"}}
-                        {{/assetHeader.button}}
+                            {{/assetHeader.button}}
                     </div>
                 {{/paper-item}}
                 {{#each assets as |asset|}}
@@ -53,6 +53,7 @@
         {{#paper-dialog-actions class="layout-row"}}
             <span class="flex"></span>
             {{#paper-button primary=true onClick=(action "closeNewAssetDialog" newAssetTitle) disabled=isInputEmpty}}Add{{/paper-button}}
+            {{#paper-button primary=true onClick=(action "exitNewAssetDialog") }}Cancel{{/paper-button}}
         {{/paper-dialog-actions}}
     {{/paper-dialog}}
 {{/if}}

@@ -1,6 +1,6 @@
 {{#paper-item as |controls|}}
     {{#if editingTitle}}
-        {{input value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
+        {{input required value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
     {{else}}
         <p class="clickable" onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
     {{/if}}
