@@ -16,8 +16,8 @@ export default Component.extend({
     editingAssetTitle: false,
     hasValidTitle: computed.gt('title.length', 0),
     inputTitleEmpty: computed.not('hasValidTitle'),
-    schema:'',
-    openAsset:'',
+    schema: '',
+    openAsset: '',
     isOpenAsset: false,
     init() {
         this._super(...arguments);
@@ -31,11 +31,11 @@ export default Component.extend({
 
     actions: {
         deleteAsset() {
-            let schema = this.blockchainUtils.deleteAsset(this.schema,this.get('asset.title'));
+            let schema = this.blockchainUtils.deleteAsset(this.schema, this.get('asset.title'));
             this.set('schema', schema);
         },
         showConfirmationDialog() {
-            this.set('showPromptDialog', true); 
+            this.set('showPromptDialog', true);
         },
         closeConfirmationDialog() {
             this.set('showPromptDialog', false);
@@ -43,9 +43,9 @@ export default Component.extend({
         toggleAssetTitleEdition() {
             let asset = this.get('asset');
             let editing = this.get('editingAssetTitle');
-            if(editing) {
-                if(asset && asset.title && asset.title.length) {
-                    this.saveAssetTitle(asset.title);  
+            if (editing) {
+                if (asset && asset.title && asset.title.length) {
+                    this.saveAssetTitle(asset.title);
                 } else {
                     this.set('asset.title', this.get('originalTitle'));
                 }
@@ -55,17 +55,16 @@ export default Component.extend({
         },
         toggleAssetState() {
             let asset = this.get('asset');
-            console.log("Toggle State", localStorage.getItem('asset'));
             asset.set('expanded', !asset.get('expanded'));
-            if(asset.get('expanded')){
-            assetArray.push(assetOpen);
-            localStorage.setItem('asset', JSON.stringify(assetArray));
+            if (asset.get('expanded')) {
+                assetArray.push(asset.title);
+                localStorage.setItem('asset', JSON.stringify(assetArray));
             }
-            this.set('openAsset',asset);
+            this.set('openAsset', asset);
             this.set('isOpenAsset', true);
         },
-        toggleOffAddTxn(title) {
-            this.get('toggleOffAddTxn')(title);
+        toggleOffAddTxn() {
+            this.get('toggleOffAddTxn')();
         },
         toggleOffDeleteTxn() {
             this.get('toggleOffDeleteTxn')();
@@ -74,10 +73,13 @@ export default Component.extend({
             this.get('selectTxn')(transaction);
         },
 
-        clearLS(){
+        clearLS() {
             let asset = this.get('asset');
             asset.set('expanded', false);
-            localStorage.clear();
+            assetArray = assetArray.filter(function (item) {
+                return item !== asset.title;
+            })
+            localStorage.setItem('asset', JSON.stringify(assetArray));
         }
     }
 });

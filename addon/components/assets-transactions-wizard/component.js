@@ -31,7 +31,7 @@ export default Component.extend({
     tranParamTitle: '',
     txnName: '',
     options: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'bool', 'int'];
     }),
     isInputEmpty: computed('newAssetTitle', function () {
         return !(this.get('newAssetTitle') && this.get('newAssetTitle').trim().length > 0);
@@ -74,13 +74,22 @@ export default Component.extend({
                     }
                 });
             }
+            arr = JSON.parse(localStorage.getItem('txn'));
 
             if (x.transactions && x.transactions.length) {
                 x.transactions.forEach(txn => {
+                    if (arr != null) {
+                        arr.forEach(function (obj) {
+                            if (obj === txn.title) {
+                                txn.showingParams = true;
+                            }
+                        });
+                    }
                     txn.parameters = this.getParams(txn);
                     if (!txn.returnType) {
                         txn.returnType = 'void';
                     }
+
                 })
             }
         });
@@ -155,7 +164,7 @@ export default Component.extend({
             this.set('schema', schema);
         },
         addNewTxn() {
-            
+
             let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);
@@ -171,7 +180,7 @@ export default Component.extend({
             this.set('showTransactionEditorDialog', false);
         },
         toggleOffAddTxn(title) {
-            if(title && title.trim().length) {
+            if (title && title.trim().length) {
                 this.set('tranAssetTitle', title);
             }
             this.set('editingTxnAdd', false);

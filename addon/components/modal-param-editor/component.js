@@ -32,7 +32,7 @@ export default Component.extend({
     }),
 
     options: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
 
     init() {

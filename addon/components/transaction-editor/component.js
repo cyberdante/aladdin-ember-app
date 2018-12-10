@@ -56,7 +56,6 @@ export default Component.extend({
     init() {
         this._super(...arguments);
         const txn = this.get('transaction');
-       
         if (txn) {
             if (txn.title && txn.title.length) {
                 this.set('newTxnName', txn.title);
@@ -100,12 +99,12 @@ export default Component.extend({
             this.get('closePromptDialog')();
         },
         upsertTransaction() {
-           
-            this.get('upsertTransaction')(this.get('paramsChanged'),this.get('newTxnName'), this.get('parameters'));
+            this.get('upsertTransaction')(this.get('newTxnName'), this.get('parameters'));
+            // this.get('upsertTransaction')(this.get('paramsChanged'),this.get('newTxnName'), this.get('parameters'));
         },
         deleteParam(index) {
             A(this.get('parameters')).removeAt(index, 1);
-            this.set('paramsChanged', true);
+            // this.set('paramsChanged', true);
         },
         addParam() {
             const idx = this.get('parameters') ? this.get('parameters').length : 0;
@@ -114,7 +113,7 @@ export default Component.extend({
                 txn: this.get('transaction'),
                 type: 'string', index: idx
             });
-            this.set('paramsChanged', true);
+            // this.set('paramsChanged', true);
         }
         
     }

@@ -3,8 +3,7 @@ import layout from './template';
 import { A } from '@ember/array';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-let assetArray = localStorage.getItem('asset') ? JSON.parse(localStorage.getItem('asset')) : [];
-
+let txnArray = localStorage.getItem('txn') ? JSON.parse(localStorage.getItem('txn')) : [];
 
 
 export default Component.extend({
@@ -15,6 +14,7 @@ export default Component.extend({
     editingTitle: false,
     showTransactionEditorDialog: false,
     assets: A([]),
+    schema: '',
     assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
@@ -27,12 +27,14 @@ export default Component.extend({
     hasValidTitle: computed.gt('transaction.title.length', 0),
     inputTitleEmpty: computed.not('hasValidTitle'),
     options: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
+
 
     init() {
         this._super(...arguments);
         this.set('origTxnTitle', this.get('title'));
+        this.set('schema', this.get('schema'))
     },
 
     saveTitle(transactionTitle) {
@@ -40,7 +42,6 @@ export default Component.extend({
         this.set('transaction.title', transactionTitle);
         this.set('schema', modifiedSchema);
         let assets = this.blockchainUtils.extractAssetsTransactions(this.schema);
-        let assetOpen;
         assets.forEach(x => {
             x.transactions.forEach(txn => {
                 if (txn.title === this.title) {
@@ -48,12 +49,11 @@ export default Component.extend({
                 }
             })
         });
-        assetArray.push(assetOpen);
-        localStorage.setItem('asset', JSON.stringify(assetArray));
-        // console.log(localStorage)
+
         this.set('editingTitle', false);
     },
     params: computed('parameters', 'parameters.length', function () {
+
         return this.get('parameters');
     }),
     openPromptDialog() {
@@ -92,8 +92,8 @@ export default Component.extend({
                 this.set('transaction.title', this.get('origTxnTitle'));
             }
         },
-        saveTransaction(paramsChanged, newTxnName, newParams) {
-            
+        saveTransaction(newTxnName, newParams) {
+
             let newTitle = newTxnName;
             if (newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
                 let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
@@ -104,7 +104,7 @@ export default Component.extend({
                 this.set('title', this.get('transaction.title'));
                 let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
                 this.set('schema', schema);
-             }
+            }
 
             this.set('showTransactionEditorDialog', false);
         },
@@ -114,6 +114,12 @@ export default Component.extend({
         toggleTransactionDisplay() {
             let val = this.get('showingParams');
             this.set('showingParams', !val);
+            
+            if (this.showingParams) {
+                txnArray.push(this.get('transaction.title'));
+                localStorage.setItem('txn', JSON.stringify(txnArray));
+            }
+
         },
 
         openPromptDialog() {
@@ -135,6 +141,18 @@ export default Component.extend({
         },
         closePromptDialog() {
             this.set('showTransactionEditorDialog', false);
+        },
+        clearLS() {
+            
+            this.transaction.set('showingParams')
+            let name  = this.transaction.title
+            this.set('showingParams', false);
+                txnArray = txnArray.filter(function (item) {
+                    return item !== name;
+                })
+                localStorage.setItem('txn', JSON.stringify(txnArray));
+
         }
+        
     }
 });
