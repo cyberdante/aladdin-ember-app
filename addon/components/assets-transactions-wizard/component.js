@@ -163,8 +163,8 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, event.target.value, this.schema);
             this.set('schema', schema);
         },
-        addNewTxn() {
-
+        addNewTxn(newTxnName, parameters) {
+            this.set('newTxnName', newTxnName)
             let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);

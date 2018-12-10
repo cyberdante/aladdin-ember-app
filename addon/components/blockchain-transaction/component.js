@@ -49,7 +49,6 @@ export default Component.extend({
                 }
             })
         });
-
         this.set('editingTitle', false);
     },
     params: computed('parameters', 'parameters.length', function () {
@@ -81,6 +80,7 @@ export default Component.extend({
             this.set('showPromptDialog', false);
         },
         toggleTxnEdition() {
+            
             this.set('origTxnTitle', this.get('transaction.title'));
             this.openPromptDialog();
             // this.set('editingTitle', true);
@@ -93,7 +93,7 @@ export default Component.extend({
             }
         },
         saveTransaction(newTxnName, newParams) {
-
+            
             let newTitle = newTxnName;
             if (newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
                 let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
