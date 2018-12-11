@@ -17,7 +17,7 @@ export default Component.extend({
     assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
-
+  
     validNewParameters: computed('parameters', 'parameters.{length,@each.title}', function () {
         let valid = true;
         this.get('parameters').forEach(p => {

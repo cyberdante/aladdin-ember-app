@@ -149,14 +149,14 @@ export default Component.extend({
             this.set('showTransactionEditorDialog', false);
         },
         clearLS() {
-            this.set('showingParams', false)
-            // this.transaction.set('showingParams')
-        //     let name  = this.transaction.title
-        //     this.set('showingParams', false);
-        //         txnArray = txnArray.filter(function (item) {
-        //             return item !== name;
-        //         })
-        //         localStorage.setItem('txn', JSON.stringify(txnArray));
+            
+            this.transaction.set('showingParams')
+            let name  = this.transaction.title
+            this.set('showingParams', false);
+                txnArray = txnArray.filter(function (item) {
+                    return item !== name;
+                })
+                // localStorage.setItem('txn', JSON.stringify(txnArray));
 
         }
         

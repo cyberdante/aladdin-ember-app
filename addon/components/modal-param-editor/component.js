@@ -24,15 +24,15 @@ export default Component.extend({
             message: 'Parameter names must be unique and no special characters',
             validate: (inputValue) => {
                 if(this.repeatedValues && this.repeatedValues.length && inputValue && inputValue.length) {
-                    this.set('allParamsValid', false);
+                    // this.set('allParamsValid', false);
                     return this.repeatedValues.indexOf(inputValue) < 0;
                 }
                 var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
                 if (!regex.exec(inputValue)) {
-                    this.set('allParamsValid', false);
+                    // this.set('allParamsValid', false);
                     return false;
                 }
-                this.set('allParamsValid', true || this.get('allParamsValid'));
+                // this.set('allParamsValid', true || this.get('allParamsValid'));
                 return true;
             }
         }];
