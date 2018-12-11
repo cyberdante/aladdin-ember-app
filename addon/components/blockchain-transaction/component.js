@@ -94,7 +94,6 @@ export default Component.extend({
             }
         },
         saveTransaction(newTxnName, newParams, tranAssetTitle, bundlehash) {
-            console.log("save txn")
             let newTitle = newTxnName;
             if (newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
                 let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams, bundlehash);
@@ -139,7 +138,12 @@ export default Component.extend({
         },
 
         addParams() {
-            A(this.get('parameters')).pushObject({ title: '', txn: this.get('transaction'), type: 'string', editingTitle: true, editingType: true });
+            A(this.get('parameters')).pushObject({ 
+                title: '',
+                txn: this.get('transaction'),
+                type: 'string',
+                editing: true
+            });
         },
         closePromptDialog() {
             this.set('showTransactionEditorDialog', false);
