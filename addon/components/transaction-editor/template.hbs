@@ -2,10 +2,10 @@
     {{#paper-dialog-content}}
         <div class="layout-row">
             <div class="layout-column flex-40 layout-align-center-end" style="margin-right: 15px;">
-                {{paper-input input="text" required="true" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
+                {{paper-input input="text" customValidations=methodVal required="true" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
             </div>
             <div class="layout-column flex-30 dropdown-container">
-                {{#paper-select
+                {{!-- {{#paper-select
                     label="Asset Name"
                     options=assetTitles
                     selected=tranAssetTitle
@@ -13,7 +13,8 @@
                     disabled=true
                     as |option|}}
                     {{option}}
-                {{/paper-select}}
+                {{/paper-select}} --}}
+                <label>{{tranAssetTitle}}</label>
             </div>
             <div class="layout-column flex-30 layout-align-center-center">
                 {{#paper-checkbox value=bundlehash onChange=(action (mut bundlehash))}}

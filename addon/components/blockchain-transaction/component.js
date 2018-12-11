@@ -86,23 +86,25 @@ export default Component.extend({
             // this.set('editingTitle', true);
         },
         setNewTransactionTitle(txnTitle) {
+
             if (txnTitle && txnTitle.length) {
                 this.saveTitle(txnTitle);
             } else {
                 this.set('transaction.title', this.get('origTxnTitle'));
             }
         },
-        saveTransaction(newTxnName, newParams) {
-            
+        saveTransaction(newTxnName, newParams, tranAssetTitle, bundlehash) {
+            console.log("save txn")
             let newTitle = newTxnName;
             if (newTitle && newTitle.trim().length && this.get('transaction.title') !== newTitle) {
-                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
+                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams, bundlehash);
                 this.set('transaction.title', newTitle);
                 this.set('schema', schema);
                 this.set('title', '');
-            } else {
+            } 
+            else {
                 this.set('title', this.get('transaction.title'));
-                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams);
+                let schema = this.blockchainUtils.updateTxnSchema(newTitle, this.get('transaction.title'), this.schema, newParams, bundlehash);
                 this.set('schema', schema);
             }
 

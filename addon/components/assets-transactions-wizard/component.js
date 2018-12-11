@@ -118,6 +118,16 @@ export default Component.extend({
         }, []);
         return params;
     },
+    setNewParams(pms) {
+
+        let params = []; 
+        for( let i = 0; i < pms.length; ++i){
+           let paramTitle = pms[i].title
+           params.push({ name: paramTitle, type: pms[i].type});
+ 
+        }
+        return params;
+    },
 
     actions: {
         selectTxn(txn) {
@@ -163,9 +173,11 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, event.target.value, this.schema);
             this.set('schema', schema);
         },
-        addNewTxn(newTxnName, parameters) {
+        addNewTxn(newTxnName, parameters, tranAssetTitle, bundlehash) {
+            this.set('parameters', this.setNewParams(parameters));
             this.set('newTxnName', newTxnName)
-            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
+            this.set('bundlehash', bundlehash)
+            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, tranAssetTitle, this.parameters, this.schema, this.bundlehash);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);
             this.set('editingTxnAdd', true);
@@ -174,14 +186,14 @@ export default Component.extend({
             this.set('paramName', '');
             this.set('paramType', '');
             this.set('txnParamType', '');
-            // this.set('parameters', [{}]);
-            this.get('parameters').clear();
+            // // this.set('parameters', [{}]);
+            // this.get('parameters').clear();
             this.set('bundlehash', false);
             this.set('showTransactionEditorDialog', false);
         },
         toggleOffAddTxn(title) {
-            if (title && title.trim().length) {
-                this.set('tranAssetTitle', title);
+            if (title.title) {
+                this.set('tranAssetTitle', title.title);
             }
             this.set('editingTxnAdd', false);
             this.set('editingTxnAddName', true);

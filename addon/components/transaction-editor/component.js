@@ -35,6 +35,7 @@ export default Component.extend({
     tranAssetTitle: '',
     newTxnName: '',
     txnParamType: '',
+    bundlehash:'',
     parameters: computed(function () {
         return A([{
             title: '',
@@ -54,12 +55,15 @@ export default Component.extend({
     typeSelected: '',
 
     init() {
+  
         this._super(...arguments);
         const txn = this.get('transaction');
+     
+
         if (txn) {
             if (txn.title && txn.title.length) {
                 this.set('newTxnName', txn.title);
-            }
+          }
             if (txn.parameters && txn.parameters.length) {
                 let paramsCopy = [];
                 txn.parameters.forEach(p => {
@@ -93,13 +97,26 @@ export default Component.extend({
         });
         return repeated;
     }),
-
+    methodVal: computed(function () {
+        return [{
+            message: 'No special characters',
+            validate: (inputValue) => {
+                var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
+                if (!regex.exec(inputValue)) {
+                    return false;
+                }
+                return true;
+            }
+        }];
+    }),
     actions: {
         closePromptDialog() {
             this.get('closePromptDialog')();
         },
         upsertTransaction() {
-            this.get('upsertTransaction')(this.get('newTxnName'), this.get('parameters'));
+
+            this.get('upsertTransaction')(this.get('newTxnName'), this.get('parameters'), this.get('tranAssetTitle'), this.get('bundlehash'));
+    
             // this.get('upsertTransaction')(this.get('paramsChanged'),this.get('newTxnName'), this.get('parameters'));
         },
         deleteParam(index) {
@@ -115,6 +132,6 @@ export default Component.extend({
             });
             // this.set('paramsChanged', true);
         }
-        
+
     }
 });
