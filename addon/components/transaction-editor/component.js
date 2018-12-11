@@ -28,7 +28,8 @@ export default Component.extend({
     newMethodHasName: computed('newTxnName', 'newTxnName.length', function () {
         return this.get('newTxnName').length > 0;
     }),
-    doneButtonEnabled: and('newMethodHasName', 'validNewParameters'),
+    allParamsValid: true,
+    doneButtonEnabled: and('newMethodHasName', 'validNewParameters', 'allParamsValid'),
     doneButtonDisabled: not('doneButtonEnabled'),
     origTxnTitle: '',
     origParamTitle: '',
@@ -103,9 +104,14 @@ export default Component.extend({
             validate: (inputValue) => {
                 var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
                 if (!regex.exec(inputValue)) {
+                    this.set('doneButtonDisabled', true);
                     return false;
                 }
+                else{
+                    this.set('doneButtonDisabled', false);
+                
                 return true;
+                }
             }
         }];
     }),

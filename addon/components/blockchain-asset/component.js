@@ -56,10 +56,10 @@ export default Component.extend({
         toggleAssetState() {
             let asset = this.get('asset');
             asset.set('expanded', !asset.get('expanded'));
-            if (asset.get('expanded')) {
-                assetArray.push(asset.title);
-                localStorage.setItem('asset', JSON.stringify(assetArray));
-            }
+            // if (asset.get('expanded')) {
+            //     assetArray.push(asset.title);
+            //     localStorage.setItem('asset', JSON.stringify(assetArray));
+            // }
             this.set('openAsset', asset);
             this.set('isOpenAsset', true);
         },
@@ -74,12 +74,13 @@ export default Component.extend({
         },
 
         clearLS() {
+            localStorage.clear() 
             let asset = this.get('asset');
             asset.set('expanded', false);
-            assetArray = assetArray.filter(function (item) {
-                return item !== asset.title;
-            })
-            localStorage.setItem('asset', JSON.stringify(assetArray));
+            // assetArray = assetArray.filter(function (item) {
+            //     return item !== asset.title;
+            // })
+            // localStorage.setItem('asset', JSON.stringify(assetArray));
         }
     }
 });
