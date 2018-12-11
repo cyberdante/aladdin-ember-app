@@ -21,17 +21,22 @@ export default Component.extend({
 
     singleConstraint: computed('repeatedValues', function() {
         return [{
-            message: 'Parameter names must be unique',
+            message: 'Parameter names must be unique and no special characters',
             validate: (inputValue) => {
                 if(this.repeatedValues && this.repeatedValues.length && inputValue && inputValue.length) {
                     return this.repeatedValues.indexOf(inputValue) < 0;
                 }
+                var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
+                if (!regex.exec(inputValue)) {
+                    return false;
+                }
                 return true;
             }
         }];
+    
     }),
 
-    options: computed(function () {
+        options: computed(function () {
         return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
 
