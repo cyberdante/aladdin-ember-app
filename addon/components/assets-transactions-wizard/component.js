@@ -190,6 +190,7 @@ export default Component.extend({
             // this.get('parameters').clear();
             this.set('bundlehash', false);
             this.set('showTransactionEditorDialog', false);
+       
         },
         toggleOffAddTxn(title) {
             if (title.title) {

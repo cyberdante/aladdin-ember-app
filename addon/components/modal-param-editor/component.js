@@ -9,30 +9,35 @@ import layout from './template';
 export default Component.extend({
     layout,
     classNames: ['modal-param-editor'],
-
+    allParamsValid: '',
     param: O.create({
         title: '',
         type: 'string',
         index: 0
     }),
+    doneButtonEnabled: '',
     cannotDelete: computed('totalParams', function() {
         return this.get('totalParams') <=1;
     }),
 
     singleConstraint: computed('repeatedValues', function() {
-        return [{
+       return [{
             message: 'Parameter names must be unique and no special characters',
             validate: (inputValue) => {
                 if(this.repeatedValues && this.repeatedValues.length && inputValue && inputValue.length) {
-                    // this.set('allParamsValid', false);
+                   
+                    this.set('doneButtonEnabled', false);
                     return this.repeatedValues.indexOf(inputValue) < 0;
                 }
                 var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
                 if (!regex.exec(inputValue)) {
-                    // this.set('allParamsValid', false);
+                    this.set('doneButtonEnabled', false);
+                    console.log("**",this.doneButtonEnabled)
                     return false;
                 }
-                // this.set('allParamsValid', true || this.get('allParamsValid'));
+                
+                this.set('doneButtonEnabled', true);
+                // || this.get('allParamsValid'));
                 return true;
             }
         }];
@@ -45,6 +50,7 @@ export default Component.extend({
 
     init() {
         this._super(...arguments);
+        this.set('allParamsValid', false);
     },
 
     actions: {

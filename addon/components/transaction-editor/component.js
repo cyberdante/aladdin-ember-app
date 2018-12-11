@@ -28,8 +28,8 @@ export default Component.extend({
     newMethodHasName: computed('newTxnName', 'newTxnName.length', function () {
         return this.get('newTxnName').length > 0;
     }),
-    allParamsValid: true,
-    doneButtonEnabled: and('newMethodHasName', 'validNewParameters', 'allParamsValid'),
+   
+    doneButtonEnabled: and ('newMethodHasName', 'validNewParameters'),
     doneButtonDisabled: not('doneButtonEnabled'),
     origTxnTitle: '',
     origParamTitle: '',
@@ -51,7 +51,7 @@ export default Component.extend({
     schemaChanged: observer('schema', function () {
         this.get('generateView')(this.schema);
         this.set('tranAssetTitle', this.get('assets')[0]);
-    }),
+   }),
 
     typeSelected: '',
 
