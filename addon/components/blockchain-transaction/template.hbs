@@ -1,9 +1,10 @@
 {{#paper-item as |controls|}}
     {{#if editingTitle}}
-        {{input value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
+        {{input required value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
     {{else}}
         <p class="clickable" onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
     {{/if}}
+
     {{#if (and parameters parameters.length)}}
         <div class="button-with-icon-container">
             {{#controls.button raised=true primary=true iconButton=true onClick=(action "toggleTransactionDisplay")}}
@@ -26,6 +27,7 @@
         {{/controls.button}}
     </div>
 {{/paper-item}}
+
 {{#if showPromptDialog}}
     {{confirmation-modal 
         confirmDelete=(action 'deleteTxn')
@@ -33,25 +35,75 @@
         modelType='transaction'
         model=transaction}}
 {{/if}}
-{{#if (and showingParams parameters parameters.length)}}
+
+{{#if (and  transaction.showingParams)}}
     {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |paramspanel|}}
         {{#paramspanel.content}}
-            {{#paper-item class="parameter-header-wrapper"}}
-                <div class="layout-row" style="width: 100%">
-                    <div class="layout-column flex-30 layout-align-center-end">
-                        <div class="parameters-header">
-                            Parameters
-                        </div>
-                    </div>
+            {{#paper-item class="parameter-header-wrapper" as |paramItem|}}
+                <div class="parameters-header">Parameters</div>
+                <div class="md-secondary-container">
+                    {{#paramItem.button raised=true onClick=(action "addParams") }}
+                        {{paper-icon "add"}}    
+                    {{/paramItem.button}}
                 </div>
+            <button class="md-button md-raised" {{action 'clearLS'}} >
+            <span>{{fa-icon 'check'}} Done</span>
+            </button>
             {{/paper-item}}
             {{#each parameters as |param|}}
                 {{blockchain-transaction-parameter 
                     param=param
-                    editingTitle=false
-                    editingParamType=false
+                    editing=param.editing
                     schema=schema}}
             {{/each}}
         {{/paramspanel.content}}
     {{/paper-card}}
+{{/if}}
+{{#if (and  showingParams parameters parameters.length)}}
+    {{#paper-card class="gray flex-xs-100 flex-sm-100 flex-md-100 flex-lg-100 flex-gt-lg-100 flex-xl-100" as |paramspanel|}}
+        {{#paramspanel.content}}
+            {{#paper-item class="parameter-header-wrapper" as |paramItem|}}
+                <div class="parameters-header">Parameters</div>
+                <div class="md-secondary-container">
+                    {{#paramItem.button raised=true onClick=(action "addParams") }}
+                        {{paper-icon "add"}}    
+                    {{/paramItem.button}}
+                </div>
+            <button class="md-button md-raised" {{action 'clearLS'}} >
+            <span>{{fa-icon 'check'}} Done</span>
+            </button>
+            {{/paper-item}}
+            {{#each parameters as |param|}}
+                {{blockchain-transaction-parameter 
+                    param=param
+                    editing=param.editing
+                    schema=schema}}
+            {{/each}}
+        {{/paramspanel.content}}
+    {{/paper-card}}
+{{/if}}
+{{#if showTransactionEditorDialog}}
+    {{transaction-editor
+        editing=true
+        transaction=transaction
+        tranAssetTitle=assetName
+        assets=assets
+        schema=schema
+        closePromptDialog=(action 'closePromptDialog')
+        upsertTransaction=(action 'saveTransaction')}}
+{{/if}}
+{{#if showNewAssetDialog}}
+    {{#paper-dialog fullscreen=fullscreen onClose=(action "closeNewAssetDialog" newAssetTitle) origin=dialogOrigin as |newAssetModal|}}
+        {{#paper-dialog-content}}
+            <div class="layout-row">
+                <div class="layout-column flex-100">
+                    {{paper-input input="text" required="true" label="Asset Name" value=newAssetTitle onChange=(action (mut newAssetTitle))}}
+                </div>
+            </div>
+        {{/paper-dialog-content}}
+        {{#paper-dialog-actions class="layout-row"}}
+            <span class="flex"></span>
+            {{#paper-button primary=true onClick=(action "closeNewAssetDialog" newAssetTitle) disabled=isInputEmpty}}Add{{/paper-button}}
+        {{/paper-dialog-actions}}
+        {{/paper-dialog}}
 {{/if}}

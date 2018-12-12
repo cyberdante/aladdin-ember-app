@@ -120,7 +120,7 @@ export default Service.extend({
                             let dummyReturn = {};
                             fn.properties.returns = dummyReturn;
                         }
-                        
+
                     }
                 }
 
@@ -242,7 +242,6 @@ export default Service.extend({
             });
 
             for (let x in parseAssets) {
-                // if (parseAssets[x]!=undefined){
                 if (x !== undefined) {
                     schema.properties[`_new_standalone_asset_${x}`] = {};
                     let fn = {};
@@ -532,10 +531,9 @@ export default Service.extend({
                 }
             }
         });
-        // console.log(assets);
+      
         let solEns = "enum Assets {"
         for (let enms in assets) {
-            // console.log(enms);
             solEns = solEns + `${enms}, `;
         }
 
@@ -758,7 +756,24 @@ export default Service.extend({
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
         return jsonSchema;
     },
+    addParam(txnTitle, newParamTitle, paramType, schema) {
+        if (typeof schema === 'string') {
+            schema = JSON.parse(schema);
+        }
 
+        for (const property in schema.properties) {
+            if (property === txnTitle) {
+                schema.properties[property][newParamTitle] = {};
+                schema.properties[property][newParamTitle].name = newParamTitle;
+                schema.properties[property][newParamTitle].type = paramType;
+
+            }
+
+        }
+
+        let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
+        return jsonSchema;
+    },
     updateParamSchemaType(txnTitle, paramTitle, newParamType, schema) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
@@ -806,20 +821,46 @@ export default Service.extend({
             throw new Error('invalid Asset name');
         }
     },
-    updateTxnSchema(newTxnTitle, oldTxnTitle, schema) {
+    updateTxnSchema(newTxnTitle, oldTxnTitle, schema, newParams, _bundleHash) {
 
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-
-        for (const property in schema.properties) {
-            if (schema.properties.hasOwnProperty(property)) {
+        let newParameters = {};
+        if (newTxnTitle && oldTxnTitle && schema.properties) {
+            for (const property in schema.properties) {
                 if (oldTxnTitle === schema.properties[property].title) {
-                    schema.properties[property].title = newTxnTitle;
+                for (const dep in schema.properties[property]) {
+                    if (dep === 'dependencies') {
+                      newParameters = schema.properties[property];
+                    }
+                    else{
+                        delete schema.properties[property][dep];
+                    }
+                }
+                    newParams.forEach(param => {
+                    newParameters[param.title] = {}
+                    newParameters[param.title].name = param.title
+                    newParameters[param.title].type = param.type
+                });
+
+                    schema.properties[newTxnTitle] = newParameters;
+                    schema.properties[newTxnTitle].title = newTxnTitle;
+                    if (oldTxnTitle != newTxnTitle)
+                        delete schema.properties[property];
+
+                if (_bundleHash) {
+                    schema.properties[newTxnTitle]['_bundleHash'] = {};
+                    schema.properties[newTxnTitle]['_bundleHash'].name = '_bundleHash';
+                    schema.properties[newTxnTitle]['_bundleHash'].type = 'string';
+    
                 }
             }
-        }
 
+            }
+        } else {
+            throw new Error('Invalid schema. No properties attribute inside.');
+        }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
@@ -885,7 +926,6 @@ export default Service.extend({
                     fn.title;
                     fn.type = typeof (fn);
                     fn.properties = {};
-                    // if(schemaToParse[key][ikey].dependencies.name !='unknown'){
                     if (schemaToParse[key][ikey].hasOwnProperty('dependencies')) {
                         assetList[schemaToParse[key][ikey].dependencies.type] = 0;
                         fn.properties.dependencies = "*" + schemaToParse[key][ikey].dependencies.type;
@@ -1008,8 +1048,6 @@ export default Service.extend({
                     let isAsset = false;
 
                     for (let key in func) {
-                        //   let asset = {};
-
                         if (key === "name") {
                             fn.title = func[key];
                         }
@@ -1022,7 +1060,6 @@ export default Service.extend({
                                     break;
                                 }
                                 if (func[key][ikey].name === "assetId") {
-                                    //   asset = func[key][ikey].name;
                                     isAsset = true;
                                     break;
                                 }
@@ -1059,7 +1096,6 @@ export default Service.extend({
                     schema.transaction[fn.title] = fn;
                 }
             });
-
             let yamlString = '---';
             for (let assets in assetList) {
                 yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;

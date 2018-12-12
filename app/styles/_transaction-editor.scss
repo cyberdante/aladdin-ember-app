@@ -1,0 +1,60 @@
+@import 'variables';
+@import 'mixins';
+@import 'palette';
+
+.md-dialog-container > md-dialog {
+    md-dialog-content {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.38);
+
+        md-input-container {
+            width: 100%;
+        }
+        .parameter-header-wrapper {
+            width: 100%;
+            .md-list-item-inner {
+                padding: 0;
+            }
+        }
+
+        .param-row > .dropdown-container + .layout-column {
+            display: inline;
+            text-align: center;
+
+            .button-with-icon-container {
+                display: inline-flex;
+                margin-top: 12px;
+                button {
+                    padding: 0;
+                    .paper-icon {
+                        vertical-align: top;
+                    }
+                }
+                &.red {
+                    .paper-icon {
+                        background-color: #f92672;
+                        color: white;
+                        height: 40px;
+                        padding-top: 6px;
+                    }
+                }
+                button:disabled {
+                    .paper-icon {
+                        background-color: rgba(0, 0, 0, 0.12);
+                        color: white;
+                        height: 40px;
+                        padding-top: 6px;
+                    }
+                }
+            }
+        }
+    }
+    md-dialog-actions {
+        button {
+            margin-right: 15px;
+        }
+    }
+}
+.transaction-editor {
+    width: 600px;
+    min-width: 600px;
+}

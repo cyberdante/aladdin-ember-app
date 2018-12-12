@@ -31,10 +31,13 @@
         {{#paper-item as |txns|}}
             {{#paper-subheader class="txn-header"}}Transactions{{/paper-subheader}}
             <div class="md-secondary-container">
-                {{#txns.button raised=true onClick=(action "toggleOffAddTxn")}}
+                {{#txns.button raised=true onClick=(action "toggleOffAddTxn" title)}}
                     {{paper-icon "add" title="Add a new Transaction"}}
                 {{/txns.button}}
             </div>
+            <button class="md-button md-raised" {{action 'clearLS'}} >
+            <span>{{fa-icon 'check'}} Done</span>
+            </button>
         {{/paper-item}}
         {{#each asset.transactions as |txn|}}
             {{blockchain-transaction
@@ -49,3 +52,5 @@
         {{/each}}
     </div>
 {{/if}}
+
+

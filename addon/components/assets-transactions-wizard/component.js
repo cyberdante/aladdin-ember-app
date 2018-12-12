@@ -13,7 +13,7 @@ export default Component.extend({
     blockchainUtils: service(),
     schema: '',
     assets: A([]),
-    assetTitles: computed('assets', function() {
+    assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
 
@@ -24,16 +24,16 @@ export default Component.extend({
     editingTxnDelete: true,
     editingTxnAddName: false,
     editingTxnDeleteName: false,
-    showDialog: false,
+    showTransactionEditorDialog: false,
     addParams: true,
     bundlehash: false,
     origTitle: '',
     tranParamTitle: '',
     txnName: '',
     options: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'bool', 'int'];
     }),
-    isInputEmpty: computed('newAssetTitle', function() {
+    isInputEmpty: computed('newAssetTitle', function () {
         return !(this.get('newAssetTitle') && this.get('newAssetTitle').trim().length > 0);
     }),
     origTxnTitle: '',
@@ -65,27 +65,45 @@ export default Component.extend({
         const self = this;
         let assets = this.blockchainUtils.extractAssetsTransactions(schema);
         assets.forEach(x => {
-            x.expanded = false;
+            x.expanded = x.expanded || false;
+            var arr = JSON.parse(localStorage.getItem('asset'));
+            if (arr != null) {
+                arr.forEach(function (obj) {
+                    if (obj === x.title) {
+                        x.expanded = true;
+                    }
+                });
+            }
+            arr = JSON.parse(localStorage.getItem('txn'));
+
             if (x.transactions && x.transactions.length) {
                 x.transactions.forEach(txn => {
+                    if (arr != null) {
+                        arr.forEach(function (obj) {
+                            if (obj === txn.title) {
+                                txn.showingParams = true;
+                            }
+                        });
+                    }
                     txn.parameters = this.getParams(txn);
                     if (!txn.returnType) {
                         txn.returnType = 'void';
                     }
+
                 })
             }
         });
         self.set('assets', assets);
     },
 
-    validNewParameters: computed('parameters', 'parameters.{length,@each.name}', function (/*parameters*/) {
+    validNewParameters: computed('parameters', 'parameters.{length,@each.title}', function () {
         let valid = true;
         this.get('parameters').forEach(p => {
-            valid = valid && (p.name && p.name.length > 0);
+            valid = valid && (p.title && p.title.length > 0);
         });
         return valid;
     }),
-    newMethodHasName: computed('newTxnName', 'newTxnName.length', function (/*newTxnName*/) {
+    newMethodHasName: computed('newTxnName', 'newTxnName.length', function () {
         return this.get('newTxnName').length > 0;
     }),
     doneButtonEnabled: and('newMethodHasName', 'validNewParameters'),
@@ -100,7 +118,17 @@ export default Component.extend({
         }, []);
         return params;
     },
-    
+    setNewParams(pms) {
+
+        let params = []; 
+        for( let i = 0; i < pms.length; ++i){
+           let paramTitle = pms[i].title
+           params.push({ name: paramTitle, type: pms[i].type});
+ 
+        }
+        return params;
+    },
+
     actions: {
         selectTxn(txn) {
             this.set('selectedTxn.isSelected', false);
@@ -115,6 +143,9 @@ export default Component.extend({
             }, []);
             this.set('txnReturnsType', 'void');
             this.set('txnParameters', A(params));
+        },
+        generateView(schema) {
+            this.generateView(schema);
         },
 
         toggleAsset(origAsset) {
@@ -142,8 +173,11 @@ export default Component.extend({
             let schema = this.blockchainUtils.updateParamSchemaType(txnTitle.title, param.title, event.target.value, this.schema);
             this.set('schema', schema);
         },
-        addNewTxn() {
-            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, this.tranAssetTitle, this.parameters, this.schema, this.bundlehash);
+        addNewTxn(newTxnName, parameters, tranAssetTitle, bundlehash) {
+            this.set('parameters', this.setNewParams(parameters));
+            this.set('newTxnName', newTxnName)
+            this.set('bundlehash', bundlehash)
+            let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, tranAssetTitle, this.parameters, this.schema, this.bundlehash);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);
             this.set('editingTxnAdd', true);
@@ -152,14 +186,19 @@ export default Component.extend({
             this.set('paramName', '');
             this.set('paramType', '');
             this.set('txnParamType', '');
-            // this.set('parameters', [{}]);
-            this.get('parameters').clear();
+            // // this.set('parameters', [{}]);
+            // this.get('parameters').clear();
             this.set('bundlehash', false);
+            this.set('showTransactionEditorDialog', false);
+       
         },
-        toggleOffAddTxn() {
+        toggleOffAddTxn(title) {
+            if (title.title) {
+                this.set('tranAssetTitle', title.title);
+            }
             this.set('editingTxnAdd', false);
             this.set('editingTxnAddName', true);
-            this.set('showDialog', true);
+            this.set('showTransactionEditorDialog', true);
         },
         toggleOffDeleteTxn() {
             this.set('editingTxnDelete', false);
@@ -169,26 +208,30 @@ export default Component.extend({
             this.set('addInput', true);
         },
         moreParams() {
-            this.get('parameters').pushObject({ name: '', type: '' });
+            this.get('parameters').pushObject({ title: '', type: 'string' });
             for (var key in this.parameters) {
                 if (this.parameters.hasOwnProperty(key)) {
                     // TODO linter complains if this block is blank
                 }
             }
+
         },
         openPromptDialog() {
-            this.set('showDialog', true);
+            this.set('showTransactionEditorDialog', true);
         },
         closePromptDialog() {
-            this.set('showDialog', false);
+            this.set('showTransactionEditorDialog', false);
             this.set('editingTxnAdd', true);
             this.set('editingTxnAddName', false);
         },
         openNewAssetDialog() {
             this.set('showNewAssetDialog', true);
         },
+        exitNewAssetDialog(){
+            this.set('showNewAssetDialog', false);
+        },
         closeNewAssetDialog(newAssetTitle) {
-            if(newAssetTitle && newAssetTitle.trim().length) {
+            if (newAssetTitle && newAssetTitle.trim().length) {
                 let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim());
                 this.set('schema', schema);
             }

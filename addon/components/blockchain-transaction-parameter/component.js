@@ -9,10 +9,11 @@ export default Component.extend({
     classNames: ['blockchain-transaction-parameter'],
     blockchainUtils: service(),
     editingParamType: false,
+    editing: false,
     newParamType: '',
 
     possibleTypeOptions: computed(function () {
-        return ['string', 'bytes32', 'uint', 'address'];
+        return ['string', 'bytes32', 'uint', 'address', 'int', 'bool'];
     }),
 
     init() {
@@ -24,7 +25,7 @@ export default Component.extend({
     saveTitle(transaction, parameter) {
         let schema = this.blockchainUtils.updateParamSchema(transaction.title, this.originalParamName, parameter.title, parameter.type, this.schema);
         this.set('schema', schema);
-        this.set('editingTitle', false);
+        this.set('editing', false);
     },
 
     actions: {
@@ -37,23 +38,33 @@ export default Component.extend({
         },
         toggleParam(paramTitle) {
             this.set('originalParamName', paramTitle);
-            this.set('editingTitle', true);
+            this.set('editing', true);
         },
         toggleParamTypeEdition() {
-            this.set('editingParamType', true);
+            this.set('editing', true);
         },
         changeParamTypeSelection(event) {
             this.set('newParamType', event.target.value);
         },
         paramTypeChange() {
+
             this.set('param.type', this.get('newParamType'));
             let parameter = this.get('param');
+            
+            if(this.originalParamName===''){
+                let schema = this.blockchainUtils.addParam(parameter.txn.title, parameter.title, parameter.type, this.schema);
+                this.set('schema', schema);
+            }
+            else{
             let schema = this.blockchainUtils.updateParamSchemaType(parameter.txn.title, parameter.title, parameter.type, this.schema);
             this.set('schema', schema);
-            if (this.get('editingTitle')) {
+            if (this.get('editing')) {
                 this.saveTitle(parameter.txn, parameter);
             }
-            this.set('editingParamType', false);
+        }
+            this.set('editing', false);
+            delete parameter.editing;
+            delete parameter.editing;
         },
         showConfirmationDialog() {
             this.set('showPromptDialog', true); 

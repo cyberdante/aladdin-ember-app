@@ -1,0 +1,52 @@
+{{#paper-dialog class="transaction-editor" fullscreen=fullscreen onClose=(action "closePromptDialog") origin=dialogOrigin}}
+    {{#paper-dialog-content}}
+        <div class="layout-row">
+            <div class="layout-column flex-40 layout-align-center-end" style="margin-right: 15px;">
+                {{paper-input input="text" customValidations=methodVal required="true" label="Method Name" value=newTxnName onChange=(action (mut newTxnName))}}
+            </div>
+            <div class="layout-column flex-30 dropdown-container">
+                {{!-- {{#paper-select
+                    label="Asset Name"
+                    options=assetTitles
+                    selected=tranAssetTitle
+                    onChange=(action (mut tranAssetTitle))
+                    disabled=true
+                    as |option|}}
+                    {{option}}
+                {{/paper-select}} --}}
+                <label>{{tranAssetTitle}}</label>
+            </div>
+            <div class="layout-column flex-30 layout-align-center-center">
+                {{#paper-checkbox value=bundlehash onChange=(action (mut bundlehash))}}
+                    off-chain files
+                {{/paper-checkbox}}
+            </div>
+        </div>
+        <div class="layout-row">
+            <div class="layout-column flex-70 layout-align-center">Parameters</div>
+            <div class="layout-column flex-30 md-secondary-container">
+                {{#paper-button raised=true onClick=(action "addParam") disabled=doneButtonDisabled }}
+                    {{paper-icon "add"}} Parameters  
+                {{/paper-button}}
+            </div>
+        </div>
+        {{#each parameters as |parameter index|}}
+            {{modal-param-editor 
+                parameter=parameter
+                deleteParam=(action "deleteParam" index)
+                totalParams=parameters.length
+                repeatedValues=repeatedValues
+                doneButtonDisabled=doneButtonDisabled}}
+        {{/each}}
+    {{/paper-dialog-content}}
+    {{#paper-dialog-actions class="layout-row"}}
+        <span class="flex"></span>
+        <button class="layout-column flex-50 layout-align-center-center md-button md-raised md-primary" style="margin-right: 15px;"
+            {{action 'closePromptDialog'}}>
+            Cancel
+        </button>
+        <button class="layout-column flex-50 md-button md-raised" {{action 'upsertTransaction'}} disabled={{doneButtonDisabled}}>
+            <span>{{fa-icon 'check'}} Done</span>
+        </button>
+    {{/paper-dialog-actions}}
+{{/paper-dialog}}
