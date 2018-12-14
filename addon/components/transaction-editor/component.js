@@ -122,11 +122,10 @@ export default Component.extend({
         upsertTransaction() {
 
             this.get('upsertTransaction')(this.get('newTxnName'), this.get('parameters'), this.get('tranAssetTitle'), this.get('bundlehash'));
-    
             // this.get('upsertTransaction')(this.get('paramsChanged'),this.get('newTxnName'), this.get('parameters'));
         },
         deleteParam(index) {
-            console.log("delete Param ", this.parameters)
+    
             A(this.get('parameters')).removeAt(index, 1);
             // this.set('paramsChanged', true);
         },

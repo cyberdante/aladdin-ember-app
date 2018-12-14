@@ -866,7 +866,7 @@ export default Service.extend({
         return jsonSchema;
 
     },
-    updateSchemaDeleteTxn(txnName, schema, assetName) {
+    updateSchemaDeleteTxn(txnName, schema) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
@@ -990,7 +990,6 @@ export default Service.extend({
         let assetType = {}
 
         let parseEnum = code.split(enumEx);
-
         if (parseEnum.length > 1) {
             parseEnum = parseEnum[1].split('}');
             parseEnum = parseEnum[0].split(',');
@@ -1022,7 +1021,7 @@ export default Service.extend({
                     }
                 }
             }
-        }
+        // }
         solc.BrowserSolc.loadVersion(this.get('solCversion'), function (compiler) {
             const compiledCode = compiler.compile(code);
             // Check if an error occured during compilation. This is the case if
@@ -1113,6 +1112,10 @@ export default Service.extend({
             cb(outputYaml);
         });
     }
+else{
+    cb('')
+}
+}
 });
 
 function YAMLStringify(data) {
