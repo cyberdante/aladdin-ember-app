@@ -32,7 +32,6 @@ export default Component.extend({
                 var regex = new RegExp("^[a-zA-Z0-9_\s]+$");
                 if (!regex.exec(inputValue)) {
                     this.set('doneButtonEnabled', false);
-                    console.log("**",this.doneButtonEnabled)
                     return false;
                 }
                 

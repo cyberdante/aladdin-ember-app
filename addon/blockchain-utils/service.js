@@ -166,7 +166,7 @@ export default Service.extend({
 
             }
         });
-
+      
         let json_schema = JSON.stringify(schemaToParse).replace(/[[\]']+/g, '');
 
         return json_schema;
@@ -827,7 +827,7 @@ export default Service.extend({
             schema = JSON.parse(schema);
         }
         let newParameters = {};
-        if (newTxnTitle && oldTxnTitle && schema.properties) {
+        if (newTxnTitle) {
             for (const property in schema.properties) {
                 if (oldTxnTitle === schema.properties[property].title) {
                 for (const dep in schema.properties[property]) {
@@ -859,18 +859,18 @@ export default Service.extend({
 
             }
         } else {
-            throw new Error('Invalid schema. No properties attribute inside.');
+            throw new Error('Invalid transaction name');
         }
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 
         return jsonSchema;
 
     },
-    updateSchemaDeleteTxn(txnName, schema) {
+    updateSchemaDeleteTxn(txnName, schema, assetName) {
         if (typeof schema === 'string') {
             schema = JSON.parse(schema);
         }
-
+        //Todo if only single transaction insert _new_standalone_asset
         delete (schema.properties[txnName]);
         let jsonSchema = JSON.stringify(schema).replace(/[[\]']+/g, '');
 

@@ -1,9 +1,11 @@
 {{#paper-item as |controls|}}
+{{#if transaction.title}}
     {{#if editingTitle}}
         {{input required value=transaction.title class="transaction-title" enter=(action "setNewTransactionTitle" transaction.title) }}
     {{else}}
         <p class="clickable" onClick={{action "toggleTxnEdition"}}>{{transaction.title}}&nbsp;<span style="color: #f92672">: {{transaction.returnType}}</span> </p>
     {{/if}}
+    
 
     {{#if (and parameters parameters.length)}}
         <div class="button-with-icon-container">
@@ -26,6 +28,7 @@
             {{paper-icon "delete_forever" title="Delete Transaction"}}
         {{/controls.button}}
     </div>
+    {{/if}}
 {{/paper-item}}
 
 {{#if showPromptDialog}}
@@ -107,3 +110,4 @@
         {{/paper-dialog-actions}}
         {{/paper-dialog}}
 {{/if}}
+
