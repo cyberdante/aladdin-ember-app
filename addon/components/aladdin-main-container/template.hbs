@@ -55,7 +55,7 @@
             yaml=yaml
             toggleEditMode=(action "toggleEditMode")
         }}
-        {{#if showErrorDialog}}
+        {{!-- {{#if showErrorDialog}}
             {{#paper-dialog onClose=(action "closeErrorDialog") escapeToClose=true}}
                 {{#paper-toolbar}}
                     {{#paper-toolbar-tools}}
@@ -80,7 +80,7 @@
                     {{#paper-button onClick=(action "closeErrorDialog")}}OK{{/paper-button}}
                 {{/paper-dialog-actions}}
             {{/paper-dialog}}
-        {{/if}}
+        {{/if}} --}}
     {{/if}}
 </div>
 
