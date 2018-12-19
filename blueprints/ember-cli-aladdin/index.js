@@ -14,7 +14,8 @@ module.exports = {
         { name: 'ember-paper', target: '^1.0.0-beta.8' },
         { name: 'ember-paper-expansion-panel', target: '0.0.3'},
         { name: 'ember-paper-stepper', target: '0.0.7' },
-        { name: 'ember-paper-swiper', target: '0.0.4' }
+        { name: 'ember-paper-swiper', target: '0.0.4' },
+        { name: 'ember-copy', target: '^1.0.0' }
       ]
     })
     .then(()=>{
