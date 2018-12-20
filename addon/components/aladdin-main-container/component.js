@@ -19,27 +19,27 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     logValues: A([]),
     blockchainUtils: service(),
     yaml: computed('code', function(){
-        if(typeof this.get('code') !== 'undefined') {
-            let utils = this.get('blockchainUtils');
-            const self = this;
-            utils.solToYaml(this.get('code'), (result) => {
-                // If result is an array display errors
-                if(Array.isArray(result)){
-                    let id = 0;
-                    let logValues = result.map(strErr => {
-                        let type = /Error:/gi.test(strErr) ? "error" : "warning";
-                        return { id: id++, type: type, value: strErr };
-                    });
-                    self.set('logValues', A(logValues));
-                    // Show error dialog
-                    self.set('showErrorDialog', true);
-                } else {
-                    self.set('yaml', result);
-                    self.set('logValues', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
-                }
-            });
-        }
-    }),
+      if(typeof this.get('code') !== 'undefined' && this.get('code') !== '') {
+          let utils = this.get('blockchainUtils');
+          const self = this;
+          utils.solToYaml(this.get('code'), (result) => {
+              // If result is an array display errors
+              if(Array.isArray(result)){
+                  let id = 0;
+                  let logValues = result.map(strErr => {
+                      let type = /Error:/gi.test(strErr) ? "error" : "warning";
+                      return { id: id++, type: type, value: strErr };
+                  });
+                  self.set('logValues', A(logValues));
+                  // Show error dialog
+                  self.set('showErrorDialog', true);
+              } else {
+                  self.set('yaml', result);
+                  self.set('logValues', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
+              }
+          });
+      }
+  }),
     workingValue: alias('code'),
 
     init() {
