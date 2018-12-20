@@ -990,6 +990,8 @@ export default Service.extend({
         let assetType = {}
 
         let parseEnum = code.split(enumEx);
+        console.log(parseEnum)
+
         if (parseEnum.length > 1) {
             parseEnum = parseEnum[1].split('}');
             parseEnum = parseEnum[0].split(',');
@@ -1109,12 +1111,14 @@ export default Service.extend({
             let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
             let stripedYml = ymlText.replace("---", '')
             let outputYaml = yamlString + stripedYml;
+            console.log(outputYaml)
             cb(outputYaml);
         });
     }
-else{
-    cb('')
-}
+    else{
+        cb('');
+    }
+
 }
 });
 
