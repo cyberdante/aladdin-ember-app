@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-aladdin",
-  "version": "0.1.7",
+  "version": "0.1.9",
   "private": true,
   "description": "Ember application for Aladdin Blockchain Research Framework",
   "keywords": [
@@ -9,7 +9,7 @@
   ],
   "repository": "",
   "license": "MIT",
-  "author": "University of Notre Dame, Center for Research Computing",
+  "author": "University Of Notre Dame, Center for Research Computing",
   "directories": {
     "doc": "doc",
     "test": "tests"
