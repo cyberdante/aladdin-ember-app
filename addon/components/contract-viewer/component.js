@@ -15,6 +15,23 @@ export default Component.extend({
     showSolCVersion: true,
 
     value: '',
+
+    internalCodeChange: false,
+    code: computed('internalCodeChange', {
+      get(key) {
+        return this.get('_code');
+      },
+      set(key, value) {
+        console.log('in the contract viewer');
+        if (!this.get('internalCodeChange').value) {
+          this.set('_code', value);
+          this.sendAction('changeYaml');
+        } else {
+          this.set('_code', value);
+        }
+      }
+    }),
+
     editorSession: null,
 
     editingContract: false,
