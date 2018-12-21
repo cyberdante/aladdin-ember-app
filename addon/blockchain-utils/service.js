@@ -423,15 +423,17 @@ export default Service.extend({
 
 
         // enum Assets {container, lock}
+        if (Object.keys(assets).length) {
+          let solEns = "enum Assets {"
+          for (let enms in assets) {
+              solEns = solEns + `${enms}, `;
+          }
 
-        let solEns = "enum Assets {"
-        for (let enms in assets) {
-            solEns = solEns + `${enms}, `;
+          let newsolEns = solEns.substr(0, solEns.length - 2);
+          newsolEns += '}';
+          sol = sol.appendLine(newsolEns);
         }
 
-        let newsolEns = solEns.substr(0, solEns.length - 2);
-        newsolEns += '}';
-        sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
             if (!myRe.exec(asset)) {
@@ -532,14 +534,17 @@ export default Service.extend({
             }
         });
       
-        let solEns = "enum Assets {"
-        for (let enms in assets) {
-            solEns = solEns + `${enms}, `;
+        if (Object.keys(assets).length) {
+          let solEns = "enum Assets {"
+          for (let enms in assets) {
+              solEns = solEns + `${enms}, `;
+          }
+
+          let newsolEns = solEns.substr(0, solEns.length - 2);
+          newsolEns += '}';
+          sol = sol.appendLine(newsolEns);
         }
 
-        let newsolEns = solEns.substr(0, solEns.length - 2);
-        newsolEns += '}';
-        sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
             if (!myRe.exec(asset)) {
