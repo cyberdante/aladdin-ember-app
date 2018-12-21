@@ -35,7 +35,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
                   self.set('showErrorDialog', true);
               } else {
                   self.set('yaml', result);
-                  self.set('logValues', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
+                  self.set('outputs', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
               }
           });
       }
@@ -50,9 +50,11 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         });
         this.set('fullScreen', false);
 
-        this.set('logValues', A([
-            { id: 0, type: "warning", value: "No errors detected" }
-        ]));
+        scheduleOnce('afterRender', this, function(){
+          this.set('outputs', A([
+              { id: 0, type: "warning", value: "No errors detected" }
+          ]));
+        });
     },
     
     solCversion: computed(function() {
