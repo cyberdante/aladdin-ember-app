@@ -3,7 +3,7 @@
         {{contract-viewer
             contractType='ethereum' 
             readOnly=false
-            logValues=logValues
+
             manualMode=manualMode
             solCversion=solCversion
             toggleEditMode=(action "toggleEditMode")
@@ -49,7 +49,6 @@
             focusColumn=(action "focusColumn")
             exitFullScreen=(action "exitFullScreen")
 
-            logValues=logValues
             manualMode=manualMode
             code=workingValue
             yaml=yaml
@@ -87,7 +86,6 @@
 <div class="bottom">
     {{schema-validator-log
         outputs=logValues
-        logValues=logValues
         isCompiling=isCompiling
         manualMode=manualMode
         readOnly=readOnly
