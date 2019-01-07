@@ -30,6 +30,7 @@ export default Component.extend({
     origTitle: '',
     tranParamTitle: '',
     txnName: '',
+    pointsToAsset: '',
     options: computed(function () {
         return ['string', 'bytes32', 'uint', 'address', 'bool', 'int'];
     }),
@@ -190,6 +191,7 @@ export default Component.extend({
             // this.get('parameters').clear();
             this.set('bundlehash', false);
             this.set('showTransactionEditorDialog', false);
+            
        
         },
         toggleOffAddTxn(title) {
@@ -229,13 +231,16 @@ export default Component.extend({
         },
         exitNewAssetDialog(){
             this.set('showNewAssetDialog', false);
+            this.set('newAssetTitle', '');
+            this.set('pointsToAsset', '');
         },
         closeNewAssetDialog(newAssetTitle) {
             if (newAssetTitle && newAssetTitle.trim().length) {
-                let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim());
+                let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim(),this.pointsToAsset);
                 this.set('schema', schema);
             }
             this.set('newAssetTitle', '');
+            this.set('pointsToAsset', '');
             this.set('showNewAssetDialog', false);
         }
     }
