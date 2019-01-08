@@ -156,6 +156,7 @@ export default Component.extend({
         toggleOff(newAsset) {
             this.set('editingAssetTitle', false);
             let schema = this.blockchainUtils.updateAssetSchema(newAsset, this.origTitle, this.schema);
+            this.set('internalCodeChange', true);
             this.set('schema', schema);
         },
         toggleParam(origParam) {
@@ -165,6 +166,7 @@ export default Component.extend({
         toggleOffParam(txnTitle, param) {
             this.set('editingParamTitle', false);
             let schema = this.blockchainUtils.updateParamSchema(txnTitle.title, this.origParamTitle, param.title, param.type, this.schema);
+            this.set('internalCodeChange', true);
             this.set('schema', schema);
         },
         typeChange(event) {
@@ -179,7 +181,7 @@ export default Component.extend({
             this.set('newTxnName', newTxnName)
             this.set('bundlehash', bundlehash)
             let schema = this.blockchainUtils.updateSchemaAddTxn(this.newTxnName, tranAssetTitle, this.parameters, this.schema, this.bundlehash);
-            console.log(schema)
+            this.set('internalCodeChange', true);
             this.set('schema', schema);
             this.set('editingTxnAddName', false);
             this.set('editingTxnAdd', true);
@@ -238,6 +240,7 @@ export default Component.extend({
         closeNewAssetDialog(newAssetTitle) {
             if (newAssetTitle && newAssetTitle.trim().length) {
                 let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim(),this.pointsToAsset);
+                this.set('internalCodeChange', true);
                 this.set('schema', schema);
             }
             this.set('newAssetTitle', '');

@@ -5,6 +5,7 @@ import {
 import { inject as service } from '@ember/service';
 import { observer } from '@ember/object';
 import layout from './template';
+import { next } from '@ember/runloop';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
@@ -19,8 +20,11 @@ export default Component.extend({
     title: 'Application',
 
     schemaChanged: observer('schema', function() {
+      console.log(this.get('internalCodeChange'));
+      if (this.get('internalCodeChange')) {  
         this.generateYaml(this.schema);
         this.generateContract(this.schema);
+      }
     }),
     
     generateYaml(schema) {
