@@ -179,7 +179,7 @@ export default Service.extend({
         });
 
         let json_schema = JSON.stringify(schemaToParse).replace(/[[\]']+/g, '');
-        // console.log(json_schema)
+
         return json_schema;
     },
     deleteAsset(genSchema, assetName) {
@@ -199,6 +199,7 @@ export default Service.extend({
     },
 
     generateSchemaYaml(yamlString, title) {
+
         let schema = {};
         schema.$schema = "http://json-schema.org/draft-04/schema";
         schema.title = title;
@@ -545,7 +546,6 @@ export default Service.extend({
         return sol;
     },
     generateSolFileYaml(schemaString) {
-        console.log(schemaString)
         String.prototype.appendLine = function (s) {
             return `${this}\n${s}`
         };
@@ -627,6 +627,7 @@ export default Service.extend({
                         Object.keys(schema[key][ikey]).forEach(function (inkey) {
                             if (inkey !== 'title') {
                                 ++len;
+                               
                                 if (len < length[ikey]) {
 
                                     if (schema[key][ikey][inkey].type === 'number') {
@@ -680,7 +681,6 @@ export default Service.extend({
                     let assetName = property.split("_new_standalone_asset_")
                     if (schema.properties.hasOwnProperty(property)) {
                         let assetMeta = schema.properties[property];
-                        // console.log("Assets", assetMeta)
                         let assetType = assetName[1];
                         if (!assets[assetType]) {
                             assets[assetType] = {
@@ -986,14 +986,13 @@ export default Service.extend({
 
     },
     schemaToYaml(genSchema) {
-
         let schemaToParse = JSON.parse(genSchema);
         let schema = {};
         schema.transaction = {};
         schema.transaction.properties = (typeof schema);
         let assetList = {};
         Object.keys(schemaToParse).forEach(function (key) {
-            if (key === 'properties') {
+           if (key === 'properties') {
                 for (let ikey in schemaToParse[key]) {
 
                     let fn = {};
@@ -1002,6 +1001,7 @@ export default Service.extend({
                     fn.properties = {};
                     let myRe = new RegExp(/_new_standalone_asset_/);
                     if (myRe.exec(ikey)) {
+                        
                         let assetName = ikey.split("_new_standalone_asset_")
                         assetList[assetName[1]] = 0;
                         // fn.properties.dependencies = "*" + schemaToParse[key][ikey].dependencies.type
@@ -1055,6 +1055,7 @@ export default Service.extend({
     },
 
     solToYaml(code, cb) {
+
         // Don't compile an empty string
         if (code.trim() === '') {
             cb();
@@ -1114,12 +1115,15 @@ export default Service.extend({
                 }
                 // Return errors if there are any before proceeding
                 let className = /contract\s+(\w+)\s?{/.exec(code)[1];
+
                 const codeInterface = JSON.parse(compiledCode.contracts[`:${className}`].interface);
                 let schema = {};
                 schema.transaction = {};
                 schema.transaction.properties = (typeof schema);
                 let assetList = [];
+
                 codeInterface.forEach(func => {
+
                     if (func.type != 'constructor') {
                         let fn = {};
                         fn.title;
@@ -1128,23 +1132,22 @@ export default Service.extend({
                         let isAsset = false;
 
                         for (let key in func) {
+
                             if (key === "name") {
                                 fn.title = func[key];
                             }
+                           
                             if (key === "inputs") {
+   
                                 for (let ikey in func[key]) {
-                                    if (isAsset === true) {
-                                        isAsset = false;
-                                        assetList[func[key][ikey].name] += 1;
-                                        fn.properties.dependencies = "*" + func[key][ikey].name;
-                                        break;
-                                    }
                                     if (func[key][ikey].name === "assetId") {
                                         isAsset = true;
-                                        break;
+                                        continue;
                                     }
-                                    else {
+                         
+                                        if(func[key][ikey].name && func[key][ikey].type){
                                         fn.properties[func[key][ikey].name] = func[key][ikey];
+                                      
                                         if (func[key][ikey].type.startsWith("byte")) {
                                             func[key][ikey].type = "string";
                                         }
@@ -1174,13 +1177,18 @@ export default Service.extend({
                             }
                         }
                         schema.transaction[fn.title] = fn;
+                     
                     }
                 });
                 let yamlString = '---';
                 for (let assets in assetList) {
+ 
+                    if (assets!="_super"){
                     yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
+                    }
                 }
                 for (let x = 0; x < parseEnum.length; ++x) {
+                   
                     if (parseEnum[x] != undefined) {
                         yamlString += "\n- asset:  &" + parseEnum[x] + " \n      name:   assetId\n      type:   " + parseEnum[x];
                     }
@@ -1190,7 +1198,6 @@ export default Service.extend({
                 let ymlText = YAMLStringify(schema).replace(/["]+/g, '');
                 let stripedYml = ymlText.replace("---", '')
                 let outputYaml = yamlString + stripedYml;
-
                 cb(outputYaml);
             });
         }
