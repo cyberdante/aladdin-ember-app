@@ -21,10 +21,10 @@ export default Component.extend({
 
     schemaChanged: observer('schema', function() {
       console.log(this.get('internalCodeChange'));
-      if (this.get('internalCodeChange')) {  
+      // if (this.get('internalCodeChange')) {  
         this.generateYaml(this.schema);
         this.generateContract(this.schema);
-      }
+      // }
     }),
     
     generateYaml(schema) {
