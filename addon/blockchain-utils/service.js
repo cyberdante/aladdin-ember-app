@@ -479,7 +479,8 @@ export default Service.extend({
         sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
-            if (!myRe.exec(asset)) {
+            if( asset!=assetsfunc[asset] && !myRe.exec(asset) ){
+                console.log(asset)
                 sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
             }
 
@@ -596,7 +597,7 @@ export default Service.extend({
         sol = sol.appendLine(newsolEns);
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
-            if (!myRe.exec(asset)) {
+            if( asset!=assetsfunc[asset] && !myRe.exec(asset) ){
                 sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
             }
 
@@ -1171,7 +1172,7 @@ export default Service.extend({
                                     fn.dependencies = assets;
                                     isAsset = false;
                                     fn.properties.dependencies = "*" + assets.type;
-                                    assetList[assets.type] += 1;
+                                    assetList[assets.type] ="asset";
 
                                 }
                             }
@@ -1181,8 +1182,9 @@ export default Service.extend({
                     }
                 });
                 let yamlString = '---';
+
                 for (let assets in assetList) {
- 
+                    /********** */
                     if (assets!="_super"){
                     yamlString += "\n- asset:  &" + assets + " \n      name:   assetId\n      type:   " + assets;
                     }
