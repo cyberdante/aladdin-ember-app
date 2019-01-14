@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { debounce } from '@ember/runloop';
 // import { A } from '@ember/array';
 import ace from 'ember-ace';
@@ -16,10 +16,19 @@ export default Component.extend({
 
     value: '',
 
-    // internalCodeChange: false,
-
-    codeObserver: observer('code', function() {
-      this.sendAction('changeYaml');
+    internalCodeChange: false,
+    code: computed('internalCodeChange', {
+      get(key) {
+        return this.get('_code');
+      },
+      set(key, value) {
+         if (!this.get('internalCodeChange').value) {
+          this.set('_code', value);
+          this.sendAction('changeYaml');
+        } else {
+          this.set('_code', value);
+        }
+      }
     }),
 
     editorSession: null,
@@ -71,10 +80,12 @@ export default Component.extend({
     }),
 
     setUpdatedValueLazily(newValue) {
+        console.log(newValue)
         if (this.isDestroyed || this.isDestroying) {
             return;
         }
         this.set('value', newValue);
+        this.sendAction('changeYaml');
         // console.log(newValue);
         // let errors = this.get('editorSession').getAnnotations();
         // Call parent component with the new yaml value only if there are currently no errors
@@ -84,7 +95,7 @@ export default Component.extend({
         //   self.set('isCompiling', true);
         //   this.blockchainUtils.solToYaml(newValue, (yamlCode) => {
         //     self.set('yaml', yamlCode);
-        //     self.set('isCompiling', false);
+        //     // self.set('isCompiling', false);
         //   });
         // }
         // }

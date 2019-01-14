@@ -49,6 +49,7 @@ export default Component.extend({
     selectedTxn: O.create({}),
 
     schemaChanged: observer('schema', function () {
+        console.log("schema changed transaction editor ", this.schema);
         this.get('generateView')(this.schema);
         this.set('tranAssetTitle', this.get('assets')[0]);
    }),
