@@ -5,7 +5,6 @@ import {
 import { inject as service } from '@ember/service';
 import { observer } from '@ember/object';
 import layout from './template';
-import { next } from '@ember/runloop';
 
 export default Component.extend({
     noColumns: computed.equal('numColumns', 0),
@@ -20,11 +19,14 @@ export default Component.extend({
     title: 'Application',
 
     schemaChanged: observer('schema', function() {
-      console.log(this.get('internalCodeChange'));
-      // if (this.get('internalCodeChange')) {  
         this.generateYaml(this.schema);
         this.generateContract(this.schema);
-      // }
+    }),
+    
+    yamlChanged: observer('yaml', function() {
+        //added observer to update the 3 other panes
+        this.set('schema', this.blockchainUtils.generateSchemaYaml(this.yaml));
+        this.generateContract(this.schema);
     }),
     
     generateYaml(schema) {
@@ -55,7 +57,10 @@ export default Component.extend({
     },
 
     viewChange(view, yamlString) {
+     let utils = this.get('blockchainUtils');
+     let schema = utils.generateSchemaYaml(this.schema, this.title);
       this.set('yaml', yamlString);
+      this.set('schema',schema);
     },
     onChange(selected) {
         this.set('selectedTab', selected);

@@ -4,10 +4,10 @@ import PanesController from '../../mixins/panes-controller';
 import { EKMixin } from 'ember-keyboard';
 import { run } from '@ember/runloop';
 import { A } from '@ember/array';
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { scheduleOnce, next } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import layout from './template';
 
 export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
@@ -19,17 +19,18 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     readOnly: true,
     logValues: A([]),
     blockchainUtils: service(),
-    
-    internalCodeChange: true,
-    code: '',
 
-    __code: observer('code', function(){
-        console.log('externally changed');
+    code: computed('code', {
+      get(key) {
+        return this.get('_code');
+      },
+      set(key, value) {
         this.set('internalCodeChange', false);
-        console.log('amc', this.get('internalCodeChange'));
+        this.set('_code', value);
+      }
     }),
 
-    workingValue: alias('code'),
+    workingValue: alias('_code'),
 
     init() {
         this._super(...arguments);
@@ -45,7 +46,7 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
           ]));
         });
     },
-
+    
     solCversion: computed(function() {
         let version = this.blockchainUtils.solCversion;
         let start = version.indexOf('-') + 2;
@@ -184,9 +185,9 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         
         changeYaml() {
           const self = this;
-          if(self.get('code') !== undefined) {
+          if(self.get('_code') !== undefined) {
             let utils = self.get('blockchainUtils');
-            utils.solToYaml(self.get('code')+'', (result) => {
+            utils.solToYaml(self.get('_code')+'', (result) => {
               // If result is an array display errors
               if(Array.isArray(result)){
                 let id = 0;
@@ -200,9 +201,12 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
               } else {
                 self.set('yaml', result);
                 self.set('outputs', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
-              }
+                self.set('schema', utils.generateSchemaYaml(this.yaml))  
+                this.sendAction('changeYaml');
+            }
             });
           }
+          
         },
     
         compile() {

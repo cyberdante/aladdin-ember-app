@@ -11,13 +11,21 @@ export default Component.extend({
   blockchainUtils: service(),
 
   schema: '',
+  yaml: '',
   viz: null,
   svg: null,
 
   schemaChanged: observer('schema', function() {
-    this.generateGraph(this.schema);
+      console.log("schema changed in graph ", this.schema)
+     this.generateGraph(this.schema);
   }),
-  
+  yamlChanged: observer('yaml', function () {
+    console.log("yaml Change ", this.yaml)
+    this.set('schema', this.blockchainUtils.generateSchemaYaml(this.yaml));
+    this.generateGraph(this.schema)
+            // this.generateView(this.schema);
+            // this.set('tranAssetTitle', this.get('assetTitles')[0]);
+        }),
   generateGraph(schema) {
     const self = this;
     let graph = this.blockchainUtils.generateGraphYaml(schema);

@@ -272,7 +272,7 @@ export default Service.extend({
     },
 
     generateGraph(schemaString) {
-
+// console.log("GenerateGraph", schemaString);
         let schema = JSON.parse(schemaString);
         //Graph styles 
         let nodeAsset = {};
@@ -336,7 +336,7 @@ export default Service.extend({
     },
 
     generateGraphYaml(schemaString) {
-
+        // console.log("GenerateGraphYaml", schemaString);
         let schema = JSON.parse(schemaString);
         let nodeAsset = {
             color: 'slategray3',
