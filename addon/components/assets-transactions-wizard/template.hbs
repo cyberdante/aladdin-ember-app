@@ -51,8 +51,9 @@
                     {{!-- {{paper-input input="text" label="Points to Asset" value=pointsToAsset onChange=(action (mut pointsToAsset))}} --}}
         <div class="layout-column flex-30 layout-align-center-start dropdown-container">
         {{#paper-select
+            disabled=noAssets
             label="Points to Asset (Optional)"
-            selected = pointsToAsset
+            selected=pointsToAsset
             options=assetTitles
             onChange=(action (mut pointsToAsset))
             as |assetTitle|}}

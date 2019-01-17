@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { A } from '@ember/array';
 import O from '@ember/object';
 import { observer, computed } from '@ember/object';
-import { /*or,*/ and, not } from '@ember/object/computed';
+import { equal, and, not } from '@ember/object/computed';
 import layout from './template';
 
 export default Component.extend({
@@ -16,6 +16,8 @@ export default Component.extend({
     assetTitles: computed('assets', function () {
         return this.get('assets').mapBy('title');
     }),
+
+    noAssets: equal('assetTitles.length', 0),
 
     editingContract: false,
     editingAssetTitle: false,
@@ -58,8 +60,7 @@ export default Component.extend({
         this.set('schema', this.blockchainUtils.generateSchemaYaml(this.yaml));
         this.generateView(this.schema);
         this.set('tranAssetTitle', this.get('assetTitles')[0]);
-    }),
-        
+    }),       
 
     init() {
         this._super(...arguments);
@@ -97,8 +98,7 @@ export default Component.extend({
                     if (!txn.returnType) {
                         txn.returnType = 'void';
                     }
-
-                })
+                });
             }
         });
         self.set('assets', assets);
