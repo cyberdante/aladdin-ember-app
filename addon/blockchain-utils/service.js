@@ -468,19 +468,20 @@ export default Service.extend({
 
 
         // enum Assets {container, lock}
+        if(Object.keys(assets).length != 0){
+            console.log(assets)
+            let solEns = "enum Assets {"
+            for (let enms in assets) {
+                solEns = solEns + `${enms}, `;
+            }
 
-        let solEns = "enum Assets {"
-        for (let enms in assets) {
-            solEns = solEns + `${enms}, `;
-        }
-
-        let newsolEns = solEns.substr(0, solEns.length - 2);
-        newsolEns += '}';
-        sol = sol.appendLine(newsolEns);
+            let newsolEns = solEns.substr(0, solEns.length - 2);
+            newsolEns += '}';
+            sol = sol.appendLine(newsolEns);
+        
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
             if( asset!=assetsfunc[asset] && !myRe.exec(asset) ){
-                console.log(asset)
                 sol = sol.appendLine(`Assets _${asset} = Assets.${assetsfunc[asset]};`);
             }
 
@@ -543,6 +544,7 @@ export default Service.extend({
 
             }
         });
+    }
         sol = sol.appendLine('}');
         return sol;
     },
@@ -587,14 +589,16 @@ export default Service.extend({
             }
         });
 
-        let solEns = "enum Assets {"
-        for (let enms in assets) {
-            solEns = solEns + `${enms}, `;
-        }
+        if(Object.keys(assets).length != 0 ){
+            let solEns = "enum Assets {"
+            for (let enms in assets) {
+                solEns = solEns + `${enms}, `;
+            }
 
-        let newsolEns = solEns.substr(0, solEns.length - 2);
-        newsolEns += '}';
-        sol = sol.appendLine(newsolEns);
+            let newsolEns = solEns.substr(0, solEns.length - 2);
+            newsolEns += '}';
+            sol = sol.appendLine(newsolEns);
+        
         let myRe = new RegExp(/_new_standalone_asset_/);
         for (let asset in assetsfunc) {
             if( asset!=assetsfunc[asset] && !myRe.exec(asset) ){
@@ -665,6 +669,7 @@ export default Service.extend({
 
             }
         });
+    }
         sol = sol.appendLine('}');
         return sol;
     },
@@ -697,18 +702,19 @@ export default Service.extend({
 
             if (schema.properties.hasOwnProperty(property)) {
                 let assetMeta = schema.properties[property];
-                let assetType = assetMeta.dependencies.type;
-
-                if (!assets[assetType]) {
-                    assets[assetType] = {
-                        transactions: []
+                if(assetMeta.dependencies){
+                    let assetType = assetMeta.dependencies.type;
+                    if (!assets[assetType]) {
+                        assets[assetType] = {
+                            transactions: []
+                        }
                     }
-                }
-                assets[assetType].transactions.push(O.create({
-                    title: assetMeta.title,
-                    meta: assetMeta
-                }));
+                    assets[assetType].transactions.push(O.create({
+                        title: assetMeta.title,
+                        meta: assetMeta
+                    }));
             }
+        }
         }
 
         return Object.keys(assets).reduce((acc, key) => {

@@ -247,6 +247,7 @@ export default Component.extend({
             if (newAssetTitle && newAssetTitle.trim().length) {
                 let schema = this.blockchainUtils.addAsset(this.schema, this.newAssetTitle.trim(),this.pointsToAsset);
                 this.set('schema', schema);
+          
             }
             this.set('newAssetTitle', '');
             this.set('pointsToAsset', '');

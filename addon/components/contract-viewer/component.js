@@ -80,7 +80,7 @@ export default Component.extend({
     }),
 
     setUpdatedValueLazily(newValue) {
-        console.log(newValue)
+  
         if (this.isDestroyed || this.isDestroying) {
             return;
         }
