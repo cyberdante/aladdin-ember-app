@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import { debounce } from '@ember/runloop';
 // import { A } from '@ember/array';
 import ace from 'ember-ace';
@@ -16,19 +16,9 @@ export default Component.extend({
 
     value: '',
 
-    internalCodeChange: false,
-    code: computed('internalCodeChange', {
-      get(key) {
-        return this.get('_code');
-      },
-      set(key, value) {
-         if (!this.get('internalCodeChange').value) {
-          this.set('_code', value);
-          this.sendAction('changeYaml');
-        } else {
-          this.set('_code', value);
-        }
-      }
+    // internalCodeChange: false,
+    codeObserver: observer('code', function() {
+        this.sendAction('changeYaml');
     }),
 
     editorSession: null,
@@ -80,7 +70,6 @@ export default Component.extend({
     }),
 
     setUpdatedValueLazily(newValue) {
-  
         if (this.isDestroyed || this.isDestroying) {
             return;
         }
