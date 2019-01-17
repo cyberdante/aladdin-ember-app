@@ -17,9 +17,9 @@ export default Component.extend({
     value: '',
 
     // internalCodeChange: false,
-    codeObserver: observer('code', function() {
-        this.sendAction('changeYaml');
-    }),
+    // codeObserver: observer('code', function() {
+    //     this.sendAction('changeYaml');
+    // }),
 
     editorSession: null,
 
