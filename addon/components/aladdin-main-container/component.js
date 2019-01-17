@@ -4,10 +4,10 @@ import PanesController from '../../mixins/panes-controller';
 import { EKMixin } from 'ember-keyboard';
 import { run } from '@ember/runloop';
 import { A } from '@ember/array';
-import { computed } from '@ember/object';
+import { computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import { scheduleOnce } from '@ember/runloop';
+import { scheduleOnce, next } from '@ember/runloop';
 import layout from './template';
 
 export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
@@ -20,17 +20,16 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
     logValues: A([]),
     blockchainUtils: service(),
 
-    code: computed('code', {
-      get(key) {
-        return this.get('_code');
-      },
-      set(key, value) {
+    internalCodeChange: true,
+    code: '',
+
+    __code: observer('code', function() {
+        console.log('externally changed');
         this.set('internalCodeChange', false);
-        this.set('_code', value);
-      }
+        console.log('amc', this.get('internalCodeChange'));
     }),
 
-    workingValue: alias('_code'),
+    workingValue: alias('code'),
 
     init() {
         this._super(...arguments);
@@ -184,29 +183,28 @@ export default Component.extend(ColumnsMixin, EKMixin, PanesController, {
         },
         
         changeYaml() {
-          const self = this;
-          if(self.get('_code') !== undefined) {
-            let utils = self.get('blockchainUtils');
-            utils.solToYaml(self.get('_code')+'', (result) => {
-              // If result is an array display errors
-              if(Array.isArray(result)){
-                let id = 0;
-                let logValues = result.map(strErr => {
-                  let type = /Error:/gi.test(strErr) ? "error" : "warning";
-                  return { id: id++, type: type, value: strErr };
+            const self = this;
+            if (self.get('code') !== undefined) {
+                let utils = self.get('blockchainUtils');
+                utils.solToYaml(self.get('code') + '', (result) => {
+                    // If result is an array, display errors
+                    if (Array.isArray(result)) {
+                        let id = 0;
+                        let logValues = result.map(strErr => {
+                            let type = /Error:/gi.test(strErr) ? "error" : "warning";
+                            return { id: id++, type: type, value: strErr };
+                        });
+                        self.set('outputs', A(logValues));
+                        // Show error dialog
+                        self.set('showErrorDialog', true);
+                    } else {
+                        self.set('yaml', result);
+                        self.set('outputs', A([{ id: 0, type: 'warning', value: 'No errors detected' }]));
+                        self.set('schema', utils.generateSchemaYaml(this.yaml))
+                        // this.sendAction('changeYaml');
+                    }
                 });
-                self.set('outputs', A(logValues));
-                // Show error dialog
-                self.set('showErrorDialog', true);
-              } else {
-                self.set('yaml', result);
-                self.set('outputs', A([{id: 0, type: 'warning', value: 'No errors detected'}]));
-                self.set('schema', utils.generateSchemaYaml(this.yaml))  
-                this.sendAction('changeYaml');
             }
-            });
-          }
-          
         },
     
         compile() {
