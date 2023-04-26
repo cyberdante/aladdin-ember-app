@@ -89,7 +89,7 @@
     "ember-paper-stepper": "0.0.7",
     "ember-paper-swiper": "0.0.4",
     "node-sass": "^4.9.3",
-    "npm": "^6.4.0",
+    "npm": "^6.14.18",
     "remedial": "1.0.8"
   },
   "ember-addon": {
